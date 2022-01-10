@@ -1,0 +1,173 @@
+[tool.poetry]
+name = "sit-igp-management-backend"
+version = "0.1.0"
+description = ""
+authors = ["Tho Nguyen <ndtho8205@gmail.com>"]
+license = "GPL-3.0-or-later"
+repository = "https://github.com/ndtho8205/sit-igp-management"
+homepage = "https://github.com/ndtho8205/sit-igp-management"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+fastapi = "^0.71.0"
+uvicorn = "^0.16.0"
+
+[tool.poetry.dev-dependencies]
+mypy = "^0.931"
+black = "^21.12b0"
+isort = "^5.10.1"
+pylint = "^2.12.2"
+safety = "^1.10.3"
+pyupgrade = "^2.31.0"
+pre-commit = "^2.16.0"
+
+flake8 = "^4.0.1"
+flake8-bandit = "^2.1.2"
+flake8-bugbear = "^21.11.29"
+flake8-builtins = "^1.5.3"
+flake8-eradicate = "^1.2.0"
+flake8-docstrings = "^1.6.0"
+flake8-pytest-style = "^1.6.0"
+flake8-comprehensions = "^3.7.0"
+flake8-rst-docstrings = "^0.2.5"
+darglint = "^1.8.1"
+pep8-naming = "^0.12.1"
+
+pytest = "^6.2.5"
+pytest-cov = "^3.0.0"
+pytest-mock = "^3.6.1"
+pytest-randomly = "^3.10.3"
+pytest-benchmark = "^3.4.1"
+hypothesis = {extras = ["numpy"], version = "^6.35.0"}
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.mypy]
+python_version = "3.8"
+
+# disallow dynamic typing
+disallow_any_explicit = false
+disallow_any_generics = true
+
+# untyped definitions and calls
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+
+# none and optional handling
+no_implicit_optional = true
+strict_optional = true
+
+# configuring warnings
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_return_any = true
+warn_unreachable = true
+
+# miscellaneous strctness flags
+allow_redefinition = false
+implicit_reexport = false
+strict_equality = true
+
+# configuring error messages
+show_error_context = true
+show_column_numbers = true
+show_error_codes = true
+
+# advanced options
+plugins = ["pydantic.mypy"]
+
+# miscellaneous
+warn_unused_configs = true
+
+[[tool.mypy.overrides]]
+module = []
+ignore_missing_imports = true
+
+[tool.pydantic-mypy]
+init_forbid_extra = true
+init_typed = true
+warn_required_dynamic_aliases = true
+warn_untyped_fields = true
+
+[tool.black]
+line-length = 90
+target-version = ["py38"]
+
+[tool.isort]
+profile = "black"
+sections = ["FUTURE", "TYPING", "STDLIB", "TEST", "THIRDPARTY", "FASTAPI", "FIRSTPARTY", "LOCALFOLDER"]
+known_typing = "typing,types,typing_extensions,mypy,mypy_extensions"
+known_test = "pytest,pytest_mock"
+known_first_party = "sit_igp_management_backend"
+known_fastapi = "fastapi"
+length_sort = true
+lines_after_imports = 2
+
+[tool.pylint.MASTER]
+extension-pkg-whitelist = ["pydantic"]
+jobs = 0
+
+[tool.pylint."MESSAGES CONTROL"]
+disable = [
+  "missing-module-docstring",
+  "missing-function-docstring",
+  "too-few-public-methods",
+]
+
+[tool.pylint.LOGGING]
+logging-format-style = "new"
+
+[tool.pylint.VARIABLES]
+init-import = "yes"
+
+[tool.pylint.FORMAT]
+max-line-length = 90
+
+[tool.pylint.BASIC]
+class-attribute-naming-style = "snake_case"
+
+[tool.pylint.DESIGN]
+max-args = 10
+
+[tool.pytest.ini_options]
+addopts = [
+  # reporting
+  "--durations=3",
+  "-vv",
+  "--color=yes",
+  # warnings
+  "--strict-config",
+  "--strict-markers",
+  # collection
+  "--ignore-glob=**/fixtures/*",
+  "--doctest-modules",
+  "--doctest-continue-on-failure",
+  # pytest-cov
+  "--cov=sit_igp_management_backend",
+  "--cov-report=term-missing:skip-covered",
+  "--cov-config=pyproject.toml",
+  # hypothesis
+  "--hypothesis-show-statistics",
+]
+doctest_optionflags = "NUMBER IGNORE_EXCEPTION_DETAIL"
+testpaths = ["tests"]
+xfail_strict = true
+
+[tool.coverage.run]
+branch = true
+omit = ["**/test_*"]
+relative_files = true
+
+[tool.coverage.report]
+exclude_lines = [
+  "pragma: no cover",
+  "raise NotImplementedError",
+  "if TYPE_CHECKING:"
+]
+fail_under = 0
