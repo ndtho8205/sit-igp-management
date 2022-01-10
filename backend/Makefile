@@ -11,8 +11,13 @@ OBJECTS := $$(find . -type f \( -name *.py -not -path './.venv/*' \))
 
 .PHONY: dev
 dev: ## Run development server
-	docker-compose --file ./docker-compose.dev.yml up --detach
-	uvicorn sit_igp_management_backend.main:app --reload --reload-dir ./sit_igp_management_backend
+	docker-compose \
+		--file ./docker-compose.dev.yml up \
+		--detach \
+		--remove-orphans
+	uvicorn sit_igp_management_backend.main:app \
+		--reload \
+		--reload-dir ./sit_igp_management_backend
 
 .PHONY: format
 format: ## Format code
@@ -32,7 +37,7 @@ test-lint: ## Run code linting tests
 	poetry run black --config pyproject.toml --diff --check $(OBJECTS)
 	poetry run flake8 --config setup.cfg $(OBJECTS)
 	poetry run pylint --rcfile pyproject.toml $(OBJECTS)
-	poetry run mypy --config-file setup.cfg $(OBJECTS)
+	poetry run mypy --config-file pyproject.toml $(OBJECTS)
 
 .PHONY: test-unit
 test-unit: ## Run unit tests
