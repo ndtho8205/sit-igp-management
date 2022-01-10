@@ -10,7 +10,10 @@ homepage = "https://github.com/ndtho8205/sit-igp-management"
 [tool.poetry.dependencies]
 python = "^3.8"
 fastapi = "^0.71.0"
-uvicorn = "^0.16.0"
+uvicorn = {extras = ["standard"], version = "^0.16.0"}
+SQLAlchemy = {extras = ["mypy"], version = "^1.4.29"}
+pydantic = {extras = ["email"], version = "^1.9.0"}
+psycopg2-binary = "^2.9.3"
 
 [tool.poetry.dev-dependencies]
 mypy = "^0.931"
@@ -80,7 +83,7 @@ show_column_numbers = true
 show_error_codes = true
 
 # advanced options
-plugins = ["pydantic.mypy"]
+plugins = ["pydantic.mypy", "sqlalchemy.ext.mypy.plugin"]
 
 # miscellaneous
 warn_unused_configs = true
@@ -118,6 +121,7 @@ disable = [
   "missing-module-docstring",
   "missing-function-docstring",
   "too-few-public-methods",
+  "missing-class-docstring",
 ]
 
 [tool.pylint.LOGGING]

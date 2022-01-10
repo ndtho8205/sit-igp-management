@@ -9,9 +9,10 @@ OBJECTS := $$(find . -type f \( -name *.py -not -path './.venv/*' \))
 
 ###### Development
 
-.PHONY: serve
-serve: ## Run development server
-	uvicorn sit_igp_management_backend.main:app --reload
+.PHONY: dev
+dev: ## Run development server
+	docker-compose --file ./docker-compose.dev.yml up --detach
+	uvicorn sit_igp_management_backend.main:app --reload --reload-dir ./sit_igp_management_backend
 
 .PHONY: format
 format: ## Format code
