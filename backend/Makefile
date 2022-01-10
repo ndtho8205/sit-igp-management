@@ -11,7 +11,7 @@ OBJECTS := $$(find . -type f \( -name *.py -not -path './.venv/*' \))
 
 .PHONY: serve
 serve: ## Run development server
-	uvicorn sit_igp_management_backend/main:app --reload
+	uvicorn sit_igp_management_backend.main:app --reload
 
 .PHONY: format
 format: ## Format code
