@@ -1,5 +1,6 @@
 from typing import Any
 
+import sqlalchemy
 from sqlalchemy.orm import Session
 
 from .professors_dto import CreateProfessorDto, UpdateProfessorDto
@@ -51,11 +52,40 @@ def update(
     professor_id: int,
     update_professor_dto: UpdateProfessorDto,
 ) -> Any:
-    raise NotImplementedError()
+    stmt = (
+        sqlalchemy.update(ProfessorSchema)
+        .where(
+            ProfessorSchema.professor_id == professor_id,
+        )
+        .values(**update_professor_dto.dict(exclude_unset=True))
+        .returning(ProfessorSchema)
+    )
+    orm_stmt = (
+        sqlalchemy.select(ProfessorSchema)
+        .from_statement(stmt)
+        .execution_options(populate_existing=True)
+    )
+
+    updated_professors = []
+    for professor in db_session.execute(orm_stmt).scalars():
+        updated_professors.append(professor)
+
+    db_session.commit()
+
+    for professor in updated_professors:
+        db_session.refresh(professor)
+
+    return updated_professors
 
 
 def remove(
     db_session: Session,
     professor_id: int,
 ) -> Any:
-    raise NotImplementedError()
+    db_session.query(ProfessorSchema).filter(
+        ProfessorSchema.professor_id == professor_id,
+    ).delete()
+    db_session.commit()
+    return {
+        "professor_id": professor_id,
+    }

@@ -15,7 +15,7 @@ dev: ## Run development server
 		--file ./docker-compose.dev.yml up \
 		--detach \
 		--remove-orphans
-	uvicorn sit_igp_management_backend.main:app \
+	poetry run uvicorn sit_igp_management_backend.main:app \
 		--reload \
 		--reload-dir ./sit_igp_management_backend
 

@@ -1,6 +1,6 @@
 from typing import Optional
 
-from pydantic import BaseModel
+from pydantic import EmailStr, BaseModel
 
 from sit_igp_management_backend.core import types
 
@@ -13,4 +13,5 @@ class CreateProfessorDto(ProfessorBase):
 
 class UpdateProfessorDto(BaseModel):
     full_name: Optional[types.FullName]
+    email: Optional[EmailStr]
     is_active: Optional[bool]
