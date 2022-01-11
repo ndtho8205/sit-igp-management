@@ -1,5 +1,5 @@
-import type { NextPage } from "next";
-import ProfessorsTable from "../components/professors/ProfessorsTable";
+import type { NextPage } from 'next';
+import ProfessorsTable from '../components/professors/ProfessorsTable';
 
 const Professors: NextPage = () => {
   return (
