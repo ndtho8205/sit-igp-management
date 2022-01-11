@@ -1,18 +1,19 @@
-from sqlalchemy import Date, Column, String, Integer, ForeignKey
+from sqlalchemy import Date, Enum, Column, String, Integer, ForeignKey
 
+from sit_igp_management_backend.core import types
 from sit_igp_management_backend.db.base_schema import BaseSchema
 
 
-class Student(BaseSchema):
+class StudentSchema(BaseSchema):
     __tablename__ = "students"
 
-    student_id = Column(Integer, primary_key=True, index=True)
-    full_name = Column(String)
-    email = Column(String, unique=True, index=True)
-    gender = Column(String)
-    area_of_study = Column(String)
-    admission_date = Column(Date)
+    student_id = Column(Integer, primary_key=True, index=True, nullable=False)
+    full_name = Column(String(256), nullable=False)
+    email = Column(String(256), unique=True, index=True)
+    gender = Column(Enum(types.Gender))
+    area_of_study = Column(String(256))
+    admission_date = Column(Date, index=True, nullable=False)
 
     supervisor_id = Column(Integer, ForeignKey("professors.professor_id"))
-    advisor1_id = Column(Integer, ForeignKey("professors.advisor1_id"))
-    advisor2_id = Column(Integer, ForeignKey("professors.advisor2_id"))
+    advisor1_id = Column(Integer, ForeignKey("professors.professor_id"))
+    advisor2_id = Column(Integer, ForeignKey("professors.professor_id"))

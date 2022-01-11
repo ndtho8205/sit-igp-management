@@ -11,7 +11,7 @@ from . import professors_service
 from .professors_dto import CreateProfessorDto, UpdateProfessorDto
 
 
-router = APIRouter(prefix="/professors", tags=["Professors"])
+router = APIRouter()
 
 
 @router.post("/")

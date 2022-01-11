@@ -1,5 +1,8 @@
 # pylint: disable=unused-import
 
+from sit_igp_management_backend.api.students.students_schema import (  # noqa: F401
+    StudentSchema,
+)
 from sit_igp_management_backend.api.professors.professors_schema import (  # noqa: F401
     ProfessorSchema,
 )

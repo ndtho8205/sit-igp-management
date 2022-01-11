@@ -1,9 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from sit_igp_management_backend.api import api
 from sit_igp_management_backend.db.init_db import init_db
 from sit_igp_management_backend.core.config import config
-from sit_igp_management_backend.api.professors import professors_router
 
 
 init_db()
@@ -22,4 +22,4 @@ if config.BACKEND_CORS_ORIGINS:
         allow_headers=["*"],
     )
 
-app.include_router(professors_router.router, prefix=config.API_PREFIX)
+app.include_router(api.router, prefix=config.API_PREFIX)
