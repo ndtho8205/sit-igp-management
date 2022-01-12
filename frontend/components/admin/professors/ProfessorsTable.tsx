@@ -1,12 +1,19 @@
-import { Space, Table, Tag } from 'antd';
+import { notification, Space, Table, Tag } from 'antd';
 import { useQuery } from 'react-query';
+import apiClient from '../../../core/api/apiClient';
 
 function ProfessorsTable() {
-  const { isLoading, error, data } = useQuery('repoData', () =>
-    fetch('http://localhost:8000/api/professors').then((res) => res.json())
+  const { isLoading, error, data } = useQuery('professors', () =>
+    apiClient.get('/professors/').then((res) => res.data)
   );
 
-  console.log({ error });
+  if (error) {
+    notification['error']({
+      key: 'Profile',
+      message: 'Oops...',
+      description: error.message,
+    });
+  }
 
   const columns = [
     { title: 'Full name', dataIndex: 'full_name', key: 'full_name' },
