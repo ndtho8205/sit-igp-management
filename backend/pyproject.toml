@@ -14,6 +14,8 @@ uvicorn = {extras = ["standard"], version = "^0.16.0"}
 SQLAlchemy = {extras = ["mypy"], version = "^1.4.29"}
 pydantic = {extras = ["email"], version = "^1.9.0"}
 psycopg2-binary = "^2.9.3"
+PyJWT = {extras = ["crypto"], version = "^2.3.0"}
+cffi = "^1.15.0"
 
 [tool.poetry.dev-dependencies]
 mypy = "^0.931"
@@ -138,6 +140,9 @@ class-attribute-naming-style = "snake_case"
 
 [tool.pylint.DESIGN]
 max-args = 10
+
+[tool.pylint.SIMILARITIES]
+ignore-imports = true
 
 [tool.pytest.ini_options]
 addopts = [
