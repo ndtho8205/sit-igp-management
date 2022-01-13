@@ -1,57 +1,93 @@
-from typing import Any
+from typing import Any, List
 
 from sqlalchemy.orm import Session
 
 from fastapi import Depends, APIRouter
 from fastapi.exceptions import HTTPException
 
+from sit_igp_management_backend.api import professors
 from sit_igp_management_backend.dependencies import get_db
-
-from . import students_service
-from .students_dto import CreateStudentDto, UpdateStudentDto
+from sit_igp_management_backend.core.exceptions import ResourceNotFoundError
+from sit_igp_management_backend.api.students.students_dto import (
+    BaseStudentDto,
+    StudentCreateDto,
+    StudentUpdateDto,
+    StudentResponseDto,
+)
+from sit_igp_management_backend.api.students.students_schema import StudentSchema
+from sit_igp_management_backend.api.students.students_service import service
 
 
 router = APIRouter()
 
 
-@router.post("/")
+@router.post("/", response_model=StudentResponseDto)
 def create(
-    student: CreateStudentDto,
+    create_dto: StudentCreateDto,
     db_session: Session = Depends(get_db),
-) -> Any:
-    return students_service.create(db_session, student)
+) -> StudentSchema:
+    if create_dto.email is not None and service.find_one_by_email(
+        db_session,
+        create_dto.email,
+    ):
+        raise HTTPException(status_code=409, detail="Email already registered")
+
+    _check_supervior_advisors_exists(db_session, create_dto)
+
+    return service.create(db_session, create_dto)
 
 
-@router.get("/")
+@router.get("/", response_model=List[StudentResponseDto])
 def find_all(
     db_session: Session = Depends(get_db),
-) -> Any:
-    return students_service.find_all(db_session)
+) -> List[StudentSchema]:
+    return service.find_all(db_session)
 
 
-@router.get("/{student_id}")
+@router.get("/{student_id}", response_model=StudentResponseDto)
 def find_one(
     student_id: int,
     db_session: Session = Depends(get_db),
 ) -> Any:
-    db_student = students_service.find_one_by_id(db_session, student_id)
+    db_student = service.find_one_by_id(db_session, student_id)
     if db_student is None:
-        raise HTTPException(status_code=404, detail="student not found")
+        raise ResourceNotFoundError("Student")
     return db_student
 
 
-@router.put("/{student_id}")
+@router.put("/{student_id}", response_model=StudentResponseDto)
 def update(
     student_id: int,
-    update_student_dto: UpdateStudentDto,
+    update_dto: StudentUpdateDto,
     db_session: Session = Depends(get_db),
-) -> Any:
-    return students_service.update(db_session, student_id, update_student_dto)
+) -> StudentSchema:
+    db_student = service.find_one_by_id(db_session, student_id)
+    if db_student is None:
+        raise ResourceNotFoundError("Student")
+
+    _check_supervior_advisors_exists(db_session, update_dto)
+
+    return service.update(db_session, student_id, update_dto)
 
 
-@router.delete("/{student_id}")
+@router.delete("/{student_id}", response_model=None)
 def remove(
     student_id: int,
     db_session: Session = Depends(get_db),
 ) -> Any:
-    return students_service.remove(db_session, student_id)
+    db_student = service.find_one_by_id(db_session, student_id)
+    if db_student is None:
+        raise ResourceNotFoundError("Student")
+
+    return service.remove(db_session, student_id)
+
+
+def _check_supervior_advisors_exists(db_session: Session, obj: BaseStudentDto) -> None:
+    if not professors.service.is_exists(db_session, obj.supervisor_id):
+        raise ResourceNotFoundError("Supervisor")
+
+    if not professors.service.is_exists(db_session, obj.advisor1_id):
+        raise ResourceNotFoundError("Advisor 1")
+
+    if not professors.service.is_exists(db_session, obj.advisor2_id):
+        raise ResourceNotFoundError("Advisor 2")

@@ -9,13 +9,18 @@ from pydantic.networks import HttpUrl, PostgresDsn
 class Config(BaseSettings):
     # pylint: disable=invalid-name
 
+    AUTH_DOMAIN: str
+    AUTH_API_AUDIENCE: str
+    AUTH_ALGORITHMS: str
+    AUTH_ISSUER: HttpUrl
+
     POSTGRES_SERVER: str
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str
     POSTGRES_DB: str
     SQLALCHEMY_DATABASE_URI: Optional[PostgresDsn] = None
 
-    @validator("SQLALCHEMY_DATABASE_URI", pre=True)
+    @validator("SQLALCHEMY_DATABASE_URI", pre=True, always=True)
     def assemble_uri(  # pylint: disable=no-self-argument, no-self-use
         cls,  # noqa: B902, N805
         v: Optional[str],

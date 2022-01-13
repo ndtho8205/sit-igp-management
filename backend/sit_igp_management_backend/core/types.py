@@ -13,7 +13,7 @@ class FullName(ConstrainedStr):
     pass
 
 
-class Gender(enum.Enum):
+class Gender(str, enum.Enum):
     MALE = "male"
     FEMALE = "female"
     OTHER = "other"

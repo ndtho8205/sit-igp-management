@@ -1,4 +1,4 @@
-from typing import Any
+from typing import List
 
 from sqlalchemy.orm import Session
 
@@ -6,55 +6,69 @@ from fastapi import Depends, APIRouter
 from fastapi.exceptions import HTTPException
 
 from sit_igp_management_backend.dependencies import get_db
-
-from . import professors_service
-from .professors_dto import CreateProfessorDto, UpdateProfessorDto
+from sit_igp_management_backend.core.exceptions import ResourceNotFoundError
+from sit_igp_management_backend.api.professors.professors_dto import (
+    ProfessorCreateDto,
+    ProfessorUpdateDto,
+    ProfessorResponseDto,
+)
+from sit_igp_management_backend.api.professors.professors_schema import ProfessorSchema
+from sit_igp_management_backend.api.professors.professors_service import service
 
 
 router = APIRouter()
 
 
-@router.post("/")
+@router.post("/", response_model=ProfessorResponseDto)
 def create(
-    professor: CreateProfessorDto,
+    create_dto: ProfessorCreateDto,
     db_session: Session = Depends(get_db),
-) -> Any:
-    db_professor = professors_service.find_one_by_email(db_session, professor.email)
+) -> ProfessorSchema:
+    db_professor = service.find_one_by_email(db_session, create_dto.email)
     if db_professor:
-        raise HTTPException(status_code=400, detail="Email already registered")
-    return professors_service.create(db_session, professor)
+        raise HTTPException(status_code=409, detail="Email already registered")
+
+    return service.create(db_session, create_dto)
 
 
-@router.get("/")
+@router.get("/", response_model=List[ProfessorResponseDto])
 def find_all(
     db_session: Session = Depends(get_db),
-) -> Any:
-    return professors_service.find_all(db_session)
+) -> List[ProfessorSchema]:
+    return service.find_all(db_session)
 
 
-@router.get("/{professor_id}")
+@router.get("/{professor_id}", response_model=ProfessorResponseDto)
 def find_one(
     professor_id: int,
     db_session: Session = Depends(get_db),
-) -> Any:
-    db_professor = professors_service.find_one_by_id(db_session, professor_id)
+) -> ProfessorSchema:
+    db_professor = service.find_one_by_id(db_session, professor_id)
     if db_professor is None:
-        raise HTTPException(status_code=404, detail="Professor not found")
+        raise ResourceNotFoundError("Professor")
     return db_professor
 
 
-@router.put("/{professor_id}")
+@router.put("/{professor_id}", response_model=ProfessorResponseDto)
 def update(
     professor_id: int,
-    update_professor_dto: UpdateProfessorDto,
+    update_dto: ProfessorUpdateDto,
     db_session: Session = Depends(get_db),
-) -> Any:
-    return professors_service.update(db_session, professor_id, update_professor_dto)
+) -> ProfessorSchema:
+    db_professor = service.find_one_by_id(db_session, professor_id)
+    if db_professor is None:
+        raise ResourceNotFoundError("Professor")
+
+    return service.update(db_session, professor_id, update_dto)
 
 
-@router.delete("/{professor_id}")
+@router.delete("/{professor_id}", response_model=None)
 def remove(
     professor_id: int,
     db_session: Session = Depends(get_db),
-) -> Any:
-    return professors_service.remove(db_session, professor_id)
+) -> None:
+    db_professor = service.find_one_by_id(db_session, professor_id)
+    if db_professor is None:
+        raise ResourceNotFoundError("Professor")
+
+    return service.remove(db_session, professor_id)

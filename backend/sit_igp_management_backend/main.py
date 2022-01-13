@@ -1,9 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from sit_igp_management_backend.db import init_db
 from sit_igp_management_backend.api import api
-from sit_igp_management_backend.db.init_db import init_db
-from sit_igp_management_backend.core.config import config
+from sit_igp_management_backend.core import config
 
 
 init_db()

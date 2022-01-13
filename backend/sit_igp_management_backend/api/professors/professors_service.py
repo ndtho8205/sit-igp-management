@@ -1,91 +1,38 @@
-from typing import Any
+from typing import Optional
 
-import sqlalchemy
-from sqlalchemy.orm import Session
+from sqlalchemy.orm.session import Session
 
-from .professors_dto import CreateProfessorDto, UpdateProfessorDto
-from .professors_schema import ProfessorSchema
-
-
-def create(
-    db_session: Session,
-    create_professor_dto: CreateProfessorDto,
-) -> Any:
-    db_professor = ProfessorSchema(**create_professor_dto.dict())
-    db_session.add(db_professor)
-    db_session.commit()
-    db_session.refresh(db_professor)
-
-    return db_professor
+from sit_igp_management_backend.core.crud_base_service import CRUDBaseService
+from sit_igp_management_backend.api.professors.professors_dto import (
+    ProfessorCreateDto,
+    ProfessorUpdateDto,
+)
+from sit_igp_management_backend.api.professors.professors_schema import ProfessorSchema
 
 
-def find_all(
-    db_session: Session,
-) -> Any:
-    return db_session.query(ProfessorSchema).all()
+class ProfessorsService(
+    CRUDBaseService[ProfessorSchema, ProfessorCreateDto, ProfessorUpdateDto],
+):
+    def find_one_by_email(
+        self,
+        db_session: Session,
+        email: str,
+    ) -> Optional[ProfessorSchema]:
+        return db_session.query(self.Schema).filter(self.Schema.email == email).first()
+
+    def is_exists(
+        self,
+        db_session: Session,
+        professor_id: Optional[int],
+    ) -> bool:
+        if professor_id is None:
+            return True
+
+        db_professor = self.find_one_by_id(db_session, professor_id)
+        if db_professor:
+            return True
+
+        return False
 
 
-def find_one_by_id(
-    db_session: Session,
-    professor_id: int,
-) -> Any:
-    return (
-        db_session.query(ProfessorSchema)
-        .filter(ProfessorSchema.professor_id == professor_id)
-        .first()
-    )
-
-
-def find_one_by_email(
-    db_session: Session,
-    professor_email: str,
-) -> Any:
-    return (
-        db_session.query(ProfessorSchema)
-        .filter(ProfessorSchema.email == professor_email)
-        .first()
-    )
-
-
-def update(
-    db_session: Session,
-    professor_id: int,
-    update_professor_dto: UpdateProfessorDto,
-) -> Any:
-    stmt = (
-        sqlalchemy.update(ProfessorSchema)
-        .where(
-            ProfessorSchema.professor_id == professor_id,
-        )
-        .values(**update_professor_dto.dict(exclude_unset=True))
-        .returning(ProfessorSchema)
-    )
-    orm_stmt = (
-        sqlalchemy.select(ProfessorSchema)
-        .from_statement(stmt)
-        .execution_options(populate_existing=True)
-    )
-
-    updated_professors = []
-    for professor in db_session.execute(orm_stmt).scalars():
-        updated_professors.append(professor)
-
-    db_session.commit()
-
-    for professor in updated_professors:
-        db_session.refresh(professor)
-
-    return updated_professors
-
-
-def remove(
-    db_session: Session,
-    professor_id: int,
-) -> Any:
-    db_session.query(ProfessorSchema).filter(
-        ProfessorSchema.professor_id == professor_id,
-    ).delete()
-    db_session.commit()
-    return {
-        "professor_id": professor_id,
-    }
+service = ProfessorsService(ProfessorSchema)

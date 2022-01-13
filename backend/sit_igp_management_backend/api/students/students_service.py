@@ -1,80 +1,36 @@
-from typing import Any
+from typing import Optional
 
-import sqlalchemy
-from sqlalchemy.orm import Session
+from sqlalchemy.orm.session import Session
 
-from .students_dto import CreateStudentDto, UpdateStudentDto
-from .students_schema import StudentSchema
-
-
-def create(
-    db_session: Session,
-    create_student_dto: CreateStudentDto,
-) -> Any:
-    db_student = StudentSchema(**create_student_dto.dict())
-    db_session.add(db_student)
-    db_session.commit()
-    db_session.refresh(db_student)
-
-    return db_student
+from sit_igp_management_backend.core.crud_base_service import CRUDBaseService
+from sit_igp_management_backend.api.students.students_dto import (
+    StudentCreateDto,
+    StudentUpdateDto,
+)
+from sit_igp_management_backend.api.students.students_schema import StudentSchema
 
 
-def find_all(
-    db_session: Session,
-) -> Any:
-    return db_session.query(StudentSchema).all()
+class StudentsService(CRUDBaseService[StudentSchema, StudentCreateDto, StudentUpdateDto]):
+    def find_one_by_email(
+        self,
+        db_session: Session,
+        email: str,
+    ) -> Optional[StudentSchema]:
+        return db_session.query(self.Schema).filter(self.Schema.email == email).first()
+
+    def is_exists(
+        self,
+        db_session: Session,
+        student_id: Optional[int],
+    ) -> bool:
+        if student_id is None:
+            return True
+
+        db_student = self.find_one_by_id(db_session, student_id)
+        if db_student:
+            return True
+
+        return False
 
 
-def find_one_by_id(
-    db_session: Session,
-    student_id: int,
-) -> Any:
-    return (
-        db_session.query(StudentSchema)
-        .filter(StudentSchema.student_id == student_id)
-        .first()
-    )
-
-
-def update(
-    db_session: Session,
-    student_id: int,
-    update_student_dto: UpdateStudentDto,
-) -> Any:
-    stmt = (
-        sqlalchemy.update(StudentSchema)
-        .where(
-            StudentSchema.student_id == student_id,
-        )
-        .values(**update_student_dto.dict(exclude_unset=True))
-        .returning(StudentSchema)
-    )
-    orm_stmt = (
-        sqlalchemy.select(StudentSchema)
-        .from_statement(stmt)
-        .execution_options(populate_existing=True)
-    )
-
-    updated_students = []
-    for student in db_session.execute(orm_stmt).scalars():
-        updated_students.append(student)
-
-    db_session.commit()
-
-    for student in updated_students:
-        db_session.refresh(student)
-
-    return updated_students
-
-
-def remove(
-    db_session: Session,
-    student_id: int,
-) -> Any:
-    db_session.query(StudentSchema).filter(
-        StudentSchema.student_id == student_id,
-    ).delete()
-    db_session.commit()
-    return {
-        "student_id": student_id,
-    }
+service = StudentsService(StudentSchema)

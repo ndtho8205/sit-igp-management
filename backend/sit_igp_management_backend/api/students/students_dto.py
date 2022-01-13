@@ -2,27 +2,38 @@ from typing import Optional
 
 from datetime import date
 
-from pydantic import EmailStr, BaseModel
+from pydantic import EmailStr, BaseModel, validator
 
 from sit_igp_management_backend.core import types
-
-from .students_entities import _BaseStudent
-
-
-class _BaseStudentDto(BaseModel):
-    email: Optional[EmailStr] = None
-    gender: Optional[types.Gender] = None
-    area_of_study: Optional[types.ShortStr] = None
-
-    supervisor_id: Optional[int] = None
-    advisor1_id: Optional[int] = None
-    advisor2_id: Optional[int] = None
+from sit_igp_management_backend.core.validators import validate_university_email
+from sit_igp_management_backend.api.students.students_entities import (
+    Student,
+    BaseStudent,
+)
 
 
-class CreateStudentDto(_BaseStudentDto, _BaseStudent):
+class BaseStudentDto(BaseModel):
+    email: Optional[EmailStr]
+    gender: Optional[types.Gender]
+    area_of_study: Optional[types.ShortStr]
+
+    supervisor_id: Optional[int]
+    advisor1_id: Optional[int]
+    advisor2_id: Optional[int]
+
+    _check_university_email = validator("email", allow_reuse=True)(
+        validate_university_email,
+    )
+
+
+class StudentCreateDto(BaseStudent, BaseStudentDto):
     pass
 
 
-class UpdateStudentDto(_BaseStudentDto):
-    full_name: Optional[types.FullName] = None
-    admission_date: Optional[date] = None
+class StudentUpdateDto(BaseStudentDto):
+    full_name: Optional[types.FullName]
+    admission_date: Optional[date]
+
+
+class StudentResponseDto(Student):
+    pass
