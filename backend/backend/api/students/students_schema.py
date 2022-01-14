@@ -3,15 +3,13 @@ from typing import TYPE_CHECKING, List
 from sqlalchemy import Date, Enum, Column, String, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 
-from sit_igp_management_backend.core import types
-from sit_igp_management_backend.db.base_schema import BaseSchema
+from backend.core import types
+from backend.db.base_schema import BaseSchema
 
 
 if TYPE_CHECKING:
-    from sit_igp_management_backend.api.professors import ProfessorSchema
-    from sit_igp_management_backend.api.semester_end_presentations import (
-        SemesterEndPresentationsSchema,
-    )
+    from backend.api.professors import ProfessorSchema
+    from backend.api.semester_end_presentations import SemesterEndPresentationsSchema
 
 
 class StudentSchema(BaseSchema):

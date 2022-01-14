@@ -19,9 +19,9 @@ dev: ## Run development server
 		--file ./docker-compose.dev.yml up \
 		--detach \
 		--remove-orphans
-	poetry run uvicorn sit_igp_management_backend.main:app \
+	poetry run uvicorn backend.main:app \
 		--reload \
-		--reload-dir ./sit_igp_management_backend
+		--reload-dir ./backend
 
 .PHONY: format
 format: ## Format code

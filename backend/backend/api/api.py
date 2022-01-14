@@ -1,10 +1,8 @@
 from fastapi import APIRouter
 
-from sit_igp_management_backend.api.students import students_router
-from sit_igp_management_backend.api.professors import professors_router
-from sit_igp_management_backend.api.semester_end_presentations import (
-    semester_end_presentations_router,
-)
+from backend.api.students import students_router
+from backend.api.professors import professors_router
+from backend.api.semester_end_presentations import semester_end_presentations_router
 
 
 router = APIRouter()

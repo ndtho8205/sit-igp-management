@@ -7,7 +7,7 @@ from sqlalchemy.orm.session import Session
 
 from fastapi.encoders import jsonable_encoder
 
-from sit_igp_management_backend.db import BaseSchema
+from backend.db import BaseSchema
 
 
 SchemaType = TypeVar("SchemaType", bound=BaseSchema)

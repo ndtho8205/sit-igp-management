@@ -3,11 +3,11 @@ from typing import TYPE_CHECKING
 from sqlalchemy import Date, Column, String, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 
-from sit_igp_management_backend.db.base_schema import BaseSchema
+from backend.db.base_schema import BaseSchema
 
 
 if TYPE_CHECKING:
-    from sit_igp_management_backend.api.students import StudentSchema
+    from backend.api.students import StudentSchema
 
 
 class SemesterEndPresentationsSchema(BaseSchema):

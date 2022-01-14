@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from sit_igp_management_backend.core import config
+from backend.core import config
 
 
 engine = create_engine(

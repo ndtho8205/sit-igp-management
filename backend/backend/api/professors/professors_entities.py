@@ -1,7 +1,7 @@
 from pydantic import EmailStr, BaseModel, validator
 
-from sit_igp_management_backend.core import types
-from sit_igp_management_backend.core.validators import validate_university_email
+from backend.core import types
+from backend.core.validators import validate_university_email
 
 
 class BaseProfessor(BaseModel):

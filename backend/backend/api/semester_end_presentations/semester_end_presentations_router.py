@@ -4,9 +4,9 @@ from sqlalchemy.orm import Session
 
 from fastapi import Depends, APIRouter
 
-from sit_igp_management_backend.api import students, professors
-from sit_igp_management_backend.dependencies import get_db
-from sit_igp_management_backend.core.exceptions import ResourceNotFoundError
+from backend.api import students, professors
+from backend.dependencies import get_db
+from backend.core.exceptions import ResourceNotFoundError
 
 from .semester_end_presentations_dto import (
     BaseSemesterEndPresentationDto,

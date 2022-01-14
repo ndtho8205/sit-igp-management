@@ -2,12 +2,9 @@ from typing import Optional
 
 from sqlalchemy.orm.session import Session
 
-from sit_igp_management_backend.core.crud_base_service import CRUDBaseService
-from sit_igp_management_backend.api.professors.professors_dto import (
-    ProfessorCreateDto,
-    ProfessorUpdateDto,
-)
-from sit_igp_management_backend.api.professors.professors_schema import ProfessorSchema
+from backend.core.crud_base_service import CRUDBaseService
+from backend.api.professors.professors_dto import ProfessorCreateDto, ProfessorUpdateDto
+from backend.api.professors.professors_schema import ProfessorSchema
 
 
 class ProfessorsService(

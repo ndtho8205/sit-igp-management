@@ -16,6 +16,6 @@ RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-
 COPY poetry.lock pyproject.toml /app/
 RUN poetry install --no-dev
 
-COPY ./sit_igp_management_backend/ /app/sit_igp_management_backend/
+COPY ./backend/ /app/backend/
 
-CMD poetry run uvicorn --host=0.0.0.0 sit_igp_management_backend.main:app
+CMD poetry run uvicorn --host=0.0.0.0 backend.main:app

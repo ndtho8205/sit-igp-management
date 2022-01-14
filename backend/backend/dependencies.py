@@ -2,7 +2,7 @@ from typing import Iterator
 
 from sqlalchemy.orm import Session
 
-from sit_igp_management_backend.db.session import DbSession
+from backend.db.session import DbSession
 
 
 def get_db() -> Iterator[Session]:

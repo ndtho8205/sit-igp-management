@@ -2,8 +2,8 @@ from typing import Optional
 
 from pydantic import EmailStr, BaseModel
 
-from sit_igp_management_backend.core import types
-from sit_igp_management_backend.api.professors.professors_entities import BaseProfessor
+from backend.core import types
+from backend.api.professors.professors_entities import BaseProfessor
 
 
 class ProfessorCreateDto(BaseProfessor):

@@ -5,17 +5,17 @@ from sqlalchemy.orm import Session
 from fastapi import Depends, APIRouter
 from fastapi.exceptions import HTTPException
 
-from sit_igp_management_backend.api import professors
-from sit_igp_management_backend.dependencies import get_db
-from sit_igp_management_backend.core.exceptions import ResourceNotFoundError
-from sit_igp_management_backend.api.students.students_dto import (
+from backend.api import professors
+from backend.dependencies import get_db
+from backend.core.exceptions import ResourceNotFoundError
+from backend.api.students.students_dto import (
     BaseStudentDto,
     StudentCreateDto,
     StudentUpdateDto,
     StudentResponseDto,
 )
-from sit_igp_management_backend.api.students.students_schema import StudentSchema
-from sit_igp_management_backend.api.students.students_service import service
+from backend.api.students.students_schema import StudentSchema
+from backend.api.students.students_service import service
 
 
 router = APIRouter()
