@@ -1,0 +1,21 @@
+FROM python:3.8.12-slim
+
+ENV PYTHONUNBUFFERED 1
+ENV PYTHONPATH=/app
+
+EXPOSE 8000
+WORKDIR /app/
+
+RUN apt-get update && \
+        apt-get install -y --no-install-recommends netcat curl && \
+        rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | POETRY_HOME=/opt/poetry python && \
+    ln -s /opt/poetry/bin/poetry /usr/bin/poetry
+
+COPY poetry.lock pyproject.toml /app/
+RUN poetry install --no-dev
+
+COPY ./sit_igp_management_backend/ /app/sit_igp_management_backend/
+
+CMD poetry run uvicorn --host=0.0.0.0 sit_igp_management_backend.main:app

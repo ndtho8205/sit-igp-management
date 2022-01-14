@@ -9,6 +9,10 @@ OBJECTS := $$(find . -type f \( -name *.py -not -path './.venv/*' \))
 
 ###### Development
 
+.PHONY: local
+local: ## Run server in container environment
+	docker-compose --file docker-compose.local.yml up --build --remove-orphans
+
 .PHONY: dev
 dev: ## Run development server
 	docker-compose \

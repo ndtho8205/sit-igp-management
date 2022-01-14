@@ -8,9 +8,6 @@ from sit_igp_management_backend.db.base_schema import BaseSchema
 
 if TYPE_CHECKING:
     from sit_igp_management_backend.api.students import StudentSchema
-    from sit_igp_management_backend.api.semester_end_presentations import (
-        SemesterEndPresentationsSchema,
-    )
 
 
 class ProfessorSchema(BaseSchema):
