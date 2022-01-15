@@ -45,7 +45,7 @@ def find_one(
 ) -> ProfessorSchema:
     db_professor = service.find_one_by_id(db_session, professor_id)
     if db_professor is None:
-        raise ResourceNotFoundError("Professor")
+        raise ResourceNotFoundError("professor")
     return db_professor
 
 
@@ -57,7 +57,7 @@ def update(
 ) -> ProfessorSchema:
     db_professor = service.find_one_by_id(db_session, professor_id)
     if db_professor is None:
-        raise ResourceNotFoundError("Professor")
+        raise ResourceNotFoundError("professor")
 
     return service.update(db_session, professor_id, update_dto)
 
@@ -69,6 +69,6 @@ def remove(
 ) -> None:
     db_professor = service.find_one_by_id(db_session, professor_id)
     if db_professor is None:
-        raise ResourceNotFoundError("Professor")
+        raise ResourceNotFoundError("professor")
 
     return service.remove(db_session, professor_id)

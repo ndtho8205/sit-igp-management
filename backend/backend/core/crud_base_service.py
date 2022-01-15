@@ -27,10 +27,15 @@ class CRUDBaseService(Generic[SchemaType, CreateDtoType, UpdateDtoType]):
         return db_obj
 
     def find_all(self, db_session: Session) -> List[SchemaType]:
-        return db_session.query(self.Schema).all()
+        return (
+            db_session.query(self.Schema)
+            .where(self.Schema.is_deleted.is_(False))
+            .order_by(self.Schema.created_at.desc())
+            .all()
+        )
 
     def find_one_by_id(self, db_session: Session, id_: int) -> Optional[SchemaType]:
-        return db_session.query(self.Schema).filter(self.Schema.id_ == id_).first()
+        return db_session.query(self.Schema).where(self.Schema.id_ == id_).first()
 
     def update(self, db_session: Session, id_: int, obj: UpdateDtoType) -> SchemaType:
         stmt = (
@@ -57,5 +62,8 @@ class CRUDBaseService(Generic[SchemaType, CreateDtoType, UpdateDtoType]):
         return list_db_obj[0]
 
     def remove(self, db_session: Session, id_: int) -> None:
-        db_session.query(self.Schema).filter(self.Schema.id_ == id_).delete()
+        stmt = (
+            sa.update(self.Schema).where(self.Schema.id_ == id_).values(is_deleted=True)
+        )
+        db_session.execute(stmt)
         db_session.commit()

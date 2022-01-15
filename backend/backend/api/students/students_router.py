@@ -1,9 +1,11 @@
 from typing import Any, List
 
+from starlette import status
 from sqlalchemy.orm import Session
+from pydantic.error_wrappers import ErrorWrapper
 
 from fastapi import Depends, APIRouter
-from fastapi.exceptions import HTTPException
+from fastapi.exceptions import HTTPException, RequestValidationError
 
 from backend.api import professors
 from backend.dependencies import get_db
@@ -30,7 +32,10 @@ def create(
         db_session,
         create_dto.email,
     ):
-        raise HTTPException(status_code=409, detail="Email already registered")
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Email already registered",
+        )
 
     _check_supervior_advisors_exists(db_session, create_dto)
 
@@ -83,11 +88,34 @@ def remove(
 
 
 def _check_supervior_advisors_exists(db_session: Session, obj: BaseStudentDto) -> None:
-    if not professors.service.is_exists(db_session, obj.supervisor_id):
-        raise ResourceNotFoundError("Supervisor")
+    error_list = []
 
-    if not professors.service.is_exists(db_session, obj.advisor1_id):
-        raise ResourceNotFoundError("Advisor 1")
+    if obj.supervisor_id and not professors.service.is_exists(
+        db_session,
+        obj.supervisor_id,
+    ):
+        error_list.append(
+            ErrorWrapper(
+                ValueError("The supervisor was not found"),
+                loc=("body", "supervisor_id"),
+            ),
+        )
 
-    if not professors.service.is_exists(db_session, obj.advisor2_id):
-        raise ResourceNotFoundError("Advisor 2")
+    if obj.advisor1_id and not professors.service.is_exists(db_session, obj.advisor1_id):
+        error_list.append(
+            ErrorWrapper(
+                ValueError("The advisor was not found"),
+                loc=("body", "advisor1_id"),
+            ),
+        )
+
+    if obj.advisor2_id and not professors.service.is_exists(db_session, obj.advisor2_id):
+        error_list.append(
+            ErrorWrapper(
+                ValueError("The advisor was not found"),
+                loc=("body", "advisor2_id"),
+            ),
+        )
+
+    if error_list:
+        raise RequestValidationError(error_list)

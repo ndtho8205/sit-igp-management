@@ -20,11 +20,8 @@ class ProfessorsService(
     def is_exists(
         self,
         db_session: Session,
-        professor_id: Optional[int],
+        professor_id: int,
     ) -> bool:
-        if professor_id is None:
-            return True
-
         db_professor = self.find_one_by_id(db_session, professor_id)
         if db_professor:
             return True

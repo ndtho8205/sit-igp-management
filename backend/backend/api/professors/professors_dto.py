@@ -1,9 +1,9 @@
 from typing import Optional
 
-from pydantic import EmailStr, BaseModel
+from pydantic import BaseModel
 
 from backend.core import types
-from backend.api.professors.professors_entities import BaseProfessor
+from backend.api.professors.professors_entities import Professor, BaseProfessor
 
 
 class ProfessorCreateDto(BaseProfessor):
@@ -12,12 +12,9 @@ class ProfessorCreateDto(BaseProfessor):
 
 class ProfessorUpdateDto(BaseModel):
     full_name: Optional[types.FullName]
-    email: Optional[EmailStr]
+    email: Optional[types.UniversityEmailStr]
+    is_deleted: Optional[bool]
 
 
-class ProfessorResponseDto(BaseProfessor):
-    id_: int
-    is_active: bool
-
-    class Config:
-        orm_mode = True
+class ProfessorResponseDto(Professor):
+    pass

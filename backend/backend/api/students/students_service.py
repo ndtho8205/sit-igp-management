@@ -18,11 +18,8 @@ class StudentsService(CRUDBaseService[StudentSchema, StudentCreateDto, StudentUp
     def is_exists(
         self,
         db_session: Session,
-        student_id: Optional[int],
+        student_id: int,
     ) -> bool:
-        if student_id is None:
-            return True
-
         db_student = self.find_one_by_id(db_session, student_id)
         if db_student:
             return True

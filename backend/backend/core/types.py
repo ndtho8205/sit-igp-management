@@ -6,7 +6,13 @@ from pydantic.networks import validate_email
 from backend.core.validators import validate_university_email
 
 
-class FullName(ConstrainedStr):
+class ShortStr(ConstrainedStr):
+    min_length = 1
+    strip_whitespace = True
+    max_length = 256
+
+
+class FullName(ShortStr):
     pass
 
 

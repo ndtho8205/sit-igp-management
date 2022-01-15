@@ -1,12 +1,12 @@
 # pylint: disable=no-member
+# pragma: no cover"
 from logging.config import fileConfig
 
 from alembic import context
 from sqlalchemy import pool, engine_from_config
 
-# pylint: disable=unused-import
-from backend import api  # noqa: F401
 from backend.db import BaseSchema
+from backend.api import import_all_schemas
 from backend.configs import app_config
 
 
@@ -14,6 +14,7 @@ config = context.config
 fileConfig(str(config.config_file_name))
 config.set_main_option("sqlalchemy.url", str(app_config.DATABASE_URL))
 
+import_all_schemas()
 target_metadata = BaseSchema.metadata
 
 

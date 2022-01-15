@@ -1,11 +1,19 @@
+from typing import Dict
+
 from fastapi import APIRouter
 
 from backend.api.students import students_router
 from backend.api.professors import professors_router
-from backend.api.semester_end_presentations import semester_end_presentations_router
+from backend.api.presentations import presentations_router
 
 
 router = APIRouter()
+
+
+@router.get("/status", tags=["API Status"])
+def root() -> Dict[str, str]:
+    return {"status": "Ok"}
+
 
 router.include_router(
     professors_router.router,
@@ -20,7 +28,7 @@ router.include_router(
 )
 
 router.include_router(
-    semester_end_presentations_router.router,
-    prefix="/semester_end_presentations",
+    presentations_router.router,
+    prefix="/presentations",
     tags=["Semester End Presentation Information"],
 )

@@ -11,7 +11,7 @@ homepage = "https://github.com/ndtho8205/sit-igp-management"
 python = "^3.8"
 fastapi = "^0.71.0"
 uvicorn = {extras = ["standard"], version = "^0.17.0"}
-pydantic = {extras = ["dotenv"], version = "^1.9.0"}
+pydantic = {extras = ["dotenv", "email"], version = "^1.9.0"}
 alembic = {extras = ["tz"], version = "^1.7.5"}
 SQLAlchemy = {extras = ["mypy"], version = "^1.4.29"}
 psycopg2-binary = "^2.9.3"
@@ -48,6 +48,7 @@ pytest-randomly = "^3.11.0"
 pytest-benchmark = "^3.4.1"
 hypothesis = {extras = ["numpy"], version = "^6.35.0"}
 schemathesis = "^3.12.3"
+pytest-env = "^0.6.2"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -149,6 +150,9 @@ max-args = 10
 ignore-imports = true
 
 [tool.pytest.ini_options]
+env = [
+  "APP_ENV=test",
+]
 addopts = [
   # reporting
   "--durations=3",
@@ -165,6 +169,8 @@ addopts = [
   "--cov=backend",
   "--cov-report=term-missing:skip-covered",
   "--cov-config=pyproject.toml",
+  # pytest-randomly
+  "--randomly-dont-reset-seed",
   # hypothesis
   "--hypothesis-show-statistics",
 ]
@@ -183,4 +189,4 @@ exclude_lines = [
   "raise NotImplementedError",
   "if TYPE_CHECKING:"
 ]
-fail_under = 0
+fail_under = 90
