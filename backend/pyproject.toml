@@ -11,12 +11,12 @@ homepage = "https://github.com/ndtho8205/sit-igp-management"
 python = "^3.8"
 fastapi = "^0.71.0"
 uvicorn = {extras = ["standard"], version = "^0.17.0"}
+pydantic = {extras = ["dotenv"], version = "^1.9.0"}
+alembic = {extras = ["tz"], version = "^1.7.5"}
 SQLAlchemy = {extras = ["mypy"], version = "^1.4.29"}
-pydantic = {extras = ["email"], version = "^1.9.0"}
 psycopg2-binary = "^2.9.3"
-PyJWT = {extras = ["crypto"], version = "^2.3.0"}
 cffi = "^1.15.0"
-alembic = "^1.7.5"
+PyJWT = {extras = ["crypto"], version = "^2.3.0"}
 
 [tool.poetry.dev-dependencies]
 requests = "^2.27.1"
@@ -47,6 +47,7 @@ pytest-mock = "^3.6.1"
 pytest-randomly = "^3.11.0"
 pytest-benchmark = "^3.4.1"
 hypothesis = {extras = ["numpy"], version = "^6.35.0"}
+schemathesis = "^3.12.3"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

@@ -4,7 +4,7 @@ from sqlalchemy.orm import declarative_base
 
 class _Base:
     # pylint: disable=invalid-name
-    id_ = Column(Integer, index=True, nullable=False, primary_key=True)
+    id_ = Column(Integer, index=True, nullable=False, primary_key=True, unique=True)
     created_at = Column(DateTime, default=func.now(), nullable=False)
     updated_at = Column(
         DateTime,

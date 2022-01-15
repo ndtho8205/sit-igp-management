@@ -1,12 +1,30 @@
 from typing import Any, Dict, List, Optional
 
-import secrets
+from enum import Enum
 
 from pydantic import AnyHttpUrl, BaseSettings, validator
 from pydantic.networks import HttpUrl, PostgresDsn
 
 
-class Config(BaseSettings):
+class AppEnvTypes(Enum):
+    PROD = "prod"
+    DEV = "dev"
+    TEST = "test"
+
+
+class BaseConfig(BaseSettings):
+    # pylint: disable=invalid-name
+
+    APP_ENV: AppEnvTypes
+
+    class Config:
+        env_file = ".env"
+        env_file_encoding = "utf-8"
+        case_sensitive = True
+        allow_mutation = False
+
+
+class BaseAppConfig(BaseConfig):
     # pylint: disable=invalid-name
 
     AUTH_DOMAIN: str
@@ -18,10 +36,11 @@ class Config(BaseSettings):
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str
     POSTGRES_DB: str
-    SQLALCHEMY_DATABASE_URI: Optional[PostgresDsn] = None
 
-    @validator("SQLALCHEMY_DATABASE_URI", pre=True, always=True)
-    def assemble_uri(  # pylint: disable=no-self-argument, no-self-use
+    DATABASE_URL: Optional[PostgresDsn] = None
+
+    @validator("DATABASE_URL", pre=True, always=True)
+    def assemble_database_url(  # pylint: disable=no-self-argument, no-self-use
         cls,  # noqa: B902, N805
         v: Optional[str],
         values: Dict[str, Any],
@@ -39,23 +58,9 @@ class Config(BaseSettings):
             )
         )
 
-    SMTP_TLS: bool = True
-    SMTP_HOST: Optional[str] = None
-    SMTP_PORT: Optional[str] = None
-    SMTP_USER: Optional[str] = None
-    SMTP_PASSWORD: Optional[str] = None
-
     APP_NAME: str = "SIT IGP Management"
     API_PREFIX: str = "/api"
 
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 8 * 24 * 60
-    SECRET_KEY: str = secrets.token_urlsafe(32)
-    BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = []
+    CORS_ALLOW_ORIGINS: List[AnyHttpUrl] = []
 
     SENTRY_DSN: Optional[HttpUrl] = None
-
-    class Config:
-        case_sensitive = True
-
-
-config = Config()

@@ -1,25 +1,5 @@
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-
-from backend.db import init_db
-from backend.api import api
-from backend.core import config
+from backend.configs import app_config
+from backend.init_app import init_app
 
 
-init_db()
-
-app = FastAPI(
-    title=config.APP_NAME,
-    openapi_url=f"{config.API_PREFIX}/openapi.json",
-)
-
-if config.BACKEND_CORS_ORIGINS:
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=config.BACKEND_CORS_ORIGINS,
-        allow_credentials=True,
-        allow_methods=["OPTIONS", "HEAD", "GET", "POST", "PUT", "DELETE"],
-        allow_headers=["*"],
-    )
-
-app.include_router(api.router, prefix=config.API_PREFIX)
+app = init_app(app_config)

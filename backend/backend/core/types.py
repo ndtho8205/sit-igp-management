@@ -1,16 +1,21 @@
 import enum
 
-from pydantic import ConstrainedStr
+from pydantic import EmailStr, ConstrainedStr
+from pydantic.networks import validate_email
 
-
-class ShortStr(ConstrainedStr):
-    min_length = 1
-    max_length = 256
-    strip_whitespace = True
+from backend.core.validators import validate_university_email
 
 
 class FullName(ConstrainedStr):
     pass
+
+
+class UniversityEmailStr(EmailStr):
+    @classmethod
+    def validate(cls, value: str) -> str:
+        email = validate_email(value)[1]
+        validate_university_email(email)
+        return email
 
 
 class Gender(str, enum.Enum):
