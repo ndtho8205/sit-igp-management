@@ -5,7 +5,6 @@ from datetime import date
 from pydantic import BaseModel
 
 from backend.core import types
-from backend.api.professors.professors_entities import Professor
 
 
 class BaseStudent(BaseModel):
@@ -14,18 +13,14 @@ class BaseStudent(BaseModel):
 
 
 class Student(BaseStudent):
-    id_: int
+    id_: types.ID
     email: Optional[types.UniversityEmailStr]
     gender: Optional[types.Gender]
     area_of_study: Optional[types.ShortStr]
 
-    supervisor_id: Optional[int]
-    advisor1_id: Optional[int]
-    advisor2_id: Optional[int]
-
-    supervisor: Optional[Professor]
-    advisor1: Optional[Professor]
-    advisor2: Optional[Professor]
+    supervisor_id: Optional[types.ID]
+    advisor1_id: Optional[types.ID]
+    advisor2_id: Optional[types.ID]
 
     is_deleted: bool
 

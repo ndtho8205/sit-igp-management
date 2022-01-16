@@ -5,6 +5,7 @@ from fastapi import APIRouter
 from backend.api.students import students_router
 from backend.api.professors import professors_router
 from backend.api.presentations import presentations_router
+from backend.api.presentation_evaluations import presentation_evaluations_router
 
 
 router = APIRouter()
@@ -31,4 +32,10 @@ router.include_router(
     presentations_router.router,
     prefix="/presentations",
     tags=["Semester End Presentation Information"],
+)
+
+router.include_router(
+    presentation_evaluations_router.router,
+    prefix="/presentation_evaluations",
+    tags=["Semester End Presentation Evaluations"],
 )

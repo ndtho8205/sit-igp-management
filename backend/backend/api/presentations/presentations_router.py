@@ -7,6 +7,7 @@ from fastapi import Depends, APIRouter
 from fastapi.exceptions import RequestValidationError
 
 from backend.api import students, professors
+from backend.core import types
 from backend.dependencies import get_db
 from backend.core.exceptions import ResourceNotFoundError
 from backend.api.presentations.presentations_dto import (
@@ -42,7 +43,7 @@ def find_all(
 
 @router.get("/{presentation_id}", response_model=PresentationResponseDto)
 def find_one(
-    presentation_id: int,
+    presentation_id: types.ID,
     db_session: Session = Depends(get_db),
 ) -> Optional[PresentationSchema]:
     db_presentation = service.find_one_by_id(db_session, presentation_id)
@@ -54,13 +55,13 @@ def find_one(
 
 @router.put("/{presentation_id}", response_model=PresentationResponseDto)
 def update(
-    presentation_id: int,
+    presentation_id: types.ID,
     update_dto: PresentationUpdateDto,
     db_session: Session = Depends(get_db),
 ) -> PresentationSchema:
     db_presentation = service.find_one_by_id(db_session, presentation_id)
     if db_presentation is None:
-        raise ResourceNotFoundError("semester end resentation")
+        raise ResourceNotFoundError("semester end presentation")
 
     _check_reviewers_exists(db_session, update_dto)
 
@@ -69,18 +70,18 @@ def update(
 
 @router.delete("/{presentation_id}", response_model=PresentationResponseDto)
 def remove(
-    presentation_id: int,
+    presentation_id: types.ID,
     db_session: Session = Depends(get_db),
 ) -> None:
     db_presentation = service.find_one_by_id(db_session, presentation_id)
     if db_presentation is None:
-        raise ResourceNotFoundError("semester end resentation")
+        raise ResourceNotFoundError("semester end presentation")
 
     return service.remove(db_session, presentation_id)
 
 
-def _check_student_exists(db_session: Session, student_id: int) -> None:
-    if not students.service.is_exists(db_session, student_id):
+def _check_student_exists(db_session: Session, student_id: types.ID) -> None:
+    if students.service.find_one_by_id(db_session, student_id) is None:
         raise RequestValidationError(
             [
                 ErrorWrapper(
@@ -102,7 +103,10 @@ def _check_reviewers_exists(db_session: Session, obj: BasePresentationDto) -> No
     }
 
     for reviewer_role, reviewer_id in reviewers.items():
-        if reviewer_id and not professors.service.is_exists(db_session, reviewer_id):
+        if (
+            reviewer_id is not None
+            and professors.service.find_one_by_id(db_session, reviewer_id) is None
+        ):
             error_list.append(
                 ErrorWrapper(
                     ValueError(f"The reviewer {reviewer_role} was not found"),

@@ -10,7 +10,7 @@ def test_create_ok(client: TestClient) -> None:
     response_body = response.json()
 
     assert response.status_code == 200
-    assert response_body["id_"] > 0
+    assert response_body["id_"]
     assert response_body["full_name"] == professor["full_name"]
     assert response_body["email"] == professor["email"]
     assert not response_body["is_verified"]
@@ -97,8 +97,8 @@ def test_find_one_by_id_ok(client: TestClient) -> None:
     assert not response_body["is_deleted"]
 
 
-def test_find_one_by_id_not_found(client: TestClient) -> None:
-    response = client.get("/api/professors/-1")
+def test_find_one_by_id_not_found(client: TestClient, random_id: str) -> None:
+    response = client.get(f"/api/professors/{random_id}")
 
     assert response.status_code == status.HTTP_404_NOT_FOUND
 
@@ -141,8 +141,8 @@ def test_update_by_id_invalid_email(client: TestClient) -> None:
     assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
 
 
-def test_update_by_id_not_found(client: TestClient) -> None:
-    response = client.put("/api/professors/-1", json={})
+def test_update_by_id_not_found(client: TestClient, random_id: str) -> None:
+    response = client.put(f"/api/professors/{random_id}", json={})
 
     assert response.status_code == status.HTTP_404_NOT_FOUND
 
@@ -177,7 +177,7 @@ def test_find_all_after_delete_ok(client: TestClient) -> None:
     assert n_professors_before - n_professors_after == 1
 
 
-def test_delete_not_found(client: TestClient) -> None:
-    response = client.delete("/api/professors/-1")
+def test_delete_not_found(client: TestClient, random_id: str) -> None:
+    response = client.delete(f"/api/professors/{random_id}")
 
     assert response.status_code == status.HTTP_404_NOT_FOUND

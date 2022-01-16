@@ -1,11 +1,21 @@
-from sqlalchemy import Column, Boolean, Integer, DateTime, func
+import uuid
+
+from sqlalchemy import Column, Boolean, DateTime, func
 from sqlalchemy.orm import as_declarative
+from sqlalchemy.dialects.postgresql import UUID
 
 
 @as_declarative()
 class BaseSchema:
     # pylint: disable=invalid-name
-    id_ = Column(Integer, index=True, nullable=False, primary_key=True, unique=True)
+    id_: uuid.UUID = Column(
+        UUID(as_uuid=True),
+        index=True,
+        nullable=False,
+        primary_key=True,
+        unique=True,
+        default=uuid.uuid4,
+    )
     is_deleted = Column(Boolean, default=False, index=True, nullable=False)
     created_at = Column(DateTime, default=func.now(), index=True, nullable=False)
     updated_at = Column(

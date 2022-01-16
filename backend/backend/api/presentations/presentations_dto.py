@@ -4,6 +4,7 @@ from datetime import date
 
 from pydantic import BaseModel
 
+from backend.core import types
 from backend.api.presentations.presentations_entities import (
     Presentation,
     BasePresentation,
@@ -13,11 +14,11 @@ from backend.api.presentations.presentations_entities import (
 class BasePresentationDto(BaseModel):
     presentation_length: Optional[str]
 
-    reviewer1_id: Optional[int]
-    reviewer2_id: Optional[int]
-    reviewer3_id: Optional[int]
-    reviewer4_id: Optional[int]
-    reviewer5_id: Optional[int]
+    reviewer1_id: Optional[types.ID]
+    reviewer2_id: Optional[types.ID]
+    reviewer3_id: Optional[types.ID]
+    reviewer4_id: Optional[types.ID]
+    reviewer5_id: Optional[types.ID]
 
 
 class PresentationCreateDto(BasePresentation, BasePresentationDto):

@@ -1,9 +1,13 @@
 import enum
 
-from pydantic import EmailStr, ConstrainedStr
+from pydantic import UUID4, EmailStr, ConstrainedStr
+from pydantic.types import ConstrainedInt
 from pydantic.networks import validate_email
 
 from backend.core.validators import validate_university_email
+
+
+ID = UUID4
 
 
 class ShortStr(ConstrainedStr):
@@ -28,3 +32,8 @@ class Gender(str, enum.Enum):
     MALE = "male"
     FEMALE = "female"
     OTHER = "other"
+
+
+class ScoreInt(ConstrainedInt):
+    ge = 1
+    le = 5

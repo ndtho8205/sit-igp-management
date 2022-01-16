@@ -22,11 +22,11 @@ def test_create_ok(client: TestClient) -> None:
     response_body = response.json()
 
     assert response.status_code == 200
-    assert response_body["id_"] > 0
+    assert response_body["id_"]
     assert response_body["full_name"] == student["full_name"]
     assert response_body["email"] == student["email"]
     assert response_body["admission_date"] == student["admission_date"]
-    assert response_body["supervisor_id"] is supervisor_id
+    assert response_body["supervisor_id"] == str(supervisor_id)
     assert response_body["gender"] is None
     assert response_body["area_of_study"] is None
     assert response_body["advisor1_id"] is None
@@ -97,13 +97,13 @@ def test_create_conflict_email(client: TestClient) -> None:
     assert response.status_code == status.HTTP_409_CONFLICT
 
 
-def test_create_supervisor_not_found(client: TestClient) -> None:
+def test_create_supervisor_not_found(client: TestClient, random_id: str) -> None:
     student = {
         "full_name": "Student 5",
         "admission_date": "2022-12-22",
-        "supervisor_id": -1,
-        "advisor1_id": -1,
-        "advisor2_id": -1,
+        "supervisor_id": random_id,
+        "advisor1_id": random_id,
+        "advisor2_id": random_id,
     }
 
     response = client.post("/api/students/", json=student)
@@ -135,7 +135,7 @@ def test_find_one_by_id_ok(client: TestClient) -> None:
     response_body = response.json()
 
     assert response.status_code == 200
-    assert response_body["id_"] > 0
+    assert response_body["id_"]
     assert response_body["full_name"] == student["full_name"]
     assert response_body["email"] is None
     assert response_body["admission_date"] == student["admission_date"]
@@ -147,8 +147,8 @@ def test_find_one_by_id_ok(client: TestClient) -> None:
     assert not response_body["is_deleted"]
 
 
-def test_find_one_by_id_not_found(client: TestClient) -> None:
-    response = client.get("/api/students/-1")
+def test_find_one_by_id_not_found(client: TestClient, random_id: str) -> None:
+    response = client.get(f"/api/students/{random_id}")
 
     assert response.status_code == status.HTTP_404_NOT_FOUND
 
@@ -175,21 +175,21 @@ def test_update_by_id_ok(client: TestClient) -> None:
     assert response_body["is_deleted"]
 
 
-def test_update_by_id_supervisor_not_found(client: TestClient) -> None:
+def test_update_by_id_supervisor_not_found(client: TestClient, random_id: str) -> None:
     student = {"full_name": "Student 10", "admission_date": "2022-12-22"}
     response = client.post("/api/students/", json=student)
     student_id = response.json()["id_"]
 
     response = client.put(
         f"/api/students/{student_id}",
-        json={"supervisor_id": -1},
+        json={"supervisor_id": random_id},
     )
 
     assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
 
 
-def test_update_by_id_not_found(client: TestClient) -> None:
-    response = client.put("/api/students/-1", json={})
+def test_update_by_id_not_found(client: TestClient, random_id: str) -> None:
+    response = client.put(f"/api/students/{random_id}", json={})
 
     assert response.status_code == status.HTTP_404_NOT_FOUND
 
@@ -224,7 +224,7 @@ def test_find_all_after_delete_ok(client: TestClient) -> None:
     assert n_students_before - n_students_after == 1
 
 
-def test_delete_not_found(client: TestClient) -> None:
-    response = client.delete("/api/students/-1")
+def test_delete_not_found(client: TestClient, random_id: str) -> None:
+    response = client.delete(f"/api/students/{random_id}")
 
     assert response.status_code == status.HTTP_404_NOT_FOUND

@@ -15,18 +15,7 @@ class ProfessorsService(
         db_session: Session,
         email: str,
     ) -> Optional[ProfessorSchema]:
-        return db_session.query(self.Schema).filter(self.Schema.email == email).first()
-
-    def is_exists(
-        self,
-        db_session: Session,
-        professor_id: int,
-    ) -> bool:
-        db_professor = self.find_one_by_id(db_session, professor_id)
-        if db_professor:
-            return True
-
-        return False
+        return db_session.query(self.Schema).where(self.Schema.email == email).first()
 
 
 service = ProfessorsService(ProfessorSchema)

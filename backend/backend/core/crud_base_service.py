@@ -8,6 +8,7 @@ from sqlalchemy.orm.session import Session
 from fastapi.encoders import jsonable_encoder
 
 from backend.db import BaseSchema
+from backend.core import types
 
 
 SchemaType = TypeVar("SchemaType", bound=BaseSchema)
@@ -34,10 +35,12 @@ class CRUDBaseService(Generic[SchemaType, CreateDtoType, UpdateDtoType]):
             .all()
         )
 
-    def find_one_by_id(self, db_session: Session, id_: int) -> Optional[SchemaType]:
+    def find_one_by_id(self, db_session: Session, id_: types.ID) -> Optional[SchemaType]:
         return db_session.query(self.Schema).where(self.Schema.id_ == id_).first()
 
-    def update(self, db_session: Session, id_: int, obj: UpdateDtoType) -> SchemaType:
+    def update(
+        self, db_session: Session, id_: types.ID, obj: UpdateDtoType
+    ) -> SchemaType:
         stmt = (
             sa.update(self.Schema)
             .where(self.Schema.id_ == id_)
@@ -61,7 +64,7 @@ class CRUDBaseService(Generic[SchemaType, CreateDtoType, UpdateDtoType]):
 
         return list_db_obj[0]
 
-    def remove(self, db_session: Session, id_: int) -> None:
+    def remove(self, db_session: Session, id_: types.ID) -> None:
         stmt = (
             sa.update(self.Schema).where(self.Schema.id_ == id_).values(is_deleted=True)
         )

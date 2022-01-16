@@ -1,3 +1,4 @@
+from uuid import uuid4
 from pathlib import Path
 
 import pytest
@@ -22,3 +23,8 @@ def _apply_migrations():  # type: ignore
 @pytest.fixture()
 def client(_apply_migrations: None) -> TestClient:
     return TestClient(init_app(app_config))
+
+
+@pytest.fixture()
+def random_id() -> str:
+    return str(uuid4())

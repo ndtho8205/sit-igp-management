@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from fastapi import Depends, APIRouter
 from fastapi.exceptions import HTTPException
 
+from backend.core import types
 from backend.dependencies import get_db
 from backend.core.exceptions import ResourceNotFoundError
 from backend.api.professors.professors_dto import (
@@ -25,7 +26,7 @@ def create(
     db_session: Session = Depends(get_db),
 ) -> ProfessorSchema:
     db_professor = service.find_one_by_email(db_session, create_dto.email)
-    if db_professor:
+    if db_professor is not None:
         raise HTTPException(status_code=409, detail="Email already registered")
 
     return service.create(db_session, create_dto)
@@ -40,7 +41,7 @@ def find_all(
 
 @router.get("/{professor_id}", response_model=ProfessorResponseDto)
 def find_one(
-    professor_id: int,
+    professor_id: types.ID,
     db_session: Session = Depends(get_db),
 ) -> ProfessorSchema:
     db_professor = service.find_one_by_id(db_session, professor_id)
@@ -51,7 +52,7 @@ def find_one(
 
 @router.put("/{professor_id}", response_model=ProfessorResponseDto)
 def update(
-    professor_id: int,
+    professor_id: types.ID,
     update_dto: ProfessorUpdateDto,
     db_session: Session = Depends(get_db),
 ) -> ProfessorSchema:
@@ -64,7 +65,7 @@ def update(
 
 @router.delete("/{professor_id}", response_model=None)
 def remove(
-    professor_id: int,
+    professor_id: types.ID,
     db_session: Session = Depends(get_db),
 ) -> None:
     db_professor = service.find_one_by_id(db_session, professor_id)

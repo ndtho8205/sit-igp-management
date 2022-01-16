@@ -13,9 +13,9 @@ class BaseStudentDto(BaseModel):
     gender: Optional[types.Gender]
     area_of_study: Optional[types.ShortStr]
 
-    supervisor_id: Optional[int]
-    advisor1_id: Optional[int]
-    advisor2_id: Optional[int]
+    supervisor_id: Optional[types.ID]
+    advisor1_id: Optional[types.ID]
+    advisor2_id: Optional[types.ID]
 
 
 class StudentCreateDto(BaseStudent, BaseStudentDto):

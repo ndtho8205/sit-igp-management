@@ -9,7 +9,7 @@ class BaseProfessor(BaseModel):
 
 
 class Professor(BaseProfessor):
-    id_: int
+    id_: types.ID
     is_verified: bool
     is_superuser: bool
     is_deleted: bool

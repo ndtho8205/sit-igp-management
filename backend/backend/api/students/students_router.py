@@ -8,6 +8,7 @@ from fastapi import Depends, APIRouter
 from fastapi.exceptions import HTTPException, RequestValidationError
 
 from backend.api import professors
+from backend.core import types
 from backend.dependencies import get_db
 from backend.core.exceptions import ResourceNotFoundError
 from backend.api.students.students_dto import (
@@ -28,9 +29,13 @@ def create(
     create_dto: StudentCreateDto,
     db_session: Session = Depends(get_db),
 ) -> StudentSchema:
-    if create_dto.email is not None and service.find_one_by_email(
-        db_session,
-        create_dto.email,
+    if (
+        create_dto.email is not None
+        and service.find_one_by_email(
+            db_session,
+            create_dto.email,
+        )
+        is not None
     ):
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
@@ -51,7 +56,7 @@ def find_all(
 
 @router.get("/{student_id}", response_model=StudentResponseDto)
 def find_one(
-    student_id: int,
+    student_id: types.ID,
     db_session: Session = Depends(get_db),
 ) -> Any:
     db_student = service.find_one_by_id(db_session, student_id)
@@ -62,7 +67,7 @@ def find_one(
 
 @router.put("/{student_id}", response_model=StudentResponseDto)
 def update(
-    student_id: int,
+    student_id: types.ID,
     update_dto: StudentUpdateDto,
     db_session: Session = Depends(get_db),
 ) -> StudentSchema:
@@ -77,7 +82,7 @@ def update(
 
 @router.delete("/{student_id}", response_model=None)
 def remove(
-    student_id: int,
+    student_id: types.ID,
     db_session: Session = Depends(get_db),
 ) -> Any:
     db_student = service.find_one_by_id(db_session, student_id)
@@ -90,9 +95,13 @@ def remove(
 def _check_supervior_advisors_exists(db_session: Session, obj: BaseStudentDto) -> None:
     error_list = []
 
-    if obj.supervisor_id and not professors.service.is_exists(
-        db_session,
-        obj.supervisor_id,
+    if (
+        obj.supervisor_id is not None
+        and professors.service.find_one_by_id(
+            db_session,
+            obj.supervisor_id,
+        )
+        is None
     ):
         error_list.append(
             ErrorWrapper(
@@ -101,7 +110,10 @@ def _check_supervior_advisors_exists(db_session: Session, obj: BaseStudentDto) -
             ),
         )
 
-    if obj.advisor1_id and not professors.service.is_exists(db_session, obj.advisor1_id):
+    if (
+        obj.advisor1_id is not None
+        and professors.service.find_one_by_id(db_session, obj.advisor1_id) is None
+    ):
         error_list.append(
             ErrorWrapper(
                 ValueError("The advisor was not found"),
@@ -109,7 +121,10 @@ def _check_supervior_advisors_exists(db_session: Session, obj: BaseStudentDto) -
             ),
         )
 
-    if obj.advisor2_id and not professors.service.is_exists(db_session, obj.advisor2_id):
+    if (
+        obj.advisor2_id is not None
+        and professors.service.find_one_by_id(db_session, obj.advisor2_id) is None
+    ):
         error_list.append(
             ErrorWrapper(
                 ValueError("The advisor was not found"),

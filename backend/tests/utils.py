@@ -5,6 +5,7 @@ from fastapi.testclient import TestClient
 
 from backend.api.students.students_entities import Student
 from backend.api.professors.professors_entities import Professor
+from backend.api.presentations.presentations_schema import PresentationSchema
 
 
 def random_str() -> str:
@@ -28,3 +29,16 @@ def generate_student(client: TestClient) -> Student:
     }
     response = client.post("/api/students/", json=create_dto)
     return Student(**response.json())
+
+
+def generate_presentation(client: TestClient) -> PresentationSchema:
+    presenter = generate_student(client)
+    reviewer = generate_professor(client)
+
+    create_dto = {
+        "student_id": str(presenter.id_),
+        "reviewer1_id": str(reviewer.id_),
+        "presentation_date": "2022-12-22",
+    }
+    response = client.post("/api/presentations/", json=create_dto)
+    return PresentationSchema(**response.json())

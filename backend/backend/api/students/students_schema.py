@@ -1,4 +1,5 @@
-from sqlalchemy import Date, Enum, Column, String, Integer, ForeignKey
+from sqlalchemy import Date, Enum, Column, String, ForeignKey
+from sqlalchemy.dialects.postgresql import UUID
 
 from backend.core import types
 from backend.db.base_schema import BaseSchema
@@ -13,6 +14,6 @@ class StudentSchema(BaseSchema):
     area_of_study = Column(String(256))
     admission_date = Column(Date, index=True, nullable=False)
 
-    supervisor_id = Column(Integer, ForeignKey("professors.id_"))
-    advisor1_id = Column(Integer, ForeignKey("professors.id_"))
-    advisor2_id = Column(Integer, ForeignKey("professors.id_"))
+    supervisor_id: types.ID = Column(UUID(as_uuid=True), ForeignKey("professors.id_"))
+    advisor1_id: types.ID = Column(UUID(as_uuid=True), ForeignKey("professors.id_"))
+    advisor2_id: types.ID = Column(UUID(as_uuid=True), ForeignKey("professors.id_"))

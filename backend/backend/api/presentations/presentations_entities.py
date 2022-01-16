@@ -4,29 +4,23 @@ from datetime import date
 
 from pydantic import BaseModel
 
-from backend.api.professors.professors_entities import Professor
+from backend.core import types
 
 
 class BasePresentation(BaseModel):
-    student_id: int
+    student_id: types.ID
     presentation_date: date
 
 
 class Presentation(BasePresentation):
-    id_: int
+    id_: types.ID
     presentation_length: Optional[str]
 
-    reviewer1_id: Optional[int]
-    reviewer2_id: Optional[int]
-    reviewer3_id: Optional[int]
-    reviewer4_id: Optional[int]
-    reviewer5_id: Optional[int]
-
-    reviewer1: Optional[Professor]
-    reviewer2: Optional[Professor]
-    reviewer3: Optional[Professor]
-    reviewer4: Optional[Professor]
-    reviewer5: Optional[Professor]
+    reviewer1_id: Optional[types.ID]
+    reviewer2_id: Optional[types.ID]
+    reviewer3_id: Optional[types.ID]
+    reviewer4_id: Optional[types.ID]
+    reviewer5_id: Optional[types.ID]
 
     is_deleted: bool
 
