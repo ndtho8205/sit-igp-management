@@ -3,17 +3,18 @@
 
 """create_all_tables
 
-Revision ID: b23fb7a9f279
-Revises:
-Create Date: 2022-01-18 01:16:05.407330+09:00
+Revision ID: e5c1ead22e08
+Revises: 
+Create Date: 2022-01-18 05:46:38.895329+09:00
 
 """
-from alembic import op
 import sqlalchemy as sa
+from alembic import op
 from sqlalchemy.dialects import postgresql
 
+
 # revision identifiers, used by Alembic.
-revision = "b23fb7a9f279"
+revision = "e5c1ead22e08"
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -289,5 +290,4 @@ def downgrade() -> None:
     op.drop_index(op.f("ix_professors_email"), table_name="professors")
     op.drop_index(op.f("ix_professors_created_at"), table_name="professors")
     op.drop_table("professors")
-    op.execute("DROP TYPE gender")
     # ### end Alembic commands ###

@@ -49,6 +49,8 @@ class BaseAppConfig(BaseConfig):
     ) -> str:
         """Build SQLAlchemy URI."""
         if isinstance(v, str):
+            if v.startswith("postgres://"):
+                v = v.replace("postgres://", "postgresql://", 1)
             return v
         return str(
             PostgresDsn.build(

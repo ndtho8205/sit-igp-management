@@ -6,6 +6,7 @@ from backend.configs import app_config
 
 
 def verify_token(credentials: HTTPAuthorizationCredentials) -> str:
+    return ""
     jwks_url = f"https://{app_config.AUTH_DOMAIN}/.well-known/jwks.json"
     jwks_client = jwt.PyJWKClient(jwks_url)
 
@@ -18,5 +19,6 @@ def verify_token(credentials: HTTPAuthorizationCredentials) -> str:
         audience=app_config.AUTH_API_AUDIENCE,
         issuer=app_config.AUTH_ISSUER,
     )
+    print(payload)
 
     return str(payload["sub"])
