@@ -1,21 +1,38 @@
-import { Layout } from 'antd';
-import { FunctionComponent, ReactNode } from 'react';
+import { Layout, Typography } from 'antd';
+import { FunctionComponent, ReactNode, useState} from 'react';
+import MainNav from '../components/professor/ProfessorMainNav';
 import Profile from '../components/common/Profile';
+import styles from '../styles/ProfessorPagesLayout.module.css';
 
-const { Header, Content, Footer } = Layout;
+const { Header, Content, Footer, Sider} = Layout;
+const { Title } = Typography;
 
 type Props = {
   children?: ReactNode;
 };
 
 const ProfessorPagesLayout: FunctionComponent = ({ children }: Props) => {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
   return (
-    <Layout>
-      <Header className="header">
-        <Profile />
-      </Header>
-      <Content>{children}</Content>
-      <Footer></Footer>
+    <Layout className={styles.professorContainer}>
+      <Sider width={300}
+        collapsed={isCollapsed}
+        collapsible
+        onCollapse={() => setIsCollapsed(!isCollapsed)}
+      >
+        {/* <div className={styles.logo} /> */}
+        <Title className={styles.logo}>TEST</Title>
+        <MainNav />
+      </Sider>
+
+      <Layout>
+        <Header className="header">
+          <Profile />
+        </Header>
+        <Content className={styles.content}>{children}</Content>
+        <Footer></Footer>
+      </Layout>
     </Layout>
   );
 };
