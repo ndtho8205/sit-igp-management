@@ -11,6 +11,7 @@ from backend.api import professors
 from backend.core import types
 from backend.dependencies import get_db
 from backend.core.exceptions import ResourceNotFoundError
+from backend.api.router_dependencies import get_superuser
 from backend.api.students.students_dto import (
     BaseStudentDto,
     StudentCreateDto,
@@ -19,6 +20,7 @@ from backend.api.students.students_dto import (
 )
 from backend.api.students.students_schema import StudentSchema
 from backend.api.students.students_service import service
+from backend.api.professors.professors_entities import Professor
 
 
 router = APIRouter()
@@ -28,6 +30,7 @@ router = APIRouter()
 def create(
     create_dto: StudentCreateDto,
     db_session: Session = Depends(get_db),
+    _: Professor = Depends(get_superuser),
 ) -> StudentSchema:
     if (
         create_dto.email is not None
@@ -50,6 +53,7 @@ def create(
 @router.get("/", response_model=List[StudentResponseDto])
 def find_all(
     db_session: Session = Depends(get_db),
+    _: Professor = Depends(get_superuser),
 ) -> List[StudentSchema]:
     return service.find_all(db_session)
 
@@ -58,6 +62,7 @@ def find_all(
 def find_one(
     student_id: types.ID,
     db_session: Session = Depends(get_db),
+    _: Professor = Depends(get_superuser),
 ) -> Any:
     db_student = service.find_one_by_id(db_session, student_id)
     if db_student is None:
@@ -70,6 +75,7 @@ def update(
     student_id: types.ID,
     update_dto: StudentUpdateDto,
     db_session: Session = Depends(get_db),
+    _: Professor = Depends(get_superuser),
 ) -> StudentSchema:
     db_student = service.find_one_by_id(db_session, student_id)
     if db_student is None:
@@ -84,6 +90,7 @@ def update(
 def remove(
     student_id: types.ID,
     db_session: Session = Depends(get_db),
+    _: Professor = Depends(get_superuser),
 ) -> Any:
     db_student = service.find_one_by_id(db_session, student_id)
     if db_student is None:

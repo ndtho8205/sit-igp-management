@@ -11,6 +11,8 @@ from backend.api import presentations
 from backend.core import types
 from backend.dependencies import get_db
 from backend.core.exceptions import ResourceNotFoundError
+from backend.api.router_dependencies import get_superuser, get_normal_user
+from backend.api.professors.professors_entities import Professor
 from backend.api.presentations.presentations_schema import PresentationSchema
 from backend.api.presentations.presentations_service import (
     service as presentations_service,
@@ -35,6 +37,7 @@ router = APIRouter()
 def create(
     create_dto: PresentationEvaluationCreateDto,
     db_session: Session = Depends(get_db),
+    _: Professor = Depends(get_superuser),
 ) -> PresentationEvaluationSchema:
     db_presentation = presentations_service.find_one_by_id(
         db_session,
@@ -64,6 +67,7 @@ def create(
 def find_all_evaluations_per_presentation(
     presentation_id: types.ID,
     db_session: Session = Depends(get_db),
+    _: Professor = Depends(get_normal_user),
 ) -> List[PresentationEvaluationSchema]:
     return service.find_all_evaluations_per_presentation(db_session, presentation_id)
 
@@ -76,6 +80,7 @@ def find_one(
     presentation_id: types.ID,
     reviewer_id: types.ID,
     db_session: Session = Depends(get_db),
+    _: Professor = Depends(get_normal_user),
 ) -> Optional[PresentationEvaluationSchema]:
     db_evaluation = service.find_one_by_presentation_reviewer_id(
         db_session,
@@ -93,6 +98,7 @@ def update(
     evaluation_id: types.ID,
     update_dto: PresentationEvaluationUpdateDto,
     db_session: Session = Depends(get_db),
+    _: Professor = Depends(get_normal_user),
 ) -> PresentationEvaluationSchema:
     db_evaluation = service.find_one_by_id(db_session, evaluation_id)
     if db_evaluation is None:
@@ -105,6 +111,7 @@ def update(
 def remove(
     presentation_id: types.ID,
     db_session: Session = Depends(get_db),
+    _: Professor = Depends(get_superuser),
 ) -> None:
     db_presentation = service.find_one_by_id(db_session, presentation_id)
     if db_presentation is None:

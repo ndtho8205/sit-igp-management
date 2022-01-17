@@ -14,6 +14,7 @@ class ProfessorUpdateDto(BaseModel):
     full_name: Optional[types.FullName]
     email: Optional[types.UniversityEmailStr]
     is_deleted: Optional[bool]
+    is_verified: Optional[bool]
 
 
 class ProfessorResponseDto(Professor):

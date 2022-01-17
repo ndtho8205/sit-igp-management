@@ -5,6 +5,8 @@ from enum import Enum
 from pydantic import AnyHttpUrl, BaseSettings, validator
 from pydantic.networks import HttpUrl, PostgresDsn
 
+from backend.core import types
+
 
 class AppEnvTypes(Enum):
     PROD = "prod"
@@ -64,3 +66,6 @@ class BaseAppConfig(BaseConfig):
     CORS_ALLOW_ORIGINS: List[AnyHttpUrl] = []
 
     SENTRY_DSN: Optional[HttpUrl] = None
+
+    SUPERUSER_FULLNAME: str
+    SUPERUSER_EMAIL: types.UniversityEmailStr

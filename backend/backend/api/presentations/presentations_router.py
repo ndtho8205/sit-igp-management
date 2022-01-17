@@ -10,6 +10,8 @@ from backend.api import students, professors
 from backend.core import types
 from backend.dependencies import get_db
 from backend.core.exceptions import ResourceNotFoundError
+from backend.api.router_dependencies import get_superuser
+from backend.api.professors.professors_entities import Professor
 from backend.api.presentations.presentations_dto import (
     BasePresentationDto,
     PresentationCreateDto,
@@ -27,6 +29,7 @@ router = APIRouter()
 def create(
     create_dto: PresentationCreateDto,
     db_session: Session = Depends(get_db),
+    _: Professor = Depends(get_superuser),
 ) -> PresentationSchema:
     _check_student_exists(db_session, create_dto.student_id)
     _check_reviewers_exists(db_session, create_dto)
@@ -37,6 +40,7 @@ def create(
 @router.get("/", response_model=List[PresentationResponseDto])
 def find_all(
     db_session: Session = Depends(get_db),
+    _: Professor = Depends(get_superuser),
 ) -> List[PresentationSchema]:
     return service.find_all(db_session)
 
@@ -45,6 +49,7 @@ def find_all(
 def find_one(
     presentation_id: types.ID,
     db_session: Session = Depends(get_db),
+    _: Professor = Depends(get_superuser),
 ) -> Optional[PresentationSchema]:
     db_presentation = service.find_one_by_id(db_session, presentation_id)
     if db_presentation is None:
@@ -58,6 +63,7 @@ def update(
     presentation_id: types.ID,
     update_dto: PresentationUpdateDto,
     db_session: Session = Depends(get_db),
+    _: Professor = Depends(get_superuser),
 ) -> PresentationSchema:
     db_presentation = service.find_one_by_id(db_session, presentation_id)
     if db_presentation is None:
@@ -72,6 +78,7 @@ def update(
 def remove(
     presentation_id: types.ID,
     db_session: Session = Depends(get_db),
+    _: Professor = Depends(get_superuser),
 ) -> None:
     db_presentation = service.find_one_by_id(db_session, presentation_id)
     if db_presentation is None:
