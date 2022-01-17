@@ -1,7 +1,6 @@
 from typing import List, Optional
 
 from sqlalchemy.orm.session import Session
-from sqlalchemy.sql.elements import and_
 
 from backend.core import types
 from backend.core.crud_base_service import CRUDBaseService
@@ -29,15 +28,14 @@ class PresentationEvaluationsService(
         return (
             db_session.query(self.Schema)
             .where(
-                and_(
-                    self.Schema.presentation_id == presentation_id,
-                    self.Schema.is_deleted.is_(False),
-                )
+                self.Schema.presentation_id == presentation_id,
+                self.Schema.is_deleted.is_(False),
             )
+            .order_by(self.Schema.created_at.desc())
             .all()
         )
 
-    def find_one_by_presentation_reviewer_id(
+    def find_one_by_presentation_and_reviewer_id(
         self,
         db_session: Session,
         presentation_id: types.ID,
@@ -46,10 +44,8 @@ class PresentationEvaluationsService(
         return (
             db_session.query(self.Schema)
             .where(
-                and_(
-                    self.Schema.presentation_id == presentation_id,
-                    self.Schema.reviewer_id == reviewer_id,
-                )
+                self.Schema.presentation_id == presentation_id,
+                self.Schema.reviewer_id == reviewer_id,
             )
             .first()
         )

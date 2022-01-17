@@ -67,5 +67,5 @@ class BaseAppConfig(BaseConfig):
 
     SENTRY_DSN: Optional[HttpUrl] = None
 
-    SUPERUSER_FULLNAME: str
+    SUPERUSER_FULLNAME: types.FullName
     SUPERUSER_EMAIL: types.UniversityEmailStr

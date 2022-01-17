@@ -17,5 +17,8 @@ class ProfessorsService(
     ) -> Optional[ProfessorSchema]:
         return db_session.query(self.Schema).where(self.Schema.email == email).first()
 
+    def is_email_unique(self, db_session: Session, email: str) -> bool:
+        return self.find_one_by_email(db_session, email) is None
+
 
 service = ProfessorsService(ProfessorSchema)

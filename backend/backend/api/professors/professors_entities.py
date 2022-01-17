@@ -7,12 +7,13 @@ class BaseProfessor(BaseModel):
     full_name: types.FullName
     email: types.UniversityEmailStr
 
+    class Config:
+        orm_mode = True
+
 
 class Professor(BaseProfessor):
     id_: types.ID
-    is_verified: bool
-    is_superuser: bool
     is_deleted: bool
 
-    class Config:
-        orm_mode = True
+    is_verified: bool
+    is_superuser: bool

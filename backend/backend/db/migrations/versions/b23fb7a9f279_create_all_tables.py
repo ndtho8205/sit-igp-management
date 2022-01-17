@@ -3,18 +3,17 @@
 
 """create_all_tables
 
-Revision ID: 756bb25521e6
+Revision ID: b23fb7a9f279
 Revises:
-Create Date: 2022-01-17 01:20:46.049046+09:00
+Create Date: 2022-01-18 01:16:05.407330+09:00
 
 """
-import sqlalchemy as sa
 from alembic import op
+import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
-
 # revision identifiers, used by Alembic.
-revision = "756bb25521e6"
+revision = "b23fb7a9f279"
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -53,12 +52,12 @@ def upgrade() -> None:
             "updated_at", sa.DateTime(), server_default=sa.text("now()"), nullable=False
         ),
         sa.Column("full_name", sa.String(length=256), nullable=False),
+        sa.Column("admission_date", sa.Date(), nullable=False),
         sa.Column("email", sa.String(length=256), nullable=True),
         sa.Column(
             "gender", sa.Enum("MALE", "FEMALE", "OTHER", name="gender"), nullable=True
         ),
         sa.Column("area_of_study", sa.String(length=256), nullable=True),
-        sa.Column("admission_date", sa.Date(), nullable=False),
         sa.Column("supervisor_id", postgresql.UUID(as_uuid=True), nullable=True),
         sa.Column("advisor1_id", postgresql.UUID(as_uuid=True), nullable=True),
         sa.Column("advisor2_id", postgresql.UUID(as_uuid=True), nullable=True),
@@ -75,17 +74,26 @@ def upgrade() -> None:
             ["professors.id_"],
         ),
         sa.PrimaryKeyConstraint("id_"),
-        sa.UniqueConstraint("email"),
     )
     op.create_index(
         op.f("ix_students_admission_date"), "students", ["admission_date"], unique=False
     )
     op.create_index(
+        op.f("ix_students_advisor1_id"), "students", ["advisor1_id"], unique=False
+    )
+    op.create_index(
+        op.f("ix_students_advisor2_id"), "students", ["advisor2_id"], unique=False
+    )
+    op.create_index(
         op.f("ix_students_created_at"), "students", ["created_at"], unique=False
     )
+    op.create_index(op.f("ix_students_email"), "students", ["email"], unique=True)
     op.create_index(op.f("ix_students_id_"), "students", ["id_"], unique=True)
     op.create_index(
         op.f("ix_students_is_deleted"), "students", ["is_deleted"], unique=False
+    )
+    op.create_index(
+        op.f("ix_students_supervisor_id"), "students", ["supervisor_id"], unique=False
     )
     op.create_table(
         "presentations",
@@ -97,7 +105,7 @@ def upgrade() -> None:
         ),
         sa.Column("student_id", postgresql.UUID(as_uuid=True), nullable=False),
         sa.Column("presentation_date", sa.Date(), nullable=False),
-        sa.Column("presentation_length", sa.String(), nullable=True),
+        sa.Column("presentation_length", sa.String(length=256), nullable=True),
         sa.Column("reviewer1_id", postgresql.UUID(as_uuid=True), nullable=True),
         sa.Column("reviewer2_id", postgresql.UUID(as_uuid=True), nullable=True),
         sa.Column("reviewer3_id", postgresql.UUID(as_uuid=True), nullable=True),
@@ -143,6 +151,36 @@ def upgrade() -> None:
         unique=False,
     )
     op.create_index(
+        op.f("ix_presentations_reviewer1_id"),
+        "presentations",
+        ["reviewer1_id"],
+        unique=False,
+    )
+    op.create_index(
+        op.f("ix_presentations_reviewer2_id"),
+        "presentations",
+        ["reviewer2_id"],
+        unique=False,
+    )
+    op.create_index(
+        op.f("ix_presentations_reviewer3_id"),
+        "presentations",
+        ["reviewer3_id"],
+        unique=False,
+    )
+    op.create_index(
+        op.f("ix_presentations_reviewer4_id"),
+        "presentations",
+        ["reviewer4_id"],
+        unique=False,
+    )
+    op.create_index(
+        op.f("ix_presentations_reviewer5_id"),
+        "presentations",
+        ["reviewer5_id"],
+        unique=False,
+    )
+    op.create_index(
         op.f("ix_presentations_student_id"), "presentations", ["student_id"], unique=False
     )
     op.create_table(
@@ -160,7 +198,7 @@ def upgrade() -> None:
         sa.Column("score_visual_aid", sa.Integer(), nullable=False),
         sa.Column("score_time", sa.Integer(), nullable=False),
         sa.Column("score_qa", sa.Integer(), nullable=False),
-        sa.Column("comment", sa.String(), nullable=True),
+        sa.Column("comment", sa.String(length=256), nullable=True),
         sa.ForeignKeyConstraint(
             ["presentation_id"],
             ["presentations.id_"],
@@ -227,14 +265,23 @@ def downgrade() -> None:
     )
     op.drop_table("presentation_evaluations")
     op.drop_index(op.f("ix_presentations_student_id"), table_name="presentations")
+    op.drop_index(op.f("ix_presentations_reviewer5_id"), table_name="presentations")
+    op.drop_index(op.f("ix_presentations_reviewer4_id"), table_name="presentations")
+    op.drop_index(op.f("ix_presentations_reviewer3_id"), table_name="presentations")
+    op.drop_index(op.f("ix_presentations_reviewer2_id"), table_name="presentations")
+    op.drop_index(op.f("ix_presentations_reviewer1_id"), table_name="presentations")
     op.drop_index(op.f("ix_presentations_presentation_date"), table_name="presentations")
     op.drop_index(op.f("ix_presentations_is_deleted"), table_name="presentations")
     op.drop_index(op.f("ix_presentations_id_"), table_name="presentations")
     op.drop_index(op.f("ix_presentations_created_at"), table_name="presentations")
     op.drop_table("presentations")
+    op.drop_index(op.f("ix_students_supervisor_id"), table_name="students")
     op.drop_index(op.f("ix_students_is_deleted"), table_name="students")
     op.drop_index(op.f("ix_students_id_"), table_name="students")
+    op.drop_index(op.f("ix_students_email"), table_name="students")
     op.drop_index(op.f("ix_students_created_at"), table_name="students")
+    op.drop_index(op.f("ix_students_advisor2_id"), table_name="students")
+    op.drop_index(op.f("ix_students_advisor1_id"), table_name="students")
     op.drop_index(op.f("ix_students_admission_date"), table_name="students")
     op.drop_table("students")
     op.drop_index(op.f("ix_professors_is_deleted"), table_name="professors")

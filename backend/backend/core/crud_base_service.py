@@ -3,7 +3,7 @@ from typing import List, Type, Generic, TypeVar, Optional
 
 import sqlalchemy as sa
 from pydantic.main import BaseModel
-from sqlalchemy.orm.session import Session
+from sqlalchemy.orm import Session
 
 from fastapi.encoders import jsonable_encoder
 
@@ -36,35 +36,30 @@ class CRUDBaseService(Generic[SchemaType, CreateDtoType, UpdateDtoType]):
         )
 
     def find_one_by_id(self, db_session: Session, id_: types.ID) -> Optional[SchemaType]:
-        return db_session.query(self.Schema).where(self.Schema.id_ == id_).first()
+        return db_session.query(self.Schema).get(id_)
 
-    def update(
-        self, db_session: Session, id_: types.ID, obj: UpdateDtoType
-    ) -> SchemaType:
+    def update_by_id(
+        self,
+        db_session: Session,
+        id_: types.ID,
+        obj: UpdateDtoType,
+    ) -> Optional[SchemaType]:
+        db_obj = self.find_one_by_id(db_session, id_)
+        if db_obj is None:
+            return None
+
         stmt = (
             sa.update(self.Schema)
             .where(self.Schema.id_ == id_)
-            .values(**jsonable_encoder(obj.dict(exclude_unset=True)))
-            .returning(self.Schema)
+            .values(obj.dict(exclude_unset=True))
         )
-        orm_stmt = (
-            sa.select(self.Schema)
-            .from_statement(stmt)
-            .execution_options(populate_existing=True)
-        )
-
-        list_db_obj: List[SchemaType] = []
-        for db_obj in db_session.execute(orm_stmt).scalars():
-            list_db_obj.append(db_obj)
-
+        db_session.execute(stmt)
         db_session.commit()
+        db_session.refresh(db_obj)
 
-        for db_obj in list_db_obj:
-            db_session.refresh(db_obj)
+        return db_obj
 
-        return list_db_obj[0]
-
-    def remove(self, db_session: Session, id_: types.ID) -> None:
+    def remove_by_id(self, db_session: Session, id_: types.ID) -> None:
         stmt = (
             sa.update(self.Schema).where(self.Schema.id_ == id_).values(is_deleted=True)
         )

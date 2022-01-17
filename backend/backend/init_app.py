@@ -1,4 +1,7 @@
+import sentry_sdk
 from sqlalchemy.orm.session import Session
+from sentry_sdk.integrations.asgi import SentryAsgiMiddleware
+from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -11,12 +14,26 @@ from backend.api.professors.professors_service import service as professors_serv
 
 
 def init_app(config: BaseAppConfig) -> FastAPI:
+    sentry_sdk.init(
+        dsn=config.SENTRY_DSN,
+        environment=str(config.APP_ENV),
+        attach_stacktrace=True,
+        send_default_pii=True,
+        request_bodies="always",
+        integrations=[SqlalchemyIntegration()],
+    )
+
     _init_db(config, DbSession())
 
     app = FastAPI(
         title=config.APP_NAME,
         openapi_url=f"{config.API_PREFIX}/openapi.json",
     )
+
+    try:
+        app.add_middleware(SentryAsgiMiddleware)
+    except Exception as ex:  # pylint: disable=broad-except
+        print(ex)
 
     if config.CORS_ALLOW_ORIGINS:
         app.add_middleware(
