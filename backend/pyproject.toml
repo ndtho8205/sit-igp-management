@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "sit-igp-management-backend"
+name = "backend"
 version = "0.1.0"
 description = ""
 authors = ["Tho Nguyen <ndtho8205@gmail.com>"]
@@ -10,14 +10,17 @@ homepage = "https://github.com/ndtho8205/sit-igp-management"
 [tool.poetry.dependencies]
 python = "^3.8"
 fastapi = "^0.71.0"
-uvicorn = {extras = ["standard"], version = "^0.16.0"}
+uvicorn = {extras = ["standard"], version = "^0.17.0"}
+pydantic = {extras = ["dotenv", "email"], version = "^1.9.0"}
+alembic = {extras = ["tz"], version = "^1.7.5"}
 SQLAlchemy = {extras = ["mypy"], version = "^1.4.29"}
-pydantic = {extras = ["email"], version = "^1.9.0"}
 psycopg2-binary = "^2.9.3"
-PyJWT = {extras = ["crypto"], version = "^2.3.0"}
 cffi = "^1.15.0"
+PyJWT = {extras = ["crypto"], version = "^2.3.0"}
 
 [tool.poetry.dev-dependencies]
+requests = "^2.27.1"
+
 mypy = "^0.931"
 black = "^21.12b0"
 isort = "^5.10.1"
@@ -28,22 +31,24 @@ pre-commit = "^2.16.0"
 
 flake8 = "^4.0.1"
 flake8-bandit = "^2.1.2"
-flake8-bugbear = "^21.11.29"
+flake8-bugbear = "^22.1.11"
 flake8-builtins = "^1.5.3"
 flake8-eradicate = "^1.2.0"
 flake8-docstrings = "^1.6.0"
 flake8-pytest-style = "^1.6.0"
-flake8-comprehensions = "^3.7.0"
+flake8-comprehensions = "^3.8.0"
 flake8-rst-docstrings = "^0.2.5"
 darglint = "^1.8.1"
 pep8-naming = "^0.12.1"
 
 pytest = "^6.2.5"
 pytest-cov = "^3.0.0"
+pytest-env = "^0.6.2"
 pytest-mock = "^3.6.1"
-pytest-randomly = "^3.10.3"
+pytest-randomly = "^3.11.0"
 pytest-benchmark = "^3.4.1"
 hypothesis = {extras = ["numpy"], version = "^6.35.0"}
+schemathesis = "^3.12.3"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -109,7 +114,7 @@ profile = "black"
 sections = ["FUTURE", "TYPING", "STDLIB", "TEST", "THIRDPARTY", "FASTAPI", "FIRSTPARTY", "LOCALFOLDER"]
 known_typing = "typing,types,typing_extensions,mypy,mypy_extensions"
 known_test = "pytest,pytest_mock"
-known_first_party = "sit_igp_management_backend"
+known_first_party = "backend"
 known_fastapi = "fastapi"
 length_sort = true
 lines_after_imports = 2
@@ -143,8 +148,12 @@ max-args = 10
 
 [tool.pylint.SIMILARITIES]
 ignore-imports = true
+min-similarity-lines = 7
 
 [tool.pytest.ini_options]
+env = [
+  "APP_ENV=test",
+]
 addopts = [
   # reporting
   "--durations=3",
@@ -158,9 +167,11 @@ addopts = [
   "--doctest-modules",
   "--doctest-continue-on-failure",
   # pytest-cov
-  "--cov=sit_igp_management_backend",
+  "--cov=backend",
   "--cov-report=term-missing:skip-covered",
   "--cov-config=pyproject.toml",
+  # pytest-randomly
+  "--randomly-dont-reset-seed",
   # hypothesis
   "--hypothesis-show-statistics",
 ]
@@ -179,4 +190,4 @@ exclude_lines = [
   "raise NotImplementedError",
   "if TYPE_CHECKING:"
 ]
-fail_under = 0
+fail_under = 90

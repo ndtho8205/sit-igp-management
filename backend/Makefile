@@ -9,15 +9,20 @@ OBJECTS := $$(find . -type f \( -name *.py -not -path './.venv/*' \))
 
 ###### Development
 
+.PHONY: local
+local: ## Run server in container environment
+	docker-compose --file docker-compose.local.yml up --build --remove-orphans
+
 .PHONY: dev
 dev: ## Run development server
 	docker-compose \
 		--file ./docker-compose.dev.yml up \
 		--detach \
 		--remove-orphans
-	poetry run uvicorn sit_igp_management_backend.main:app \
+	poetry run alembic upgrade head
+	poetry run uvicorn backend.main:app \
 		--reload \
-		--reload-dir ./sit_igp_management_backend
+		--reload-dir ./backend
 
 .PHONY: format
 format: ## Format code

@@ -19,9 +19,10 @@ const AdminMainNav = () => {
     <Menu theme="dark" defaultSelectedKeys={[router.route]} mode="inline">
       {menuItems.map(({ href, label, icon }) => (
         <Menu.Item key={href} icon={icon}>
+          {' '}
           <Link href={href}>{label}</Link>
         </Menu.Item>
-      ))}
+      ))}{' '}
     </Menu>
   );
 };
