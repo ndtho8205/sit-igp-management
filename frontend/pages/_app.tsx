@@ -1,10 +1,13 @@
 import { Auth0Provider } from '@auth0/auth0-react';
+import moment from 'moment';
 import { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import { ReactElement, ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import config from '../core/config';
 import '../styles/globals.css';
+
+moment.locale('jp');
 
 const queryClient = new QueryClient();
 

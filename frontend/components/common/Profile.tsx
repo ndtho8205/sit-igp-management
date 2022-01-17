@@ -1,6 +1,5 @@
 import { useAuth0 } from '@auth0/auth0-react';
-import { notification, Space } from 'antd';
-import Image from 'next/image';
+import { Image, notification, Space } from 'antd';
 import LoginButton from './LoginButton';
 import LogoutButton from './LogoutButton';
 

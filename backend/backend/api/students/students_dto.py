@@ -1,11 +1,13 @@
-from typing import Optional
+from typing import Any, Optional
 
 from datetime import date
 
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
+from sqlalchemy.orm.query import Query
 
 from backend.core import types
 from backend.api.students.students_entities import Student, BaseStudent
+from backend.api.professors.professors_entities import Professor
 
 
 class BaseStudentDto(BaseModel):
@@ -30,4 +32,15 @@ class StudentUpdateDto(BaseStudentDto):
 
 
 class StudentResponseDto(Student):
-    pass
+    # pylint: disable=invalid-name,no-self-argument,no-self-use
+
+    supervisor: Optional[Professor]
+    advisor1: Optional[Professor]
+    advisor2: Optional[Professor]
+
+    @validator("supervisor", "advisor1", "advisor2", pre=True)
+    def evaluate_lazy_columns(cls, v: Any) -> Any:  # noqa: B902, N805
+        print(v)
+        if isinstance(v, Query):
+            return v.all()
+        return v
