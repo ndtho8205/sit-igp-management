@@ -12,9 +12,7 @@ from backend.configs import app_config
 
 config = context.config
 fileConfig(str(config.config_file_name))
-HEROKU_DB_URL = "postgresql://talcmiclppniwj:895444aaffc84ab7f0cc9d39ee19d5deb693ffab6f2e18aca72954d0ca20b47d@ec2-3-227-15-75.compute-1.amazonaws.com:5432/d8muuksf5n29ja"
-# config.set_main_option("sqlalchemy.url", str(app_config.DATABASE_URL))
-config.set_main_option("sqlalchemy.url", HEROKU_DB_URL)
+config.set_main_option("sqlalchemy.url", str(app_config.DATABASE_URL))
 
 import_all_schemas()
 target_metadata = BaseSchema.metadata
