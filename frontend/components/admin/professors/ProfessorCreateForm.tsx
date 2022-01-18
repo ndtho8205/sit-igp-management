@@ -1,11 +1,12 @@
 import { Form, Input } from 'antd';
 import { useQueryClient } from 'react-query';
-import professors_service from '../../../core/api/professors_service';
+import useProfessorsApi from '../../../core/api/useProfessorsApi';
 import { rules } from '../../../core/validators';
 import ModalForm from '../../common/ModalForm';
 
 const ProfessorCreateForm = () => {
   const queryClient = useQueryClient();
+  const { createProfessor } = useProfessorsApi();
 
   const handleOnSuccess = () => {
     queryClient.invalidateQueries('findAllProfessors');
@@ -17,7 +18,7 @@ const ProfessorCreateForm = () => {
       okText="Create"
       buttonShape="circle"
       buttonType="primary"
-      onOk={professors_service.create}
+      onOk={createProfessor}
       onSuccess={handleOnSuccess}
     >
       <Form.Item

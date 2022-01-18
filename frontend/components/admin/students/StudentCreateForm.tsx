@@ -1,6 +1,6 @@
 import { DatePicker, Form, Input, Select } from 'antd';
 import { useQueryClient } from 'react-query';
-import students_service from '../../../core/api/students_service';
+import useStudentsApi from '../../../core/api/useStudentsApi';
 import Gender from '../../../core/types/gender';
 import { rules } from '../../../core/validators';
 import ModalForm from '../../common/ModalForm';
@@ -8,6 +8,7 @@ import ProfessorAutoComplete from '../../common/ProfessorAutoComplete';
 
 const StudentCreateForm = () => {
   const queryClient = useQueryClient();
+  const { createStudent } = useStudentsApi();
 
   const handleOnSuccess = () => {
     queryClient.invalidateQueries('findAllStudents');
@@ -19,7 +20,7 @@ const StudentCreateForm = () => {
       okText="Create"
       buttonShape="circle"
       buttonType="primary"
-      onOk={students_service.create}
+      onOk={createStudent}
       onSuccess={handleOnSuccess}
     >
       <Form.Item label="Full name" name="full_name" rules={rules.FullName}>

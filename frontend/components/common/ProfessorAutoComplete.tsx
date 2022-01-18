@@ -1,6 +1,6 @@
 import { AutoComplete } from 'antd';
 import { useQuery } from 'react-query';
-import professors_service from '../../core/api/professors_service';
+import useProfessorsApi from '../../core/api/useProfessorsApi';
 import Professor from '../../core/types/professor';
 import { notify } from '../../core/utils';
 
@@ -9,9 +9,10 @@ type Props = {
 };
 
 const ProfessorAutoComplete = (props: Props) => {
+  const { findAllProfessors } = useProfessorsApi();
   const { data, error } = useQuery<Professor[], Error>(
     'findAllProfessors',
-    professors_service.findAll
+    findAllProfessors
   );
 
   if (error) {

@@ -1,7 +1,7 @@
 import { Space, Table, Tag } from 'antd';
 import React from 'react';
 import { useQuery, useQueryClient } from 'react-query';
-import professors_service from '../../../core/api/professors_service';
+import useProfessorsApi from '../../../core/api/useProfessorsApi';
 import Professor from '../../../core/types/professor';
 import { notify } from '../../../core/utils';
 import DeletePopconfirm from '../../common/DeletePopconfirm';
@@ -9,9 +9,10 @@ import ProfessorEditForm from './ProfessorEditForm';
 
 function ProfessorsTable() {
   const queryClient = useQueryClient();
+  const { findAllProfessors, deleteProfessor } = useProfessorsApi();
   const { isLoading, data, error } = useQuery<Professor[], Error>(
     'findAllProfessors',
-    professors_service.findAll
+    findAllProfessors
   );
 
   const handleOnDeleteSuccess = () => {
@@ -43,7 +44,7 @@ function ProfessorsTable() {
           <Space size="middle">
             <ProfessorEditForm professor={record} />
             <DeletePopconfirm
-              onOk={() => professors_service.delete(record.id_)}
+              onOk={() => deleteProfessor(record.id_)}
               onSuccess={handleOnDeleteSuccess}
             />
           </Space>

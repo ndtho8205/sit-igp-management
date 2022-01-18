@@ -1,7 +1,7 @@
 import { EditOutlined } from '@ant-design/icons';
 import { Form, Input } from 'antd';
 import { useQueryClient } from 'react-query';
-import professors_service from '../../../core/api/professors_service';
+import useProfessorsApi from '../../../core/api/useProfessorsApi';
 import Professor from '../../../core/types/professor';
 import { rules } from '../../../core/validators';
 import ModalForm from '../../common/ModalForm';
@@ -12,9 +12,10 @@ type Props = {
 
 const ProfessorEditForm = ({ professor }: Props) => {
   const queryClient = useQueryClient();
+  const { updateProfessor } = useProfessorsApi();
 
   const handleOnOk = async (obj: Professor) => {
-    return await professors_service.update(professor.id_, obj);
+    return await updateProfessor(professor.id_, obj);
   };
 
   const handleOnSuccess = () => {

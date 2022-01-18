@@ -18,10 +18,8 @@ const notify = (
           break;
         case 409:
         case 404:
-          error_msg = msg.response.data.detail;
-          break;
         default:
-          break;
+          error_msg = msg.response?.data.detail;
       }
     } else if (msg instanceof Error) {
       error_msg = msg.message;

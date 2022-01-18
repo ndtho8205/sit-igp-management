@@ -23,15 +23,17 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page: ReactElement) => page);
 
   return (
-    <Auth0Provider
-      domain={config.authDomain}
-      clientId={config.authClientId}
-      redirectUri={config.authRedirectUri}
-    >
-      <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient}>
+      <Auth0Provider
+        domain={config.authDomain}
+        clientId={config.authClientId}
+        redirectUri={config.authRedirectUri}
+        audience={config.authApiAudience}
+        scope="read:current_user read:profile"
+      >
         <div id="app">{getLayout(<Component {...pageProps} />)}</div>
-      </QueryClientProvider>
-    </Auth0Provider>
+      </Auth0Provider>
+    </QueryClientProvider>
   );
 }
 
