@@ -26,6 +26,7 @@ const SemEndPresentationRubric = () => {
           columns={columns} 
           pagination={{ position: ['none','none'] }}
           className={styles.myTable}
+          bordered
         ></Table>
       ),
       width: "90%",

@@ -5,7 +5,7 @@ import ProfessorPagesLayout from '../../../layouts/ProfessorPagesLayout';
 const SemEndPresentationViewScorePage = () => {
   return (
     <div>
-      <h1>Semester End Presentation - View</h1>
+      <h1>Semester End Presentation - View Scores</h1>
       <SemEndPresentationTable page="View"/>
     </div>
   );

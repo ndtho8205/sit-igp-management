@@ -97,6 +97,7 @@ function SemEndPresentationTable({page}) {
         showSorterTooltip
         sticky
         scroll={{x:"100%"}}
+        bordered
       ></Table>
     );
   }
@@ -110,6 +111,7 @@ function SemEndPresentationTable({page}) {
         showSorterTooltip
         sticky
         scroll={{x:"100%"}}
+        bordered
       ></Table>
     );
   }

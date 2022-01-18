@@ -164,7 +164,7 @@ const SemEndPresentationForm = ({studentData}) => {
             <>
               {criterion.criteria}
               <Popover 
-              content={<Table dataSource={[criterion]} columns={columns} pagination={{ position: ['none','none'] }}></Table>}
+              content={<Table dataSource={[criterion]} columns={columns} pagination={{ position: ['none','none'] }} bordered></Table>}
               title={criterion.criteria}
               placement="bottomLeft"
               trigger={"click"}
@@ -202,7 +202,9 @@ const SemEndPresentationForm = ({studentData}) => {
 
       <Modal
         visible={isFormVisible}
-        title={studentData.student_name}
+        title={
+          studentData.student_name + " - " + studentData.student_id
+        }
         okText="Input"
         cancelText="Cancel"
         confirmLoading={isLoading}
