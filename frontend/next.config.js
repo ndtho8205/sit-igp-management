@@ -1,8 +1,10 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
-  distDir: '../backend/public',
   reactStrictMode: true,
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   typescript: {
     ignoreBuildErrors: true,
-  }
+  },
 };

@@ -1,38 +1,26 @@
-import {
-  DesktopOutlined,
-  HomeOutlined,
-  IdcardOutlined,
-  UserOutlined,
-} from '@ant-design/icons';
 import { Menu } from 'antd';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { ReactNode } from 'react';
 
-const AdminMainNav = () => {
+type Props = {
+  menuItems: {
+    href: string;
+    label: string;
+    icon: ReactNode;
+  }[];
+};
+
+const AdminMainNav = ({ menuItems }: Props) => {
   const router = useRouter();
-  const menuItems = [
-    { href: '/admin', label: 'Home', icon: <HomeOutlined /> },
-    {
-      href: '/admin/presentations',
-      label: 'Semester End Presentations',
-      icon: <DesktopOutlined />,
-    },
-    {
-      href: '/admin/professors',
-      label: 'Professors',
-      icon: <IdcardOutlined />,
-    },
-    { href: '/admin/students', label: 'Students', icon: <UserOutlined /> },
-  ];
 
   return (
     <Menu theme="dark" defaultSelectedKeys={[router.route]} mode="inline">
       {menuItems.map(({ href, label, icon }) => (
         <Menu.Item key={href} icon={icon}>
-          {' '}
           <Link href={href}>{label}</Link>
         </Menu.Item>
-      ))}{' '}
+      ))}
     </Menu>
   );
 };

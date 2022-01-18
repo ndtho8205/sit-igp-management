@@ -175,7 +175,7 @@ function SemEndPresentationTable({ page }) {
         rowKey="professor_id"
         showSorterTooltip
         sticky
-        scroll={{x:"100%"}}
+        scroll={{ x: '100%' }}
         bordered
       ></Table>
     );
@@ -188,7 +188,7 @@ function SemEndPresentationTable({ page }) {
         rowKey="professor_id"
         showSorterTooltip
         sticky
-        scroll={{x:"100%"}}
+        scroll={{ x: '100%' }}
         bordered
       ></Table>
     );

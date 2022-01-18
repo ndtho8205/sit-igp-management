@@ -16,11 +16,15 @@ const Profile = () => {
 
   if (isAuthenticated && user) {
     return (
-      <Space>
-        <Image src={user.picture} alt={user.name} width={32} height={32} />
-        <span>
-          {user.name} ({user.email})
-        </span>
+      <Space align="center">
+        <Image
+          src={user.picture}
+          alt={user.name}
+          width={32}
+          height={32}
+          style={{ borderRadius: '100%' }}
+        />
+        {user.name}
         <LogoutButton />
       </Space>
     );

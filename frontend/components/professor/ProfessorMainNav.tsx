@@ -1,4 +1,10 @@
-import { HomeOutlined, UserSwitchOutlined, EditOutlined, ProfileOutlined, FundViewOutlined, DesktopOutlined } from '@ant-design/icons';
+import {
+  DesktopOutlined,
+  EditOutlined,
+  FundViewOutlined,
+  HomeOutlined,
+  ProfileOutlined,
+} from '@ant-design/icons';
 import { Menu } from 'antd';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -9,24 +15,32 @@ const AdminMainNav = () => {
   const menuItems = [
     { href: '/professor', label: 'Home', icon: <HomeOutlined /> },
     {
-      href: '/professor/semendpresentation/viewscore',
+      href: '/professor/presentationEvaluation/summary',
       label: 'Semester End Presentation',
       icon: <DesktopOutlined />,
       subItems: [
         {
-          href: '/professor/semendpresentation/inputscore',
+          href: '/professor/presentationEvaluation/inputScore',
           label: 'Input Score',
           icon: <EditOutlined />,
         },
         {
-          href: '/professor/semendpresentation/viewscore',
+          href: '/professor/presentationEvaluation/summary',
           label: 'View Score',
           icon: <ProfileOutlined />,
         },
       ],
     },
-    { href: '/professor/supervisorevaluation', label: 'Supervisor Evaluation', icon: <FundViewOutlined /> },
-    { href: '/professor/labrotation', label: 'Lab Rotation', icon: <UserSwitchOutlined /> },
+    {
+      href: '/professor/supervisorEvaluation',
+      label: 'Supervisor Evaluation',
+      icon: <FundViewOutlined />,
+    },
+    // {
+    //   href: '/professor/labrotation',
+    //   label: 'Lab Rotation',
+    //   icon: <UserSwitchOutlined />,
+    // },
   ];
 
   function renderMenuItems() {

@@ -1,10 +1,7 @@
-import { EditOutlined } from '@ant-design/icons';
-import { notification, Space, Table } from 'antd';
-import { useQuery } from 'react-query';
-import apiClient from '../../../core/api/apiClient';
+import { Table } from 'antd';
 // import SemEndPresentationForm from './SemEndPresentationForm';
 
-function SupervisorEvaluationTable({page}) {
+function SupervisorEvaluationTable({ page }) {
   // const { isLoading, error, data } = useQuery('professors', () =>
   //   apiClient.get('/professors/').then((res) => res.data)
   // );
@@ -18,50 +15,63 @@ function SupervisorEvaluationTable({page}) {
   // }
 
   const inputColumns = [
-    { title: 'Student Name', dataIndex: 'student_name', key: 'student_name', width: '250px' },
-    { title: 'Student ID', dataIndex: 'student_id', key: 'student_id', align: 'center', width: '110px' },
-    { 
-      title: 'Students can understand basic knowledge and skills for problem-finding and -solving in engineering.',
+    {
+      title: 'Student Name',
+      dataIndex: 'student_name',
+      key: 'student_name',
+      width: '250px',
+    },
+    {
+      title: 'Student ID',
+      dataIndex: 'student_id',
+      key: 'student_id',
+      align: 'center',
+      width: '110px',
+    },
+    {
+      title:
+        'Students can understand basic knowledge and skills for problem-finding and -solving in engineering.',
       children: [
         {
           title: 'Daily Activities',
           dataIndex: 'score_d1',
           key: 'score_d1',
           align: 'center',
-          width: '170px'
+          width: '170px',
         },
         {
           title: 'Presentation in Meeting',
           dataIndex: 'score_p1',
           key: 'score_p1',
           align: 'center',
-          width: '170px'
-        }
-      ]
+          width: '170px',
+        },
+      ],
     },
-    { 
-      title: 'Students can work for a team organized by the laboratory members in solving social issues.',
+    {
+      title:
+        'Students can work for a team organized by the laboratory members in solving social issues.',
       children: [
         {
           title: 'Daily Activities',
           dataIndex: 'score_d2',
           key: 'score_d2',
           align: 'center',
-          width: '170px'
+          width: '170px',
         },
         {
           title: 'Presentation in Meeting',
           dataIndex: 'score_p2',
           key: 'score_p2',
           align: 'center',
-          width: '170px'
-        }
-      ]
+          width: '170px',
+        },
+      ],
     },
-    { 
-      title: 'Comment', 
-      dataIndex: 'comment', 
-      key: 'comment', 
+    {
+      title: 'Comment',
+      dataIndex: 'comment',
+      key: 'comment',
       width: '300px',
       // render: (text, record) => (
       //   <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
@@ -88,26 +98,26 @@ function SupervisorEvaluationTable({page}) {
 
   const testData = [
     {
-      student_name: "Tran Minh Chanh",
-      student_id: "NB20502",
+      student_name: 'Tran Minh Chanh',
+      student_id: 'NB20502',
       score_d1: 0,
       score_p1: 0,
       score_d2: 0,
       score_p2: 0,
-      comment: ""
+      comment: '',
     },
     {
-      student_name: "Nguyen Duc Tho",
-      student_id: "NB20501",
+      student_name: 'Nguyen Duc Tho',
+      student_id: 'NB20501',
       score_d1: 80,
       score_p1: 81,
       score_d2: 82,
       score_p2: 83,
-      comment: "Some comments"
-    }
-  ]
+      comment: 'Some comments',
+    },
+  ];
 
-  if(page == "Input") {
+  if (page == 'Input') {
     return (
       <Table
         dataSource={testData}
@@ -116,7 +126,7 @@ function SupervisorEvaluationTable({page}) {
         rowKey="professor_id"
         showSorterTooltip
         sticky
-        scroll={{x:"100%"}}
+        scroll={{ x: '100%' }}
         bordered
       ></Table>
     );

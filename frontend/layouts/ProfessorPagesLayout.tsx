@@ -1,10 +1,10 @@
 import { Layout, Typography } from 'antd';
-import { FunctionComponent, ReactNode, useState} from 'react';
-import MainNav from '../components/professor/ProfessorMainNav';
+import { FunctionComponent, ReactNode, useState } from 'react';
 import Profile from '../components/common/Profile';
+import MainNav from '../components/professor/ProfessorMainNav';
 import styles from '../styles/ProfessorPagesLayout.module.css';
 
-const { Header, Content, Footer, Sider} = Layout;
+const { Header, Content, Footer, Sider } = Layout;
 const { Title } = Typography;
 
 type Props = {
@@ -16,7 +16,8 @@ const ProfessorPagesLayout: FunctionComponent = ({ children }: Props) => {
 
   return (
     <Layout className={styles.professorContainer}>
-      <Sider width={300}
+      <Sider
+        width={300}
         collapsed={isCollapsed}
         collapsible
         onCollapse={() => setIsCollapsed(!isCollapsed)}

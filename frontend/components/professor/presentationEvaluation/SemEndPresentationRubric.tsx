@@ -1,6 +1,5 @@
-import { Button, Table } from 'antd';
-import { Modal } from 'antd';
-import semEndRubric from '../../../core/semEndRubric';
+import { Button, Modal, Table } from 'antd';
+import semEndRubric from '../../../core/data/presentationEvaluationRubric';
 import styles from '../../../styles/ProfessorPagesLayout.module.css';
 
 const SemEndPresentationRubric = () => {
@@ -20,26 +19,24 @@ const SemEndPresentationRubric = () => {
     Modal.info({
       // title: 'This is a notification message',
       content: (
-        <Table 
+        <Table
           id={'semEndRubricTable'}
-          dataSource={semEndRubric} 
-          columns={columns} 
-          pagination={{ position: ['none','none'] }}
+          dataSource={semEndRubric}
+          columns={columns}
+          pagination={{ position: ['none', 'none'] }}
           className={styles.myTable}
           bordered
         ></Table>
       ),
-      width: "90%",
+      width: '90%',
       maskClosable: true,
-      okType: "ghost",
-      okText: "Close",
+      okType: 'ghost',
+      okText: 'Close',
       onOk() {},
-    })
-  };
+    });
+  }
 
-  return (
-    <Button onClick={showRubric}>Show Rubric</Button>
-  );
+  return <Button onClick={showRubric}>Show Rubric</Button>;
 };
-    
+
 export default SemEndPresentationRubric;

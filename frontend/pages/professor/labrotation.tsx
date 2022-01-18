@@ -17,7 +17,7 @@ const LabRotationPage = () => {
 };
 
 LabRotationPage.getLayout = function getLayout(page: ReactElement) {
-    return <ProfessorPagesLayout>{page}</ProfessorPagesLayout>;
-  };
+  return <ProfessorPagesLayout>{page}</ProfessorPagesLayout>;
+};
 
 export default LabRotationPage;

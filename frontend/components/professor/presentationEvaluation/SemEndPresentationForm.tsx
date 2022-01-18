@@ -12,7 +12,7 @@ import {
 } from 'antd';
 import Modal from 'antd/lib/modal/Modal';
 import React, { useState } from 'react';
-import semEndRubric from '../../../core/semEndRubric';
+import semEndRubric from '../../../core/data/presentationEvaluationRubric';
 import styles from '../../../styles/ProfessorPagesLayout.module.css';
 
 type ProfessorCreateValues = {
@@ -24,11 +24,15 @@ type ProfessorCreateValues = {
 };
 
 class ScoreInput extends React.Component {
-  state = {
-    inputValue: this.props.scoreData,
-  };
+  constructor(props: { scoreData: number }) {
+    super(props);
 
-  onChange = (value) => {
+    this.state = {
+      inputValue: props.scoreData as number,
+    };
+  }
+
+  onChange = (value: number) => {
     this.setState({
       inputValue: value,
     });
@@ -173,15 +177,25 @@ const SemEndPresentationForm = ({ studentData }) => {
           label={
             <>
               {criterion.criteria}
-              <Popover 
-              content={<Table dataSource={[criterion]} columns={columns} pagination={{ position: ['none','none'] }} bordered></Table>}
-              title={criterion.criteria}
-              placement="bottomLeft"
-              trigger={"click"}
-              overlayStyle={{
-                width: "55%"
-              }}>
-              <QuestionCircleOutlined style={{fontSize:'1.5em' ,paddingLeft:'6px'}}/>
+              <Popover
+                content={
+                  <Table
+                    dataSource={[criterion]}
+                    columns={columns}
+                    pagination={{ position: ['none', 'none'] }}
+                    bordered
+                  ></Table>
+                }
+                title={criterion.criteria}
+                placement="bottomLeft"
+                trigger={'click'}
+                overlayStyle={{
+                  width: '55%',
+                }}
+              >
+                <QuestionCircleOutlined
+                  style={{ fontSize: '1.5em', paddingLeft: '6px' }}
+                />
               </Popover>
             </>
           }
@@ -209,9 +223,7 @@ const SemEndPresentationForm = ({ studentData }) => {
 
       <Modal
         visible={isFormVisible}
-        title={
-          studentData.student_name + " - " + studentData.student_id
-        }
+        title={studentData.student_name + ' - ' + studentData.student_id}
         okText="Input"
         cancelText="Cancel"
         confirmLoading={isLoading}
