@@ -16,6 +16,7 @@ const AdminPagesLayout: FunctionComponent = ({ children }: Props) => {
   return (
     <Layout className={styles.adminContainer}>
       <Sider
+        width="300"
         collapsed={isCollapsed}
         collapsible
         onCollapse={() => setIsCollapsed(!isCollapsed)}

@@ -1,10 +1,7 @@
-import { EditOutlined } from '@ant-design/icons';
-import { notification, Space, Table } from 'antd';
-import { useQuery } from 'react-query';
-import apiClient from '../../../core/api/apiClient';
+import { Space, Table } from 'antd';
 import SemEndPresentationForm from './SemEndPresentationForm';
 
-function SemEndPresentationTable({page}) {
+function SemEndPresentationTable({ page }) {
   // const { isLoading, error, data } = useQuery('professors', () =>
   //   apiClient.get('/professors/').then((res) => res.data)
   // );
@@ -18,17 +15,58 @@ function SemEndPresentationTable({page}) {
   // }
 
   const inputColumns = [
-    { title: 'Student Name', dataIndex: 'student_name', key: 'student_name', width: '250px' },
-    { title: 'Student ID', dataIndex: 'student_id', key: 'student_id', align: 'center', width: '110px' },
-    { title: 'Research Objectives, Goals, and Plans', dataIndex: 'score_research_goal', key: 'score_research_goal', align: 'center', width: '170px' },
-    { title: 'Delivery', dataIndex: 'score_delivery', key: 'score_delivery', align: 'center', width: '120px' },
-    { title: 'Visual Aids', dataIndex: 'score_visual_aid', key: 'score_visual_aid', align: 'center', width: '120px' },
-    { title: 'Time', dataIndex: 'score_time', key: 'score_time', align: 'center', width: '110px' },
-    { title: 'Ability to answer Q&A', dataIndex: 'score_qa', key: 'score_qa', align: 'center', width: '140px' },
-    { 
-      title: 'Comment', 
-      dataIndex: 'comment', 
-      key: 'comment', 
+    {
+      title: 'Student Name',
+      dataIndex: 'student_name',
+      key: 'student_name',
+      width: '250px',
+    },
+    {
+      title: 'Student ID',
+      dataIndex: 'student_id',
+      key: 'student_id',
+      align: 'center',
+      width: '110px',
+    },
+    {
+      title: 'Research Objectives, Goals, and Plans',
+      dataIndex: 'score_research_goal',
+      key: 'score_research_goal',
+      align: 'center',
+      width: '170px',
+    },
+    {
+      title: 'Delivery',
+      dataIndex: 'score_delivery',
+      key: 'score_delivery',
+      align: 'center',
+      width: '120px',
+    },
+    {
+      title: 'Visual Aids',
+      dataIndex: 'score_visual_aid',
+      key: 'score_visual_aid',
+      align: 'center',
+      width: '120px',
+    },
+    {
+      title: 'Time',
+      dataIndex: 'score_time',
+      key: 'score_time',
+      align: 'center',
+      width: '110px',
+    },
+    {
+      title: 'Ability to answer Q&A',
+      dataIndex: 'score_qa',
+      key: 'score_qa',
+      align: 'center',
+      width: '140px',
+    },
+    {
+      title: 'Comment',
+      dataIndex: 'comment',
+      key: 'comment',
       width: '300px',
       // render: (text, record) => (
       //   <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
@@ -44,9 +82,9 @@ function SemEndPresentationTable({page}) {
       render: (text, record) => {
         return (
           <>
-          <Space size="middle">
-            <SemEndPresentationForm studentData={record}/>
-          </Space>
+            <Space size="middle">
+              <SemEndPresentationForm studentData={record} />
+            </Space>
           </>
         );
       },
@@ -54,40 +92,81 @@ function SemEndPresentationTable({page}) {
   ];
 
   const viewColumns = [
-    { title: 'Student Name', dataIndex: 'student_name', key: 'student_name', width: '250px' },
-    { title: 'Student ID', dataIndex: 'student_id', key: 'student_id', align: 'center', width: '110px' },
-    { title: 'Research Objectives, Goals, and Plans', dataIndex: 'score_research_goal', key: 'score_research_goal', align: 'center', width: '170px' },
-    { title: 'Delivery', dataIndex: 'score_delivery', key: 'score_delivery', align: 'center', width: '120px' },
-    { title: 'Visual Aids', dataIndex: 'score_visual_aid', key: 'score_visual_aid', align: 'center', width: '120px' },
-    { title: 'Time', dataIndex: 'score_time', key: 'score_time', align: 'center', width: '110px' },
-    { title: 'Ability to answer Q&A', dataIndex: 'score_qa', key: 'score_qa', align: 'center', width: '140px' },
-    { title: 'Comment', dataIndex: 'comment', key: 'comment' , width: '350px'},
+    {
+      title: 'Student Name',
+      dataIndex: 'student_name',
+      key: 'student_name',
+      width: '250px',
+    },
+    {
+      title: 'Student ID',
+      dataIndex: 'student_id',
+      key: 'student_id',
+      align: 'center',
+      width: '110px',
+    },
+    {
+      title: 'Research Objectives, Goals, and Plans',
+      dataIndex: 'score_research_goal',
+      key: 'score_research_goal',
+      align: 'center',
+      width: '170px',
+    },
+    {
+      title: 'Delivery',
+      dataIndex: 'score_delivery',
+      key: 'score_delivery',
+      align: 'center',
+      width: '120px',
+    },
+    {
+      title: 'Visual Aids',
+      dataIndex: 'score_visual_aid',
+      key: 'score_visual_aid',
+      align: 'center',
+      width: '120px',
+    },
+    {
+      title: 'Time',
+      dataIndex: 'score_time',
+      key: 'score_time',
+      align: 'center',
+      width: '110px',
+    },
+    {
+      title: 'Ability to answer Q&A',
+      dataIndex: 'score_qa',
+      key: 'score_qa',
+      align: 'center',
+      width: '140px',
+    },
+    { title: 'Comment', dataIndex: 'comment', key: 'comment', width: '350px' },
   ];
 
   const testData = [
     {
-      student_name: "Tran Minh Chanh",
-      student_id: "NB20502",
+      student_name: 'Tran Minh Chanh',
+      student_id: 'NB20502',
       score_research_goal: 0,
       score_delivery: 0,
       score_visual_aid: 0,
       score_time: 0,
       score_qa: 0,
-      comment: ""
+      comment: '',
     },
     {
-      student_name: "Nguyen Duc Tho",
-      student_id: "NB20501",
+      student_name: 'Nguyen Duc Tho',
+      student_id: 'NB20501',
       score_research_goal: 3,
       score_delivery: 4,
       score_visual_aid: 1,
       score_time: 1,
       score_qa: 1,
-      comment: "Some comments"
-    }
-  ]
+      comment: 'Some comments',
+    },
+  ];
 
-  if(page == "Input") {
+  if (page == 'Input') {
     return (
       <Table
         dataSource={testData}
@@ -100,8 +179,7 @@ function SemEndPresentationTable({page}) {
         bordered
       ></Table>
     );
-  }
-  else if (page == "View"){
+  } else if (page == 'View') {
     return (
       <Table
         dataSource={testData}

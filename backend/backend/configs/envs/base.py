@@ -5,6 +5,8 @@ from enum import Enum
 from pydantic import AnyHttpUrl, BaseSettings, validator
 from pydantic.networks import HttpUrl, PostgresDsn
 
+from backend.core import types
+
 
 class AppEnvTypes(Enum):
     PROD = "prod"
@@ -47,6 +49,8 @@ class BaseAppConfig(BaseConfig):
     ) -> str:
         """Build SQLAlchemy URI."""
         if isinstance(v, str):
+            if v.startswith("postgres://"):
+                v = v.replace("postgres://", "postgresql://", 1)
             return v
         return str(
             PostgresDsn.build(
@@ -64,3 +68,6 @@ class BaseAppConfig(BaseConfig):
     CORS_ALLOW_ORIGINS: List[AnyHttpUrl] = []
 
     SENTRY_DSN: Optional[HttpUrl] = None
+
+    SUPERUSER_FULLNAME: types.FullName
+    SUPERUSER_EMAIL: types.UniversityEmailStr

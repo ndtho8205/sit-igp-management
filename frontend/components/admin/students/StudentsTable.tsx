@@ -1,7 +1,7 @@
 import { Space, Table } from 'antd';
 import React from 'react';
 import { useQuery, useQueryClient } from 'react-query';
-import students_service from '../../../core/api/students_service';
+import useStudentsApi from '../../../core/api/useStudentsApi';
 import Student from '../../../core/types/student';
 import { notify } from '../../../core/utils';
 import DeletePopconfirm from '../../common/DeletePopconfirm';
@@ -9,9 +9,10 @@ import StudentEditForm from './StudentEditForm';
 
 function StudentsTable() {
   const queryClient = useQueryClient();
-  const { isLoading, data, error } = useQuery<Student[], Error>(
+  const { findAllStudents, deleteStudent } = useStudentsApi();
+  const { isLoading, data, error } = useQuery(
     'findAllStudents',
-    students_service.findAll
+    findAllStudents
   );
 
   const handleOnDeleteSuccess = () => {
@@ -21,7 +22,6 @@ function StudentsTable() {
   if (error) {
     notify('error', error);
   }
-  console.log(data);
 
   const columns = [
     { title: 'Full name', dataIndex: 'full_name', key: 'full_name' },
@@ -60,7 +60,7 @@ function StudentsTable() {
           <Space size="middle">
             <StudentEditForm student={record} />
             <DeletePopconfirm
-              onOk={() => students_service.delete(record.id_)}
+              onOk={() => deleteStudent(record.id_)}
               onSuccess={handleOnDeleteSuccess}
             />
           </Space>

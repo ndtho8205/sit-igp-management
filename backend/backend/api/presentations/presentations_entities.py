@@ -11,9 +11,14 @@ class BasePresentation(BaseModel):
     student_id: types.ID
     presentation_date: date
 
+    class Config:
+        orm_mode = True
+
 
 class Presentation(BasePresentation):
     id_: types.ID
+    is_deleted: bool
+
     presentation_length: Optional[str]
 
     reviewer1_id: Optional[types.ID]
@@ -21,8 +26,3 @@ class Presentation(BasePresentation):
     reviewer3_id: Optional[types.ID]
     reviewer4_id: Optional[types.ID]
     reviewer5_id: Optional[types.ID]
-
-    is_deleted: bool
-
-    class Config:
-        orm_mode = True

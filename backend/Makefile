@@ -9,6 +9,10 @@ OBJECTS := $$(find . -type f \( -name *.py -not -path './.venv/*' \))
 
 ###### Development
 
+.PHONY: update-requirements
+update-requirements: ## Update requirements files
+	@poetry export --output requirements.txt
+
 .PHONY: local
 local: ## Run server in container environment
 	docker-compose --file docker-compose.local.yml up --build --remove-orphans

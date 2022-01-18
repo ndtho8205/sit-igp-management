@@ -17,6 +17,7 @@ class BaseSchema:
         default=uuid.uuid4,
     )
     is_deleted = Column(Boolean, default=False, index=True, nullable=False)
+
     created_at = Column(DateTime, default=func.now(), index=True, nullable=False)
     updated_at = Column(
         DateTime,

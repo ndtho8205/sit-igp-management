@@ -7,7 +7,7 @@ from sqlalchemy.orm.query import Query
 
 from backend.core import types
 from backend.api.students.students_entities import Student, BaseStudent
-from backend.api.professors.professors_entities import Professor
+from backend.api.professors.professors_entities import BaseProfessor
 
 
 class BaseStudentDto(BaseModel):
@@ -32,15 +32,13 @@ class StudentUpdateDto(BaseStudentDto):
 
 
 class StudentResponseDto(Student):
+    supervisor: Optional[BaseProfessor]
+    advisor1: Optional[BaseProfessor]
+    advisor2: Optional[BaseProfessor]
+
     # pylint: disable=invalid-name,no-self-argument,no-self-use
-
-    supervisor: Optional[Professor]
-    advisor1: Optional[Professor]
-    advisor2: Optional[Professor]
-
     @validator("supervisor", "advisor1", "advisor2", pre=True)
     def evaluate_lazy_columns(cls, v: Any) -> Any:  # noqa: B902, N805
-        print(v)
         if isinstance(v, Query):
             return v.all()
         return v

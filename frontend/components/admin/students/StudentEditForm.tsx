@@ -1,7 +1,7 @@
 import { EditOutlined } from '@ant-design/icons';
 import { Form, Input, Select } from 'antd';
 import { useQueryClient } from 'react-query';
-import students_service from '../../../core/api/students_service';
+import useStudentsApi from '../../../core/api/useStudentsApi';
 import Gender from '../../../core/types/gender';
 import Student from '../../../core/types/student';
 import { rules } from '../../../core/validators';
@@ -14,9 +14,10 @@ type Props = {
 
 const StudentEditForm = ({ student }: Props) => {
   const queryClient = useQueryClient();
+  const { updateStudent } = useStudentsApi();
 
   const handleOnOk = async (obj: Student) => {
-    return await students_service.update(student.id_, obj);
+    return await updateStudent(student.id_, obj);
   };
 
   const handleOnSuccess = () => {

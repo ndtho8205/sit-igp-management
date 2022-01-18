@@ -124,7 +124,7 @@ def test_update_by_id_ok(client: TestClient) -> None:
     assert response_body["full_name"] == "Updated Professor 8"
     assert response_body["email"] == professor["email"]
     assert response_body["is_deleted"]
-    assert not response_body["is_verified"]
+    assert response_body["is_verified"]
     assert not response_body["is_superuser"]
 
 

@@ -1,4 +1,9 @@
-import { HomeOutlined, IdcardOutlined, UserOutlined } from '@ant-design/icons';
+import {
+  DesktopOutlined,
+  HomeOutlined,
+  IdcardOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
 import { Menu } from 'antd';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -7,6 +12,11 @@ const AdminMainNav = () => {
   const router = useRouter();
   const menuItems = [
     { href: '/admin', label: 'Home', icon: <HomeOutlined /> },
+    {
+      href: '/admin/presentations',
+      label: 'Semester End Presentations',
+      icon: <DesktopOutlined />,
+    },
     {
       href: '/admin/professors',
       label: 'Professors',

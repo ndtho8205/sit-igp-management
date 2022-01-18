@@ -1,6 +1,6 @@
 from typing import Iterator
 
-from sqlalchemy.orm.session import Session
+from sqlalchemy.orm import Session
 
 from backend.db.session import DbSession
 

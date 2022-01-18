@@ -24,10 +24,10 @@ const ModalForm = <T,>(props: Props<T>) => {
 
   const submitMutation = useMutation(props.onOk, {
     onSuccess: () => {
-      notify('success', `${props.okText} success!`);
-      props.onSuccess();
       form.resetFields();
       setFormVisible(false);
+      notify('success', `${props.okText} success!`);
+      props.onSuccess();
     },
     onError: (error: Error | AxiosError) => {
       notify('error', error);
@@ -49,6 +49,7 @@ const ModalForm = <T,>(props: Props<T>) => {
   };
 
   const handleCancel = () => {
+    form.resetFields();
     setFormVisible(false);
   };
 
