@@ -61,7 +61,7 @@ def find_one_presentation_evaluation_by_id(
     return db_evaluation
 
 
-@router.get("/", response_model=PresentationEvaluationResponseDto)
+@router.get("/{presentation_id}/{reviewer_id}", response_model=PresentationEvaluationResponseDto)
 def find_one_presentation_evaluation_by_presentation_and_reviewer_id(
     presentation_id: types.ID,
     reviewer_id: types.ID,

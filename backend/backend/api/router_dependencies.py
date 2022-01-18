@@ -27,7 +27,7 @@ def authenticate_user(
     #         detail="Incorrect login information",
     #     ) from ex
 
-    user = professors_service.find_one_by_email(db_session, "nb20501@shibaura-it.ac.jp")
+    user = professors_service.find_one_by_email(db_session, "tanpx@shibaura-it.ac.jp")
 
     if not user or user.is_deleted:
         raise HTTPException(
