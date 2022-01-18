@@ -1,5 +1,5 @@
 import { useAuth0 } from '@auth0/auth0-react';
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 import config from '../config';
 
 axios.defaults.baseURL = config.apiServerUrl;
@@ -33,12 +33,17 @@ const useAxios = () => {
   //   });
 
   return {
-    get: async <T>(url: string): Promise<AxiosResponse<T>> => axios.get(url),
-    post: async <T>(url: string, data?: unknown): Promise<AxiosResponse<T>> =>
-      axios.post(url, data),
-    put: async <T>(url: string, data?: unknown): Promise<AxiosResponse<T>> =>
-      axios.put(url, data),
-    remove: async <T>(url: string): Promise<AxiosResponse<T>> =>
+    get: async <T>(url: string): Promise<AxiosResponse<T, AxiosError>> =>
+      axios.get(url),
+    post: async <T>(
+      url: string,
+      data?: unknown
+    ): Promise<AxiosResponse<T, AxiosError>> => axios.post(url, data),
+    put: async <T>(
+      url: string,
+      data?: unknown
+    ): Promise<AxiosResponse<T, AxiosError>> => axios.put(url, data),
+    remove: async <T>(url: string): Promise<AxiosResponse<T, AxiosError>> =>
       axios.delete(url),
   };
 };

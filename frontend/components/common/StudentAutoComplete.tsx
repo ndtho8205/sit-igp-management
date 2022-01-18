@@ -5,7 +5,6 @@ import Student from '../../core/types/student';
 import { notify } from '../../core/utils';
 
 type Props = {
-  value: string;
   onChange?: (value: string) => void;
 };
 

@@ -1,4 +1,5 @@
 import { Space, Table } from 'antd';
+import { AxiosError } from 'axios';
 import React from 'react';
 import { useQuery, useQueryClient } from 'react-query';
 import useStudentsApi from '../../../core/api/useStudentsApi';
@@ -20,7 +21,7 @@ function StudentsTable() {
   };
 
   if (error) {
-    notify('error', error);
+    notify('error', error as AxiosError);
   }
 
   const columns = [
