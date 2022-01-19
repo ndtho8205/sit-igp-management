@@ -9,7 +9,7 @@ import { Menu } from 'antd';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-const AdminMainNav = () => {
+const ProfessorMainNav = () => {
   const router = useRouter();
   const { SubMenu } = Menu;
   const menuItems = [
@@ -78,4 +78,4 @@ const AdminMainNav = () => {
   );
 };
 
-export default AdminMainNav;
+export default ProfessorMainNav;

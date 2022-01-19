@@ -1,5 +1,5 @@
-import { Table } from 'antd';
-// import SemEndPresentationForm from './SemEndPresentationForm';
+import { Space, Table } from 'antd';
+import SupervisorEvaluationForm from './SupervisorEvaluationForm';
 
 function SupervisorEvaluationTable({ page }) {
   // const { isLoading, error, data } = useQuery('professors', () =>
@@ -69,30 +69,19 @@ function SupervisorEvaluationTable({ page }) {
       ],
     },
     {
-      title: 'Comment',
-      dataIndex: 'comment',
-      key: 'comment',
-      width: '300px',
-      // render: (text, record) => (
-      //   <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-      //     {text}
-      //   </div>
-      // ),
-    },
-    {
       title: 'Input',
       key: 'action',
       align: 'center',
       width: '90px',
-      // render: (text, record) => {
-      //   return (
-      //     <>
-      //     <Space size="middle">
-      //       <SemEndPresentationForm studentData={record}/>
-      //     </Space>
-      //     </>
-      //   );
-      // },
+      render: (record) => {
+        return (
+          <>
+          <Space size="middle">
+            <SupervisorEvaluationForm studentData={record}/>
+          </Space>
+          </>
+        );
+      },
     },
   ];
 
@@ -104,7 +93,8 @@ function SupervisorEvaluationTable({ page }) {
       score_p1: 0,
       score_d2: 0,
       score_p2: 0,
-      comment: '',
+      score_presentation: 100,
+      school_year: 11
     },
     {
       student_name: 'Nguyen Duc Tho',
@@ -113,7 +103,9 @@ function SupervisorEvaluationTable({ page }) {
       score_p1: 81,
       score_d2: 82,
       score_p2: 83,
-      comment: 'Some comments',
+      score_presentation: 100,
+      score_lab_rotation: 100,
+      school_year: 21
     },
   ];
 
