@@ -131,6 +131,7 @@ disable = [
   "missing-function-docstring",
   "too-few-public-methods",
   "missing-class-docstring",
+  "too-many-instance-attributes",
 ]
 
 [tool.pylint.LOGGING]
