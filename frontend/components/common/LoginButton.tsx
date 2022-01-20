@@ -1,25 +1,32 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { Button } from 'antd';
+import { notify } from '../../core/utils';
 
 type Props = {
   type?: 'primary' | 'default';
-  isLoading?: boolean;
 };
 
 const LoginButton = (props: Props) => {
-  const { loginWithRedirect, user } = useAuth0();
+  const auth = useAuth0();
 
-  console.log(user);
-  console.log(useAuth0);
-  return (
-    <Button
-      type={props.type || 'default'}
-      onClick={() => loginWithRedirect()}
-      loading={props.isLoading}
-    >
-      Log In
-    </Button>
-  );
+  if (auth.error) {
+    notify('error', auth.error);
+  }
+
+  if (auth.isAuthenticated) {
+    console.log({ user: auth.user });
+    return <div> Hello {auth.user?.name}</div>;
+  } else {
+    return (
+      <Button
+        type={props.type || 'default'}
+        onClick={() => auth.loginWithRedirect()}
+        loading={auth.isLoading}
+      >
+        Log In
+      </Button>
+    );
+  }
 };
 
 export default LoginButton;

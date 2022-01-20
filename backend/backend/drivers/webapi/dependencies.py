@@ -3,7 +3,7 @@ from typing import Iterator
 import jwt
 from sqlalchemy.orm import Session
 
-from fastapi import Depends
+from fastapi import Depends, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi.exceptions import HTTPException
 
@@ -26,45 +26,45 @@ def get_db() -> Iterator[Session]:
 auth_scheme = HTTPBearer()
 
 
-def verify_token(credentials: HTTPAuthorizationCredentials) -> str:
-    return "nb20501@shibaura-it.ac.jp"
+def verify_token(credentials: HTTPAuthorizationCredentials = Depends(auth_scheme)) -> str:
     jwks_url = f"https://{app_config.AUTH_DOMAIN}/.well-known/jwks.json"
     jwks_client = jwt.PyJWKClient(jwks_url)
 
-    signing_key = jwks_client.get_signing_key_from_jwt(credentials.credentials).key
+    try:
+        signing_key = jwks_client.get_signing_key_from_jwt(credentials.credentials).key
+    except Exception as ex:
+        print(str(ex))
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="invalid credentials"
+        ) from ex
 
-    payload = jwt.decode(
-        credentials.credentials,
-        signing_key,
-        algorithms=[app_config.AUTH_ALGORITHMS],
-        audience=app_config.AUTH_API_AUDIENCE,
-        issuer=app_config.AUTH_ISSUER,
-    )
-    print(payload)
+    try:
+        payload = jwt.decode(
+            credentials.credentials,
+            signing_key,
+            algorithms=[app_config.AUTH_ALGORITHMS],
+            audience=app_config.AUTH_API_AUDIENCE,
+            issuer=app_config.AUTH_ISSUER,
+        )
+    except Exception as ex:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="invalid credentials"
+        ) from ex
 
-    return str(payload["sub"])
+    return str(payload[app_config.AUTH_EMAIL_NAMESPACE])
 
 
 def authenticate_user(
     db_session: Session = Depends(get_db),
-    token: HTTPAuthorizationCredentials = Depends(auth_scheme),
+    user_email: str = Depends(verify_token),
 ) -> Professor:
-    try:
-        user_email = verify_token(token)
-    except Exception as ex:
-        raise HTTPException(
-            status_code=401,
-            detail="Incorrect login information",
-        ) from ex
-
     professor_repository.set_session(db_session)
     user = verify_professor_email(professor_repository, user_email)
-    print(user)
 
     if not user or user.is_deleted:
         raise HTTPException(
-            status_code=401,
-            detail="Incorrect login information",
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Please login using your university email account.",
         )
 
     return user

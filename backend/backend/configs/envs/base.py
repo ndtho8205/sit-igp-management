@@ -33,6 +33,7 @@ class BaseAppConfig(BaseConfig):
     AUTH_API_AUDIENCE: str
     AUTH_ALGORITHMS: str
     AUTH_ISSUER: HttpUrl
+    AUTH_EMAIL_NAMESPACE: str
 
     POSTGRES_SERVER: str
     POSTGRES_USER: str

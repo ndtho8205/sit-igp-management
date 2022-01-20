@@ -31,7 +31,6 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
         clientId={config.authClientId}
         redirectUri={config.authRedirectUri}
         audience={config.authApiAudience}
-        scope="openid profile email"
       >
         <div id="app">{getLayout(<Component {...pageProps} />)}</div>
       </Auth0Provider>
