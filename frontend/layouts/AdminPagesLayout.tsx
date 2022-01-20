@@ -44,12 +44,10 @@ const AdminPagesLayout = ({ children }: Props) => {
     {}
   );
 
-  console.log(routeLabels);
-
   return (
     <Layout className={styles.adminContainer}>
       <Sider
-        width="300"
+        width={300}
         collapsed={isCollapsed}
         collapsible
         onCollapse={() => setIsCollapsed(!isCollapsed)}

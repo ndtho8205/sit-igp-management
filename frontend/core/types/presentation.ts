@@ -22,8 +22,6 @@ type Presentation = {
 };
 
 type PresentationEvaluation = {
-  id_: string;
-
   score_research_goal: number;
   score_delivery: number;
   score_visual_aid: number;

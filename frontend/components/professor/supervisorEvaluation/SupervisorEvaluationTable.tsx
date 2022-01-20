@@ -23,9 +23,9 @@ function SupervisorEvaluationTable({ page }) {
       render: (record) => {
         return (
           <>
-          <Space size="middle">
-            <SupervisorEvaluationForm studentData={record}/>
-          </Space>
+            <Space size="middle">
+              <SupervisorEvaluationForm studentData={record} />
+            </Space>
           </>
         );
       },
@@ -52,28 +52,20 @@ function SupervisorEvaluationTable({ page }) {
     },
     {
       title: 'Thesis Program',
-      dataIndex: ['thesis_program','score_course'],
-      key: ['thesis_program','score_course'],
+      dataIndex: ['thesis_program', 'score_course'],
+      key: ['thesis_program', 'score_course'],
       align: 'center',
       render: (text) => {
-        return (
-          <>
-            {(text == -1) ? "--" : text}
-          </>
-        );
+        return <>{text == -1 ? '--' : text}</>;
       },
     },
     {
       title: 'Lab Seminar',
-      dataIndex: ['lab_seminar','score_course'],
-      key: ['lab_seminar','score_course'],
+      dataIndex: ['lab_seminar', 'score_course'],
+      key: ['lab_seminar', 'score_course'],
       align: 'center',
       render: (text) => {
-        return (
-          <>
-            {(text == -1) ? "--" : text}
-          </>
-        );
+        return <>{text == -1 ? '--' : text}</>;
       },
     },
   ];
@@ -88,17 +80,17 @@ function SupervisorEvaluationTable({ page }) {
         score_p1: -1,
         score_d2: -1,
         score_p2: -1,
-        score_course:-1
+        score_course: -1,
       },
       lab_seminar: {
         score_d1: -1,
         score_p1: -1,
         score_d2: -1,
         score_p2: -1,
-        score_course: -1
+        score_course: -1,
       },
-      score_presentation: 84.40,
-      school_year: 11
+      score_presentation: 84.4,
+      school_year: 11,
     },
     {
       student_name: 'Nguyen Duc Tho',
@@ -109,18 +101,18 @@ function SupervisorEvaluationTable({ page }) {
         score_p1: 60,
         score_d2: 60,
         score_p2: 50,
-        score_course:69.17
+        score_course: 69.17,
       },
       lab_seminar: {
         score_d1: 80,
         score_p1: 80,
         score_d2: 80,
         score_p2: 70,
-        score_course: 84.17
+        score_course: 84.17,
       },
       score_presentation: 100,
       score_lab_rotation: 100,
-      school_year: 21
+      school_year: 21,
     },
   ];
 

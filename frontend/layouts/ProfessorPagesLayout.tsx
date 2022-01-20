@@ -1,11 +1,10 @@
-import { Layout, Typography } from 'antd';
+import { Layout } from 'antd';
 import { FunctionComponent, ReactNode, useState } from 'react';
-import Profile from '../components/common/Profile';
+import RoutePageHeader from '../components/common/RoutePageHeader';
 import MainNav from '../components/professor/ProfessorMainNav';
 import styles from '../styles/ProfessorPagesLayout.module.css';
 
-const { Header, Content, Footer, Sider } = Layout;
-const { Title } = Typography;
+const { Content, Footer, Sider } = Layout;
 
 type Props = {
   children?: ReactNode;
@@ -13,6 +12,13 @@ type Props = {
 
 const ProfessorPagesLayout: FunctionComponent = ({ children }: Props) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const routeLabels = {
+    '/professor': 'Home',
+    '/professor/presentationEvaluation/inputScore': 'Input Score',
+    '/professor/presentationEvaluation/summary': 'View Score',
+    '/professor/supervisorEvaluation': 'Supervisor Evaluation',
+  };
 
   return (
     <Layout className={styles.professorContainer}>
@@ -22,15 +28,12 @@ const ProfessorPagesLayout: FunctionComponent = ({ children }: Props) => {
         collapsible
         onCollapse={() => setIsCollapsed(!isCollapsed)}
       >
-        {/* <div className={styles.logo} /> */}
-        <Title className={styles.logo}>TEST</Title>
+        <div className={styles.logo} />
         <MainNav />
       </Sider>
 
       <Layout>
-        <Header className="header">
-          <Profile />
-        </Header>
+        <RoutePageHeader routeLabels={routeLabels} />
         <Content className={styles.content}>{children}</Content>
         <Footer></Footer>
       </Layout>

@@ -31,6 +31,8 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
         clientId={config.authClientId}
         redirectUri={config.authRedirectUri}
         audience={config.authApiAudience}
+        useRefreshTokens
+        cacheLocation="localstorage"
       >
         <div id="app">{getLayout(<Component {...pageProps} />)}</div>
       </Auth0Provider>

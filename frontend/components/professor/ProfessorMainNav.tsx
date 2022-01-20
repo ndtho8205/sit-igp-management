@@ -15,7 +15,7 @@ const ProfessorMainNav = () => {
   const menuItems = [
     { href: '/professor', label: 'Home', icon: <HomeOutlined /> },
     {
-      href: '/professor/presentationEvaluation/summary',
+      href: '/professor/presentationEvaluation',
       label: 'Semester End Presentation',
       icon: <DesktopOutlined />,
       subItems: [

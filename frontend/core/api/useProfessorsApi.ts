@@ -1,31 +1,33 @@
-import Professor from '../types/professor';
+import { Professor } from '../types/professor';
 import useAxios from './useAxios';
 
 const useProfessorsApi = () => {
   const { get, post, put, remove } = useAxios();
+  const endpoint = '/professors';
+
   return {
+    whoami: async () => {
+      const response = await get<Professor>(`${endpoint}/me`);
+      return response.data;
+    },
+
     createProfessor: async (obj: Professor) => {
-      const response = await post<Professor>('/professors/', obj);
+      const response = await post<Professor>(`${endpoint}/`, obj);
       return response.data;
     },
 
     findAllProfessors: async () => {
-      const response = await get<Professor[]>('/professors/');
-      return response.data;
-    },
-
-    findProfessorByID: async (id: string) => {
-      const response = await get<Professor>(`/professors/${id}`);
+      const response = await get<Professor[]>(`${endpoint}/`);
       return response.data;
     },
 
     updateProfessor: async (id: string, obj: Professor) => {
-      const response = await put<Professor>(`/professors/${id}`, obj);
+      const response = await put<Professor>(`${endpoint}/${id}`, obj);
       return response.data;
     },
 
     deleteProfessor: async (id: string) => {
-      await remove<Professor>(`/professors/${id}`);
+      await remove<Professor>(`${endpoint}/${id}`);
     },
   };
 };

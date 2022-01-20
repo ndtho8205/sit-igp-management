@@ -4,39 +4,43 @@ import useAxios from './useAxios';
 
 const usePresentationsApi = () => {
   const { get, post, put, remove } = useAxios();
+  const endpoint = '/presentations';
+
   return {
     createPresentation: async (obj: Presentation) => {
       obj.presentation_date = moment(obj.presentation_date).format(
         'YYYY-MM-DD'
       );
-      const response = await post<Presentation>('/presentations/', obj);
+      const response = await post<Presentation>(`${endpoint}/`, obj);
       return response.data;
     },
 
     findAllPresentations: async () => {
-      const response = await get<Presentation[]>('/presentations/');
+      const response = await get<Presentation[]>(`${endpoint}/`);
       return response.data;
     },
 
     findPresentationById: async (id: string) => {
-      const response = await get<Presentation>(`/presentations/${id}`);
+      const response = await get<Presentation>(`${endpoint}/${id}`);
       return response.data;
     },
 
     updatePresentation: async (id: string, obj: Presentation) => {
-      const response = await put<Presentation>(`/presentations/${id}`, obj);
+      const response = await put<Presentation>(`${endpoint}/${id}`, obj);
       return response.data;
     },
 
     deletePresentation: async (id: string) => {
-      await remove<Presentation>(`/presentations/${id}`);
+      await remove<Presentation>(`${endpoint}/${id}`);
     },
 
     createPresentationEvaluation: async (
       id: string,
+      presentation_id: string,
+      reviewer_id: string,
       obj: PresentationEvaluation
     ) => {
-      await post<PresentationEvaluation>(`/presentations/${id}`, obj);
+      await post<PresentationEvaluation>(`${endpoint}/${id}`, obj);
     },
   };
 };
