@@ -1,11 +1,11 @@
 # pylint: skip-file
 # flake8: noqa
 
-"""create_all_tables
+"""professors_students_presentations_presentation-evaluations_tables
 
-Revision ID: d6db8d619e77
-Revises: 
-Create Date: 2022-01-20 12:33:39.980079+09:00
+Revision ID: f721c0ecb59e
+Revises:
+Create Date: 2022-01-20 16:15:54.749728+09:00
 
 """
 from alembic import op
@@ -13,7 +13,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision = "d6db8d619e77"
+revision = "f721c0ecb59e"
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -58,9 +58,9 @@ def upgrade() -> None:
             "gender", sa.Enum("MALE", "FEMALE", "OTHER", name="gender"), nullable=True
         ),
         sa.Column("area_of_study", sa.String(length=2048), nullable=True),
-        sa.Column("supervisor_id", postgresql.UUID(), nullable=True),
-        sa.Column("advisor1_id", postgresql.UUID(), nullable=True),
-        sa.Column("advisor2_id", postgresql.UUID(), nullable=True),
+        sa.Column("supervisor_id", postgresql.UUID(as_uuid=True), nullable=True),
+        sa.Column("advisor1_id", postgresql.UUID(as_uuid=True), nullable=True),
+        sa.Column("advisor2_id", postgresql.UUID(as_uuid=True), nullable=True),
         sa.ForeignKeyConstraint(
             ["advisor1_id"],
             ["professors.id_"],
@@ -197,7 +197,8 @@ def upgrade() -> None:
         sa.Column("score_delivery", sa.Integer(), nullable=False),
         sa.Column("score_visual_aid", sa.Integer(), nullable=False),
         sa.Column("score_time", sa.Integer(), nullable=False),
-        sa.Column("score_qa", sa.Integer(), nullable=False),
+        sa.Column("score_qa_ability", sa.Integer(), nullable=False),
+        sa.Column("question_score", sa.Float(), nullable=False),
         sa.Column("comment", sa.String(length=256), nullable=True),
         sa.ForeignKeyConstraint(
             ["presentation_id"],
@@ -289,4 +290,5 @@ def downgrade() -> None:
     op.drop_index(op.f("ix_professors_email"), table_name="professors")
     op.drop_index(op.f("ix_professors_created_at"), table_name="professors")
     op.drop_table("professors")
+    op.execute("DROP TYPE gender")
     # ### end Alembic commands ###
