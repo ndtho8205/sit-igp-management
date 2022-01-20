@@ -24,7 +24,10 @@ from backend.usecases.inputs import (
     PresentationUpdateInput,
     PresentationEvaluationCreateInput,
 )
-from backend.adapters.webapi.responses import PresentationResponse
+from backend.adapters.webapi.responses import (
+    PresentationResponse,
+    PresentationEvaluationResponse,
+)
 from backend.drivers.webapi.dependencies import get_db, authenticate_user
 
 
@@ -96,7 +99,10 @@ def delete(
     delete_presentation(current_user, presentation_repository, presentation_id)
 
 
-@router.post("/{presentation_id}/evaluations/", response_model=PresentationResponse)
+@router.post(
+    "/{presentation_id}/evaluations/",
+    response_model=PresentationEvaluationResponse,
+)
 def evaluate_presentation(
     presentation_id: ID,
     inp: PresentationEvaluationCreateInput,
@@ -113,5 +119,6 @@ def evaluate_presentation(
         presentation_evaluation_repository,
         inp,
     )
+    print(evaluation)
 
     return evaluation

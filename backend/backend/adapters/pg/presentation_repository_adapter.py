@@ -12,6 +12,9 @@ from backend.adapters.pg.base_repository import BaseRepository
 from backend.adapters.pg.schemas.presentation import PresentationSchema
 from backend.adapters.pg.student_repository_adapter import student_repository
 from backend.adapters.pg.professor_repository_adapter import professor_repository
+from backend.adapters.pg.presentation_evaluation_repository import (
+    presentation_evaluation_repository,
+)
 
 
 class PresentationRepositoryAdapter(PresentationRepository):
@@ -76,6 +79,8 @@ class PresentationRepositoryAdapter(PresentationRepository):
     # pylint: disable=no-self-use
     def schema_to_entity(self, obj: PresentationSchema) -> Presentation:
         student_repository.set_session(self.db_session)
+        presentation_evaluation_repository.set_session(self.db_session)
+
         presenter = student_repository.find_one_by_id(obj.student_id)
         if presenter is None:
             raise NotFoundError("presenter was not found")
@@ -94,14 +99,37 @@ class PresentationRepositoryAdapter(PresentationRepository):
 
         if obj.reviewer1_id is not None:
             presentation.reviewer1 = professor_repository.find_one_by_id(obj.reviewer1_id)
+            presentation.reviewer1_evaluation = presentation_evaluation_repository.find_one_by_presentation_and_reviewer_id(
+                presentation.id_, obj.reviewer1_id
+            )
 
         if obj.reviewer2_id is not None:
             presentation.reviewer2 = professor_repository.find_one_by_id(obj.reviewer2_id)
 
+            presentation.reviewer2_evaluation = presentation_evaluation_repository.find_one_by_presentation_and_reviewer_id(
+                presentation.id_,
+                obj.reviewer2_id,
+            )
+
+            print("=================================")
+            print(presentation.reviewer2_evaluation)
+            print("=================================")
+
         if obj.reviewer3_id is not None:
             presentation.reviewer3 = professor_repository.find_one_by_id(obj.reviewer3_id)
+
+            presentation.reviewer3_evaluation = presentation_evaluation_repository.find_one_by_presentation_and_reviewer_id(
+                presentation.id_,
+                obj.reviewer3_id,
+            )
+
         if obj.reviewer4_id is not None:
             presentation.reviewer4 = professor_repository.find_one_by_id(obj.reviewer4_id)
+
+            presentation.reviewer4_evaluation = presentation_evaluation_repository.find_one_by_presentation_and_reviewer_id(
+                presentation.id_,
+                obj.reviewer4_id,
+            )
 
         return presentation
 

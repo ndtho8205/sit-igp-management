@@ -104,7 +104,7 @@ class PresentationEvaluationRepositoryAdapter(PresentationEvaluationRepository):
     def find_one_by_presentation_and_reviewer_id(
         self, presentation_id: ID, reviewer_id: ID
     ) -> Optional[PresentationEvaluation]:
-        db_evaluation = (
+        db_evaluation: Optional[PresentationEvaluationSchema] = (
             self.db_session.query(PresentationEvaluationSchema)
             .where(
                 PresentationEvaluationSchema.presentation_id == presentation_id,
@@ -112,7 +112,10 @@ class PresentationEvaluationRepositoryAdapter(PresentationEvaluationRepository):
             )
             .first()
         )
-        return db_evaluation
+        if db_evaluation is None:
+            return None
+
+        return self.schema_to_entity(db_evaluation)
 
     # pylint: disable=no-self-use
     def schema_to_entity(

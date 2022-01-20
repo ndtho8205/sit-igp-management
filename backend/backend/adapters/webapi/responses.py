@@ -41,11 +41,11 @@ class StudentResponse(BaseModel):
 
 
 class PresentationEvaluationResponse(BaseModel):
-    research_goal: RatingScore
-    delivery: RatingScore
-    visual_aid: RatingScore
-    time: RatingScore
-    qa_ability: RatingScore
+    score_research_goal: RatingScore
+    score_delivery: RatingScore
+    score_visual_aid: RatingScore
+    score_time: RatingScore
+    score_qa_ability: RatingScore
 
     comment: Optional[str]
 

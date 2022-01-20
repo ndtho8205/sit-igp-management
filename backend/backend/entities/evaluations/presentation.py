@@ -12,11 +12,11 @@ from backend.entities.professor import Professor
 class PresentationEvaluation(BaseModel):
     id_: ID
 
-    research_goal: RatingScore
-    delivery: RatingScore
-    visual_aid: RatingScore
-    time: RatingScore
-    qa_ability: RatingScore
+    score_research_goal: RatingScore
+    score_delivery: RatingScore
+    score_visual_aid: RatingScore
+    score_time: RatingScore
+    score_qa_ability: RatingScore
 
     question_score: float
 

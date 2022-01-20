@@ -26,7 +26,7 @@ class PresentationEvaluationSchema(BaseSchema):
     score_delivery: int = Column(Integer, nullable=False)
     score_visual_aid: int = Column(Integer, nullable=False)
     score_time: int = Column(Integer, nullable=False)
-    score_qa: int = Column(Integer, nullable=False)
+    score_qa_ability: int = Column(Integer, nullable=False)
 
     question_score: float = Column(Float, nullable=False)
 
