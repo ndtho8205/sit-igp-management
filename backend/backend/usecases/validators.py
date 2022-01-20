@@ -2,8 +2,13 @@ from typing import Optional
 
 from backend.entities.types import ID
 from backend.usecases.errors import NotFoundError
+from backend.entities.professor import Professor
 from backend.usecases.repositories.student_repository import StudentRepository
 from backend.usecases.repositories.professor_repository import ProfessorRepository
+from backend.usecases.repositories.presentation_repository import PresentationRepository
+from backend.usecases.repositories.presentation_evaluation_repository import (
+    PresentationEvaluationRepository,
+)
 
 
 def validate_student_supervisor_advisor_exists(
@@ -60,3 +65,12 @@ def validate_presentation_reviewers(
             and professor_repository.find_one_by_id(reviewer_id) is None
         ):
             raise NotFoundError(f"{reviewer_role} was not found")
+
+
+def validate_presentation_evaluation_reviewer_rights(
+    presentation_repository: PresentationRepository,
+    presentation_evaluation_repository: PresentationEvaluationRepository,
+    current_user_id: ID,
+    reviewer_id: ID,
+) -> None:
+    pass

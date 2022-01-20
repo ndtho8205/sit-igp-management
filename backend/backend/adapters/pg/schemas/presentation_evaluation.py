@@ -1,4 +1,6 @@
-from sqlalchemy import Column, String, Integer, ForeignKey
+from typing import Optional
+
+from sqlalchemy import Float, Column, String, Integer, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID
 
 from backend.entities.types import ID
@@ -20,10 +22,12 @@ class PresentationEvaluationSchema(BaseSchema):
         index=True,
         nullable=False,
     )
-    score_research_goal = Column(Integer, nullable=False)
-    score_delivery = Column(Integer, nullable=False)
-    score_visual_aid = Column(Integer, nullable=False)
-    score_time = Column(Integer, nullable=False)
-    score_qa = Column(Integer, nullable=False)
+    score_research_goal: int = Column(Integer, nullable=False)
+    score_delivery: int = Column(Integer, nullable=False)
+    score_visual_aid: int = Column(Integer, nullable=False)
+    score_time: int = Column(Integer, nullable=False)
+    score_qa: int = Column(Integer, nullable=False)
 
-    comment = Column(String(256))
+    question_score: float = Column(Float, nullable=False)
+
+    comment: Optional[str] = Column(String(256))

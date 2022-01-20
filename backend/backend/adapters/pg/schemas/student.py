@@ -19,6 +19,18 @@ class StudentSchema(BaseSchema):
     gender: Optional[Gender] = Column(Enum(Gender))
     area_of_study: Optional[str] = Column(String(2048))
 
-    supervisor_id: Optional[str] = Column(UUID, ForeignKey("professors.id_"), index=True)
-    advisor1_id: Optional[str] = Column(UUID, ForeignKey("professors.id_"), index=True)
-    advisor2_id: Optional[str] = Column(UUID, ForeignKey("professors.id_"), index=True)
+    supervisor_id: Optional[str] = Column(
+        UUID(as_uuid=True),
+        ForeignKey("professors.id_"),
+        index=True,
+    )
+    advisor1_id: Optional[str] = Column(
+        UUID(as_uuid=True),
+        ForeignKey("professors.id_"),
+        index=True,
+    )
+    advisor2_id: Optional[str] = Column(
+        UUID(as_uuid=True),
+        ForeignKey("professors.id_"),
+        index=True,
+    )

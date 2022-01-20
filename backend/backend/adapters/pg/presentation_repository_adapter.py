@@ -1,6 +1,7 @@
 from typing import List, Optional
 
 from sqlalchemy.orm.session import Session
+from sqlalchemy.sql.elements import or_
 
 from backend.entities import Presentation
 from backend.entities.types import ID
@@ -44,7 +45,24 @@ class PresentationRepositoryAdapter(PresentationRepository):
         self.repository.delete(self.db_session, presentation_id)
 
     def find_all(self, reviewer_id: Optional[ID]) -> List[Presentation]:
-        db_presentations = self.repository.find_all(self.db_session)
+        if reviewer_id is None:
+            db_presentations = self.repository.find_all(self.db_session)
+        else:
+            db_presentations = (
+                self.db_session.query(PresentationSchema)
+                .where(
+                    or_(
+                        PresentationSchema.reviewer1_id == reviewer_id,
+                        PresentationSchema.reviewer2_id == reviewer_id,
+                        PresentationSchema.reviewer3_id == reviewer_id,
+                        PresentationSchema.reviewer4_id == reviewer_id,
+                    )
+                )
+                .where(PresentationSchema.is_deleted.is_(False))
+                .order_by(PresentationSchema.created_at.desc())
+                .all()
+            )
+
         return [
             self.schema_to_entity(db_presentation) for db_presentation in db_presentations
         ]
@@ -57,6 +75,7 @@ class PresentationRepositoryAdapter(PresentationRepository):
 
     # pylint: disable=no-self-use
     def schema_to_entity(self, obj: PresentationSchema) -> Presentation:
+        student_repository.set_session(self.db_session)
         presenter = student_repository.find_one_by_id(obj.student_id)
         if presenter is None:
             raise NotFoundError("presenter was not found")

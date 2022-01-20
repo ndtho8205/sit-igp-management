@@ -9,7 +9,8 @@ from backend.entities.professor import Professor
 # )
 from backend.entities.evaluations.presentation import (
     Presentation,
-    PresentationReviewerEvaluation,
+    PresentationEvaluation,
+    compute_presentation_question_score,
 )
 
 
@@ -17,7 +18,8 @@ __all__ = [
     "Professor",
     "Student",
     "Presentation",
-    "PresentationReviewerEvaluation",
+    "PresentationEvaluation",
+    "compute_presentation_question_score",
     # "LabSeminar",
     # "LabRotation",
     # "ThesisProgram",

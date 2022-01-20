@@ -40,7 +40,7 @@ class StudentResponse(BaseModel):
     advisor2: Optional[_SubProfessor]
 
 
-class PresentationReviewerEvaluationResponse(BaseModel):
+class PresentationEvaluationResponse(BaseModel):
     research_goal: RatingScore
     delivery: RatingScore
     visual_aid: RatingScore
@@ -53,6 +53,8 @@ class PresentationReviewerEvaluationResponse(BaseModel):
 
 
 class PresentationResponse(BaseModel):
+    id_: ID
+
     student: StudentResponse
     presentation_date: date
     presentation_length: Optional[str]
@@ -63,7 +65,7 @@ class PresentationResponse(BaseModel):
     reviewer3: Optional[_SubProfessor]
     reviewer4: Optional[_SubProfessor]
 
-    reviewer1_evaluation: Optional[PresentationReviewerEvaluationResponse]
-    reviewer2_evaluation: Optional[PresentationReviewerEvaluationResponse]
-    reviewer3_evaluation: Optional[PresentationReviewerEvaluationResponse]
-    reviewer4_evaluation: Optional[PresentationReviewerEvaluationResponse]
+    reviewer1_evaluation: Optional[PresentationEvaluationResponse]
+    reviewer2_evaluation: Optional[PresentationEvaluationResponse]
+    reviewer3_evaluation: Optional[PresentationEvaluationResponse]
+    reviewer4_evaluation: Optional[PresentationEvaluationResponse]

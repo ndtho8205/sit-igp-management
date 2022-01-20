@@ -1,3 +1,5 @@
+from typing import Optional
+
 from datetime import date
 
 from sqlalchemy import Date, Column, String, ForeignKey
@@ -18,29 +20,29 @@ class PresentationSchema(BaseSchema):
     )
     presentation_date: date = Column(Date, index=True, nullable=False)
 
-    presentation_length: str = Column(String(256))
+    presentation_length: Optional[str] = Column(String(256))
 
-    session_chair_id: ID = Column(
+    session_chair_id: Optional[ID] = Column(
         UUID(as_uuid=True),
         ForeignKey("professors.id_"),
         index=True,
     )
-    reviewer1_id: ID = Column(
+    reviewer1_id: Optional[ID] = Column(
         UUID(as_uuid=True),
         ForeignKey("professors.id_"),
         index=True,
     )
-    reviewer2_id: ID = Column(
+    reviewer2_id: Optional[ID] = Column(
         UUID(as_uuid=True),
         ForeignKey("professors.id_"),
         index=True,
     )
-    reviewer3_id: ID = Column(
+    reviewer3_id: Optional[ID] = Column(
         UUID(as_uuid=True),
         ForeignKey("professors.id_"),
         index=True,
     )
-    reviewer4_id: ID = Column(
+    reviewer4_id: Optional[ID] = Column(
         UUID(as_uuid=True),
         ForeignKey("professors.id_"),
         index=True,

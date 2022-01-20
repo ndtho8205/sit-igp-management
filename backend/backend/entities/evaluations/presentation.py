@@ -9,7 +9,7 @@ from backend.entities.student import Student
 from backend.entities.professor import Professor
 
 
-class PresentationReviewerEvaluation(BaseModel):
+class PresentationEvaluation(BaseModel):
     id_: ID
 
     research_goal: RatingScore
@@ -18,17 +18,12 @@ class PresentationReviewerEvaluation(BaseModel):
     time: RatingScore
     qa_ability: RatingScore
 
+    question_score: float
+
     comment: Optional[str]
 
-    @property
-    def question_score(self) -> float:
-        return (
-            self.research_goal * 0.35
-            + self.delivery * 0.2
-            + self.visual_aid * 0.2
-            + self.time * 0.05
-            + self.qa_ability * 0.2
-        ) * 20
+    class Config:
+        orm_mode = True
 
 
 class Presentation(BaseModel):
@@ -45,10 +40,13 @@ class Presentation(BaseModel):
     reviewer3: Optional[Professor]
     reviewer4: Optional[Professor]
 
-    reviewer1_evaluation: Optional[PresentationReviewerEvaluation]
-    reviewer2_evaluation: Optional[PresentationReviewerEvaluation]
-    reviewer3_evaluation: Optional[PresentationReviewerEvaluation]
-    reviewer4_evaluation: Optional[PresentationReviewerEvaluation]
+    reviewer1_evaluation: Optional[PresentationEvaluation]
+    reviewer2_evaluation: Optional[PresentationEvaluation]
+    reviewer3_evaluation: Optional[PresentationEvaluation]
+    reviewer4_evaluation: Optional[PresentationEvaluation]
+
+    class Config:
+        orm_mode = True
 
     @property
     def average_score(self) -> Optional[float]:
@@ -65,3 +63,19 @@ class Presentation(BaseModel):
             scores.append(evaluation.question_score)
 
         return sum(scores) / 4
+
+
+def compute_presentation_question_score(
+    research_goal: int,
+    delivery: int,
+    visual_aid: int,
+    time: int,
+    qa_ability: int,
+) -> float:
+    return (
+        research_goal * 0.35
+        + delivery * 0.2
+        + visual_aid * 0.2
+        + time * 0.05
+        + qa_ability * 0.2
+    ) * 20

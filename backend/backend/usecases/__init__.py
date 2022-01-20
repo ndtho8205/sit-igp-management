@@ -11,6 +11,9 @@ from backend.usecases.delete_professor_record import delete_professor_record
 from backend.usecases.update_presentation_info import update_presentation_info
 from backend.usecases.create_new_student_record import create_new_student_record
 from backend.usecases.create_new_professor_record import create_new_professor_record
+from backend.usecases.create_new_presentation_evaluation import (
+    create_new_presentation_evaluation,
+)
 
 
 __all__ = [
@@ -30,4 +33,5 @@ __all__ = [
     "update_presentation_info",
     "delete_presentation",
     "list_all_presentations",
+    "create_new_presentation_evaluation",
 ]

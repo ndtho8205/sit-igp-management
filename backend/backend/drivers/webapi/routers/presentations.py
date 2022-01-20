@@ -4,20 +4,26 @@ from sqlalchemy.orm import Session
 
 from fastapi import Depends, APIRouter
 
-from backend.entities import Professor, Presentation
+from backend.entities import Professor, Presentation, PresentationEvaluation
 from backend.usecases import (
     delete_presentation,
     list_all_presentations,
     create_new_presentation,
     update_presentation_info,
+    create_new_presentation_evaluation,
 )
 from backend.adapters.pg import (
     student_repository,
     professor_repository,
     presentation_repository,
+    presentation_evaluation_repository,
 )
 from backend.entities.types import ID
-from backend.usecases.inputs import PresentationCreateInput, PresentationUpdateInput
+from backend.usecases.inputs import (
+    PresentationCreateInput,
+    PresentationUpdateInput,
+    PresentationEvaluationCreateInput,
+)
 from backend.adapters.webapi.responses import PresentationResponse
 from backend.drivers.webapi.dependencies import get_db, authenticate_user
 
@@ -32,6 +38,8 @@ def create_presentation(
     current_user: Professor = Depends(authenticate_user),
 ) -> Presentation:
     presentation_repository.set_session(db_session)
+    professor_repository.set_session(db_session)
+    student_repository.set_session(db_session)
     presentation = create_new_presentation(
         current_user,
         student_repository,
@@ -66,6 +74,7 @@ def update_presentation_by_id(
     current_user: Professor = Depends(authenticate_user),
 ) -> Presentation:
     presentation_repository.set_session(db_session)
+    professor_repository.set_session(db_session)
     presentation = update_presentation_info(
         current_user,
         professor_repository,
@@ -85,3 +94,24 @@ def delete(
 ) -> None:
     presentation_repository.set_session(db_session)
     delete_presentation(current_user, presentation_repository, presentation_id)
+
+
+@router.post("/{presentation_id}/evaluations/", response_model=PresentationResponse)
+def evaluate_presentation(
+    presentation_id: ID,
+    inp: PresentationEvaluationCreateInput,
+    db_session: Session = Depends(get_db),
+    current_user: Professor = Depends(authenticate_user),
+) -> PresentationEvaluation:
+    presentation_repository.set_session(db_session)
+    presentation_evaluation_repository.set_session(db_session)
+    presentation_repository.set_session(db_session)
+
+    evaluation = create_new_presentation_evaluation(
+        current_user,
+        presentation_repository,
+        presentation_evaluation_repository,
+        inp,
+    )
+
+    return evaluation

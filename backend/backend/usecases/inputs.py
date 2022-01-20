@@ -88,7 +88,7 @@ class PresentationEvaluationCreateInput(BaseModel):
     score_delivery: RatingScore
     score_visual_aid: RatingScore
     score_time: RatingScore
-    score_qa: RatingScore
+    score_qa_ability: RatingScore
 
     comment: Optional[LongStr]
 

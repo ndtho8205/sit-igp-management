@@ -61,6 +61,7 @@ class StudentRepositoryAdapter(StudentRepository):
 
     # pylint: disable=no-self-use
     def schema_to_entity(self, obj: StudentSchema) -> Student:
+        professor_repository.set_session(self.db_session)
         student = Student.from_orm(obj)
         if obj.supervisor_id is not None:
             student.supervisor = professor_repository.find_one_by_id(obj.supervisor_id)

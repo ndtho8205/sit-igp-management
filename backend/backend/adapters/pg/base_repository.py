@@ -6,8 +6,8 @@ from sqlalchemy.orm import Session
 
 from fastapi.encoders import jsonable_encoder
 
+from backend.entities.types import ID
 from backend.adapters.pg.schemas import BaseSchema
-from backend.usecases.validators import ID
 
 
 SchemaType = TypeVar("SchemaType", bound=BaseSchema)
