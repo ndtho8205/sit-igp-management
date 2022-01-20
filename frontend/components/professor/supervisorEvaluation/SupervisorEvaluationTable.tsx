@@ -89,20 +89,40 @@ function SupervisorEvaluationTable({ page }) {
     {
       student_name: 'Tran Minh Chanh',
       student_id: 'NB20502',
-      score_d1: 0,
-      score_p1: 0,
-      score_d2: 0,
-      score_p2: 0,
-      score_presentation: 100,
+      thesis_program: {
+        score_d1: 0,
+        score_p1: 0,
+        score_d2: 0,
+        score_p2: 0,
+        score_course:0
+      },
+      lab_seminar: {
+        score_d1: 0,
+        score_p1: 0,
+        score_d2: 0,
+        score_p2: 0,
+        score_course:0
+      },
+      score_presentation: 84.40,
       school_year: 11
     },
     {
       student_name: 'Nguyen Duc Tho',
       student_id: 'NB20501',
-      score_d1: 80,
-      score_p1: 81,
-      score_d2: 82,
-      score_p2: 83,
+      thesis_program: {
+        score_d1: 60,
+        score_p1: 60,
+        score_d2: 60,
+        score_p2: 50,
+        score_course:69.17
+      },
+      lab_seminar: {
+        score_d1: 80,
+        score_p1: 80,
+        score_d2: 80,
+        score_p2: 70,
+        score_course: 84.17
+      },
       score_presentation: 100,
       score_lab_rotation: 100,
       school_year: 21

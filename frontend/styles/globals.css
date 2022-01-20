@@ -7,3 +7,8 @@
 #app .header {
   background: #fff;
 }
+
+.ant-input-number-input {
+  text-align: center;
+  color: black;
+}
