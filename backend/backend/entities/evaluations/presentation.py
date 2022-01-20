@@ -1,14 +1,17 @@
-from typing import Tuple, Optional
+from typing import Optional
 
 from datetime import date
 
 from pydantic import BaseModel
 
-from backend.entities.types import RatingScore
+from backend.entities.types import ID, RatingScore
+from backend.entities.student import Student
 from backend.entities.professor import Professor
 
 
-class SemesterEndPresentationReviewerScore(BaseModel):
+class PresentationReviewerEvaluation(BaseModel):
+    id_: ID
+
     research_goal: RatingScore
     delivery: RatingScore
     visual_aid: RatingScore
@@ -28,36 +31,32 @@ class SemesterEndPresentationReviewerScore(BaseModel):
         ) * 20
 
 
-class SemesterEndPresentation(BaseModel):
+class Presentation(BaseModel):
+    id_: ID
+
+    student: Student
     presentation_date: date
 
     presentation_length: Optional[str]
     session_chair: Optional[Professor]
 
-    reviewer_1_evaluation: Tuple[
-        Professor,
-        Optional[SemesterEndPresentationReviewerScore],
-    ]
-    reviewer_2_evaluation: Tuple[
-        Professor,
-        Optional[SemesterEndPresentationReviewerScore],
-    ]
-    reviewer_3_evaluation: Tuple[
-        Professor,
-        Optional[SemesterEndPresentationReviewerScore],
-    ]
-    reviewer_4_evaluation: Tuple[
-        Professor,
-        Optional[SemesterEndPresentationReviewerScore],
-    ]
+    reviewer1: Optional[Professor]
+    reviewer2: Optional[Professor]
+    reviewer3: Optional[Professor]
+    reviewer4: Optional[Professor]
+
+    reviewer1_evaluation: Optional[PresentationReviewerEvaluation]
+    reviewer2_evaluation: Optional[PresentationReviewerEvaluation]
+    reviewer3_evaluation: Optional[PresentationReviewerEvaluation]
+    reviewer4_evaluation: Optional[PresentationReviewerEvaluation]
 
     @property
     def average_score(self) -> Optional[float]:
         reviewer_evaluations = [
-            self.reviewer_1_evaluation[1],
-            self.reviewer_2_evaluation[1],
-            self.reviewer_3_evaluation[1],
-            self.reviewer_4_evaluation[1],
+            self.reviewer1_evaluation,
+            self.reviewer2_evaluation,
+            self.reviewer3_evaluation,
+            self.reviewer4_evaluation,
         ]
         scores = []
         for evaluation in reviewer_evaluations:

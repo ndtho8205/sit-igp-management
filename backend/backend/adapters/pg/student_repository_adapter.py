@@ -3,8 +3,8 @@ from typing import List, Optional
 from sqlalchemy.orm.session import Session
 
 from backend.entities import Student
+from backend.entities.types import ID
 from backend.usecases.inputs import StudentCreateInput, StudentUpdateInput
-from backend.usecases.validators import ID
 from backend.usecases.repositories import StudentRepository
 from backend.adapters.pg.base_repository import BaseRepository
 from backend.adapters.pg.schemas.student import StudentSchema

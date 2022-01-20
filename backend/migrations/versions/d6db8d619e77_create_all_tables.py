@@ -3,18 +3,17 @@
 
 """create_all_tables
 
-Revision ID: 8badda08d5c3
-Revises:
-Create Date: 2022-01-18 13:11:26.999968+09:00
+Revision ID: d6db8d619e77
+Revises: 
+Create Date: 2022-01-20 12:33:39.980079+09:00
 
 """
-import sqlalchemy as sa
 from alembic import op
+import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
-
 # revision identifiers, used by Alembic.
-revision = "8badda08d5c3"
+revision = "d6db8d619e77"
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -58,10 +57,10 @@ def upgrade() -> None:
         sa.Column(
             "gender", sa.Enum("MALE", "FEMALE", "OTHER", name="gender"), nullable=True
         ),
-        sa.Column("area_of_study", sa.String(length=256), nullable=True),
-        sa.Column("supervisor_id", postgresql.UUID(as_uuid=True), nullable=True),
-        sa.Column("advisor1_id", postgresql.UUID(as_uuid=True), nullable=True),
-        sa.Column("advisor2_id", postgresql.UUID(as_uuid=True), nullable=True),
+        sa.Column("area_of_study", sa.String(length=2048), nullable=True),
+        sa.Column("supervisor_id", postgresql.UUID(), nullable=True),
+        sa.Column("advisor1_id", postgresql.UUID(), nullable=True),
+        sa.Column("advisor2_id", postgresql.UUID(), nullable=True),
         sa.ForeignKeyConstraint(
             ["advisor1_id"],
             ["professors.id_"],
@@ -107,11 +106,11 @@ def upgrade() -> None:
         sa.Column("student_id", postgresql.UUID(as_uuid=True), nullable=False),
         sa.Column("presentation_date", sa.Date(), nullable=False),
         sa.Column("presentation_length", sa.String(length=256), nullable=True),
+        sa.Column("session_chair_id", postgresql.UUID(as_uuid=True), nullable=True),
         sa.Column("reviewer1_id", postgresql.UUID(as_uuid=True), nullable=True),
         sa.Column("reviewer2_id", postgresql.UUID(as_uuid=True), nullable=True),
         sa.Column("reviewer3_id", postgresql.UUID(as_uuid=True), nullable=True),
         sa.Column("reviewer4_id", postgresql.UUID(as_uuid=True), nullable=True),
-        sa.Column("reviewer5_id", postgresql.UUID(as_uuid=True), nullable=True),
         sa.ForeignKeyConstraint(
             ["reviewer1_id"],
             ["professors.id_"],
@@ -129,7 +128,7 @@ def upgrade() -> None:
             ["professors.id_"],
         ),
         sa.ForeignKeyConstraint(
-            ["reviewer5_id"],
+            ["session_chair_id"],
             ["professors.id_"],
         ),
         sa.ForeignKeyConstraint(
@@ -176,9 +175,9 @@ def upgrade() -> None:
         unique=False,
     )
     op.create_index(
-        op.f("ix_presentations_reviewer5_id"),
+        op.f("ix_presentations_session_chair_id"),
         "presentations",
-        ["reviewer5_id"],
+        ["session_chair_id"],
         unique=False,
     )
     op.create_index(
@@ -266,7 +265,7 @@ def downgrade() -> None:
     )
     op.drop_table("presentation_evaluations")
     op.drop_index(op.f("ix_presentations_student_id"), table_name="presentations")
-    op.drop_index(op.f("ix_presentations_reviewer5_id"), table_name="presentations")
+    op.drop_index(op.f("ix_presentations_session_chair_id"), table_name="presentations")
     op.drop_index(op.f("ix_presentations_reviewer4_id"), table_name="presentations")
     op.drop_index(op.f("ix_presentations_reviewer3_id"), table_name="presentations")
     op.drop_index(op.f("ix_presentations_reviewer2_id"), table_name="presentations")
@@ -290,5 +289,4 @@ def downgrade() -> None:
     op.drop_index(op.f("ix_professors_email"), table_name="professors")
     op.drop_index(op.f("ix_professors_created_at"), table_name="professors")
     op.drop_table("professors")
-    op.execute("DROP TYPE gender")
     # ### end Alembic commands ###

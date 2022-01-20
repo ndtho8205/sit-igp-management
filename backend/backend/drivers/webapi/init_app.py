@@ -10,7 +10,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from backend.configs import app_config
 from backend.adapters.pg import professor_repository
 from backend.drivers.webapi import api
-from backend.usecases.errors import ConflictError, NotFoundError, ForbiddenError
+from backend.usecases.errors import (
+    ConflictError,
+    NotFoundError,
+    ForbiddenError,
+    BadRequestError,
+)
 from backend.usecases.inputs import ProfessorCreateInput
 from backend.drivers.pg.session import DbSession
 
@@ -23,8 +28,8 @@ try:
     if superuser is None:
         professor_repository.create(
             ProfessorCreateInput(
-                full_name="",
-                email="",
+                full_name=app_config.SUPERUSER_FULLNAME,
+                email=app_config.SUPERUSER_EMAIL,
                 is_verified=True,
                 is_superuser=True,
             )
@@ -98,6 +103,17 @@ async def forbidden_exception_handler(
 ) -> JSONResponse:
     return JSONResponse(
         status_code=403,
+        content={"detail": exc.args[0]},
+    )
+
+
+@app.exception_handler(BadRequestError)
+async def bad_request_exception_handler(
+    request: Request,
+    exc: BadRequestError,
+) -> JSONResponse:
+    return JSONResponse(
+        status_code=400,
         content={"detail": exc.args[0]},
     )
 

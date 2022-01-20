@@ -23,8 +23,8 @@ dev: ## Run development server
 		--file ./docker-compose.dev.yml up \
 		--detach \
 		--remove-orphans
-	#poetry run alembic upgrade head
-	poetry run uvicorn backend:app \
+	poetry run alembic upgrade head
+	poetry run uvicorn backend.webapi:app \
 		--reload \
 		--reload-dir ./backend
 

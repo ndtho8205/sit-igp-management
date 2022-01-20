@@ -3,8 +3,8 @@ from typing import List, Optional
 from abc import ABC, abstractmethod
 
 from backend.entities import Professor
+from backend.entities.types import ID
 from backend.usecases.inputs import ProfessorCreateInput, ProfessorUpdateInput
-from backend.usecases.validators import ID
 
 
 class ProfessorRepository(ABC):

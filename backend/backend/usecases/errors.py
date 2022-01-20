@@ -12,3 +12,7 @@ class NotFoundError(AppError):
 
 class ForbiddenError(AppError):
     pass
+
+
+class BadRequestError(AppError):
+    pass

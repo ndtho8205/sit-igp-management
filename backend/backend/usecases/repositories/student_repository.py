@@ -3,8 +3,8 @@ from typing import List, Optional
 from abc import ABC, abstractmethod
 
 from backend.entities import Student
+from backend.entities.types import ID
 from backend.usecases.inputs import StudentCreateInput, StudentUpdateInput
-from backend.usecases.validators import ID
 
 
 class StudentRepository(ABC):

@@ -2,7 +2,11 @@ from typing import Dict
 
 from fastapi import APIRouter
 
-from backend.drivers.webapi.routers import students_router, professors_router
+from backend.drivers.webapi.routers import (
+    students_router,
+    professors_router,
+    presentations_router,
+)
 
 
 router = APIRouter()
@@ -25,11 +29,11 @@ router.include_router(
     tags=["Students"],
 )
 
-# router.include_router(
-#    presentations_router,
-#    prefix="/presentations",
-#    tags=["Semester End Presentation Information"],
-# )
+router.include_router(
+    presentations_router,
+    prefix="/presentations",
+    tags=["Semester End Presentation Information"],
+)
 #
 # router.include_router(
 #    presentation_evaluations_router.router,
