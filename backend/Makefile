@@ -24,7 +24,7 @@ dev: ## Run development server
 		--detach \
 		--remove-orphans
 	poetry run alembic upgrade head
-	poetry run uvicorn backend.main:app \
+	poetry run uvicorn backend.webapi:app \
 		--reload \
 		--reload-dir ./backend
 
