@@ -16,59 +16,6 @@ function SupervisorEvaluationTable({ page }) {
 
   const inputColumns = [
     {
-      title: 'Student Name',
-      dataIndex: 'student_name',
-      key: 'student_name',
-      width: '250px',
-    },
-    {
-      title: 'Student ID',
-      dataIndex: 'student_id',
-      key: 'student_id',
-      align: 'center',
-      width: '110px',
-    },
-    {
-      title:
-        'Students can understand basic knowledge and skills for problem-finding and -solving in engineering.',
-      children: [
-        {
-          title: 'Daily Activities',
-          dataIndex: 'score_d1',
-          key: 'score_d1',
-          align: 'center',
-          width: '170px',
-        },
-        {
-          title: 'Presentation in Meeting',
-          dataIndex: 'score_p1',
-          key: 'score_p1',
-          align: 'center',
-          width: '170px',
-        },
-      ],
-    },
-    {
-      title:
-        'Students can work for a team organized by the laboratory members in solving social issues.',
-      children: [
-        {
-          title: 'Daily Activities',
-          dataIndex: 'score_d2',
-          key: 'score_d2',
-          align: 'center',
-          width: '170px',
-        },
-        {
-          title: 'Presentation in Meeting',
-          dataIndex: 'score_p2',
-          key: 'score_p2',
-          align: 'center',
-          width: '170px',
-        },
-      ],
-    },
-    {
       title: 'Input',
       key: 'action',
       align: 'center',
@@ -83,25 +30,72 @@ function SupervisorEvaluationTable({ page }) {
         );
       },
     },
+    {
+      title: 'Student Name',
+      dataIndex: 'student_name',
+      key: 'student_name',
+      width: '250px',
+    },
+    {
+      title: 'Student ID',
+      dataIndex: 'student_id',
+      key: 'student_id',
+      align: 'center',
+      width: '110px',
+    },
+    {
+      title: 'Academic Year',
+      dataIndex: 'student_year',
+      key: 'student_yea',
+      align: 'center',
+      width: '150px',
+    },
+    {
+      title: 'Thesis Program',
+      dataIndex: ['thesis_program','score_course'],
+      key: ['thesis_program','score_course'],
+      align: 'center',
+      render: (text) => {
+        return (
+          <>
+            {(text == -1) ? "--" : text}
+          </>
+        );
+      },
+    },
+    {
+      title: 'Lab Seminar',
+      dataIndex: ['lab_seminar','score_course'],
+      key: ['lab_seminar','score_course'],
+      align: 'center',
+      render: (text) => {
+        return (
+          <>
+            {(text == -1) ? "--" : text}
+          </>
+        );
+      },
+    },
   ];
 
   const testData = [
     {
       student_name: 'Tran Minh Chanh',
       student_id: 'NB20502',
+      student_year: 'Freshmen 2',
       thesis_program: {
-        score_d1: 0,
-        score_p1: 0,
-        score_d2: 0,
-        score_p2: 0,
-        score_course:0
+        score_d1: -1,
+        score_p1: -1,
+        score_d2: -1,
+        score_p2: -1,
+        score_course:-1
       },
       lab_seminar: {
-        score_d1: 0,
-        score_p1: 0,
-        score_d2: 0,
-        score_p2: 0,
-        score_course:0
+        score_d1: -1,
+        score_p1: -1,
+        score_d2: -1,
+        score_p2: -1,
+        score_course: -1
       },
       score_presentation: 84.40,
       school_year: 11
@@ -109,6 +103,7 @@ function SupervisorEvaluationTable({ page }) {
     {
       student_name: 'Nguyen Duc Tho',
       student_id: 'NB20501',
+      student_year: 'Sophomore 1',
       thesis_program: {
         score_d1: 60,
         score_p1: 60,

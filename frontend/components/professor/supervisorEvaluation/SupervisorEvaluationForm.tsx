@@ -23,12 +23,12 @@ type ProfessorCreateValues = {
   score_qa: number;
 };
 
-let formThesis : FormInstance<any>
-let formLabSeminar : FormInstance<any>
+// let formThesis : FormInstance<any>
+// let formLabSeminar : FormInstance<any>
 
 class ScoreInput extends React.Component<any, any> {
   hasLabRotation : boolean;
-  constructor(props: { scoreData: any , criteria: any , isThesis: boolean }) {
+  constructor(props: { scoreData: any , criteria: any , isThesis: boolean, form: FormInstance }) {
     super(props);
     this.state = {
       score_d1: props.scoreData[(props.isThesis)? 'thesis_program':'lab_seminar'].score_d1 as number,
@@ -53,12 +53,13 @@ class ScoreInput extends React.Component<any, any> {
       this.setState({
         score_course: score_course,
       });
-      if(this.props.isThesis) {
-        formThesis.setFieldsValue({score_course: score_course});
-      }
-      else{
-        formLabSeminar.setFieldsValue({score_course: score_course});
-      }
+      // if(this.props.isThesis) {
+      //   formThesis.setFieldsValue({score_course: score_course});
+      // }
+      // else{
+      //   formLabSeminar.setFieldsValue({score_course: score_course});
+      // }
+      this.props.form.setFieldsValue({score_course: score_course});
     }, 1000);
     return null;
   }
@@ -259,8 +260,8 @@ class ScoreInput extends React.Component<any, any> {
 const SupervisorEvaluationForm = ({ studentData }) => {
   const [isFormVisible, setFormVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  [formThesis] = Form.useForm();
-  [formLabSeminar] = Form.useForm()
+  const [formThesis] = Form.useForm();
+  const [formLabSeminar] = Form.useForm()
   const showForm = () => {
     setFormVisible(true);
   };
@@ -320,7 +321,8 @@ const SupervisorEvaluationForm = ({ studentData }) => {
   
   function generateForm(
     criteria: any,
-    isThesis: boolean
+    isThesis: boolean,
+    form: FormInstance
   ){
     return (
       <>
@@ -338,6 +340,7 @@ const SupervisorEvaluationForm = ({ studentData }) => {
             scoreData={studentData} 
             criteria={criteria}
             isThesis={isThesis}
+            form={form}
           />
         </Form>       
       </>
@@ -417,10 +420,10 @@ const SupervisorEvaluationForm = ({ studentData }) => {
         bodyStyle={{height: '70vh',overflowY: "scroll"}}
       >
         Thesis Program
-        {generateForm(generateCriteriaRows(Criteria[0].criteria.thesis),true)}
+        {generateForm(generateCriteriaRows(Criteria[0].criteria.thesis),true,formThesis)}
         <br/>
         Lab Seminar
-        {generateForm(generateCriteriaRows(Criteria[0].criteria.labSeminar),false)}
+        {generateForm(generateCriteriaRows(Criteria[0].criteria.labSeminar),false,formLabSeminar)}
       </Modal>
     </>
   );

@@ -16,6 +16,21 @@ function SemEndPresentationTable({ page }) {
 
   const inputColumns = [
     {
+      title: 'Input',
+      key: 'action',
+      align: 'center',
+      width: '90px',
+      render: (text, record) => {
+        return (
+          <>
+            <Space size="middle">
+              <SemEndPresentationForm studentData={record} />
+            </Space>
+          </>
+        );
+      },
+    },
+    {
       title: 'Student Name',
       dataIndex: 'student_name',
       key: 'student_name',
@@ -34,6 +49,13 @@ function SemEndPresentationTable({ page }) {
       key: 'score_research_goal',
       align: 'center',
       width: '170px',
+      render: (text) => {
+        return (
+          <>
+            {(text == 0) ? "--" : text}
+          </>
+        );
+      },
     },
     {
       title: 'Delivery',
@@ -41,6 +63,13 @@ function SemEndPresentationTable({ page }) {
       key: 'score_delivery',
       align: 'center',
       width: '120px',
+      render: (text) => {
+        return (
+          <>
+            {(text == 0) ? "--" : text}
+          </>
+        );
+      },
     },
     {
       title: 'Visual Aids',
@@ -48,6 +77,13 @@ function SemEndPresentationTable({ page }) {
       key: 'score_visual_aid',
       align: 'center',
       width: '120px',
+      render: (text) => {
+        return (
+          <>
+            {(text == 0) ? "--" : text}
+          </>
+        );
+      },
     },
     {
       title: 'Time',
@@ -55,6 +91,13 @@ function SemEndPresentationTable({ page }) {
       key: 'score_time',
       align: 'center',
       width: '110px',
+      render: (text) => {
+        return (
+          <>
+            {(text == 0) ? "--" : text}
+          </>
+        );
+      },
     },
     {
       title: 'Ability to answer Q&A',
@@ -62,6 +105,13 @@ function SemEndPresentationTable({ page }) {
       key: 'score_qa',
       align: 'center',
       width: '140px',
+      render: (text) => {
+        return (
+          <>
+            {(text == 0) ? "--" : text}
+          </>
+        );
+      },
     },
     {
       title: 'Comment',
@@ -73,21 +123,6 @@ function SemEndPresentationTable({ page }) {
       //     {text}
       //   </div>
       // ),
-    },
-    {
-      title: 'Input',
-      key: 'action',
-      align: 'center',
-      width: '90px',
-      render: (text, record) => {
-        return (
-          <>
-            <Space size="middle">
-              <SemEndPresentationForm studentData={record} />
-            </Space>
-          </>
-        );
-      },
     },
   ];
 
