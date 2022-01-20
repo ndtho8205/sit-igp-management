@@ -100,6 +100,8 @@ const SemEndPresentationForm = ({ studentData }) => {
       .validateFields()
       .then((values: ProfessorCreateValues) => {
         setIsLoading(true);
+        console.log(values);
+
         apiClient
           ?.post('/professors/', values)
           .then((res) => {

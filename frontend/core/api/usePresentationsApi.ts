@@ -1,5 +1,5 @@
 import moment from 'moment';
-import Presentation from '../types/presentation';
+import { Presentation, PresentationEvaluation } from '../types/presentation';
 import useAxios from './useAxios';
 
 const usePresentationsApi = () => {
@@ -30,6 +30,13 @@ const usePresentationsApi = () => {
 
     deletePresentation: async (id: string) => {
       await remove<Presentation>(`/presentations/${id}`);
+    },
+
+    createPresentationEvaluation: async (
+      id: string,
+      obj: PresentationEvaluation
+    ) => {
+      await post<PresentationEvaluation>(`/presentations/${id}`, obj);
     },
   };
 };

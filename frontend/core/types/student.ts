@@ -1,18 +1,19 @@
 import Gender from './gender';
+import { ProfessorBasics } from './professor';
 
 type Student = {
   id_: string;
+
   full_name: string;
-  email: string;
-  gender: Gender;
-  area_of_study: string;
   admission_date: string;
 
-  supervisor_id: string;
-  advisor1_id: string;
-  advisor2_id: string;
+  email?: string;
+  gender?: Gender;
+  area_of_study?: string;
 
-  is_deleted: boolean;
+  supervisor?: ProfessorBasics;
+  advisor1?: ProfessorBasics;
+  advisor2?: ProfessorBasics;
 };
 
 export default Student;

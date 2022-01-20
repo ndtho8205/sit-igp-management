@@ -1,17 +1,14 @@
 import { useAuth0 } from '@auth0/auth0-react';
-import { Image, notification, Space } from 'antd';
+import { Button, Image, Space } from 'antd';
+import { notify } from '../../core/utils';
 import LoginButton from './LoginButton';
-import LogoutButton from './LogoutButton';
 
 const Profile = () => {
-  const { user, isAuthenticated, error } = useAuth0();
+  const { user, isAuthenticated, error, logout } = useAuth0();
+  console.log(user, isAuthenticated);
 
   if (error) {
-    notification['error']({
-      key: 'Profile',
-      message: 'Oops...',
-      description: error.message,
-    });
+    notify('error', error);
   }
 
   if (isAuthenticated && user) {
@@ -25,12 +22,12 @@ const Profile = () => {
           style={{ borderRadius: '100%' }}
         />
         {user.name}
-        <LogoutButton />
+        <Button onClick={() => logout({ returnTo: window.location.origin })} />
       </Space>
     );
+  } else {
+    return <LoginButton />;
   }
-
-  return <LoginButton />;
 };
 
 export default Profile;

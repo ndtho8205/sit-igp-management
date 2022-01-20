@@ -1,6 +1,7 @@
 import { Auth0Provider } from '@auth0/auth0-react';
 import { NextPage } from 'next';
 import type { AppProps } from 'next/app';
+import Router from 'next/router';
 import { ReactElement, ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import config from '../core/config';
@@ -16,6 +17,10 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
+const onRedirectCallback = (appState) => {
+  Router.replace(appState?.returnTo || '/');
+};
+
 function App({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page: ReactElement) => page);
 
@@ -26,7 +31,7 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
         clientId={config.authClientId}
         redirectUri={config.authRedirectUri}
         audience={config.authApiAudience}
-        scope="read:current_user read:profile"
+        scope="openid profile email"
       >
         <div id="app">{getLayout(<Component {...pageProps} />)}</div>
       </Auth0Provider>
