@@ -6,7 +6,7 @@ import SemesterEndEvaluationSummary from '../../../core/types/semesterEndEvaluat
 import { notify } from '../../../core/utils';
 import LabRotationInputForm from './LabRotationInputForm';
 
-function ProfessorsTable() {
+const LabRotationTable = () => {
   const { getSummary } = useSemesterEndEvaluationApi();
   const summaryQuery = useQuery<SemesterEndEvaluationSummary[], Error>(
     'getSummary',
@@ -51,6 +51,6 @@ function ProfessorsTable() {
       sticky
     ></Table>
   );
-}
+};
 
-export default ProfessorsTable;
+export default LabRotationTable;

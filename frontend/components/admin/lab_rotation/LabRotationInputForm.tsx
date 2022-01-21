@@ -14,8 +14,6 @@ const LabRotationInputForm = ({ summary }: Props) => {
   const { createLabRotationEvaluation, updateLabRotationEvaluation } =
     useSemesterEndEvaluationApi();
 
-  console.log(summary);
-
   const handleOnOk = async (obj: { course_score: number }) => {
     if (summary.lab_rotation === null) {
       return await createLabRotationEvaluation(summary.presentation.id_, obj);

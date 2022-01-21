@@ -8,7 +8,7 @@ import { notify } from '../../../core/utils';
 import DeletePopconfirm from '../../common/DeletePopconfirm';
 import StudentEditForm from './StudentEditForm';
 
-function StudentsTable() {
+const StudentsTable = () => {
   const queryClient = useQueryClient();
   const { findAllStudents, deleteStudent } = useStudentsApi();
   const { isLoading, data, error } = useQuery(
@@ -80,6 +80,6 @@ function StudentsTable() {
       sticky
     ></Table>
   );
-}
+};
 
 export default StudentsTable;

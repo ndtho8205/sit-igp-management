@@ -15,8 +15,10 @@ const usePresentationsApi = () => {
       return response.data;
     },
 
-    findAllPresentations: async () => {
-      const response = await get<Presentation[]>(`${endpoint}/`);
+    findAllPresentations: async (reviewer_id = '') => {
+      const response = await get<Presentation[]>(
+        `${endpoint}/?reviewer_id=${reviewer_id}`
+      );
       return response.data;
     },
 
@@ -35,12 +37,14 @@ const usePresentationsApi = () => {
     },
 
     createPresentationEvaluation: async (
-      id: string,
-      presentation_id: string,
-      reviewer_id: string,
+      presentationId: string,
+      reviewerId: string,
       obj: PresentationEvaluation
     ) => {
-      await post<PresentationEvaluation>(`${endpoint}/${id}`, obj);
+      await post<PresentationEvaluation>(
+        `${endpoint}/${presentationId}/evaluations/`,
+        obj
+      );
     },
   };
 };
