@@ -1,31 +1,37 @@
-import { EditOutlined } from "@ant-design/icons";
-import { useQueryClient } from "react-query";
-import useSemesterEndEvaluationApi from "../../../core/api/useSemesterEndEvaluationApi";
-import { Criteria } from "../../../core/data/supervisorEvaluationCriteria";
-import SchoolYear from "../../../core/types/schoolYear";
-import SemesterEndEvaluationSummary from "../../../core/types/semesterEndEvaluationSummary";
-import Cell from "../../../core/types/supervisorEvaluation";
-import ThesisProgramEvaluation from "../../../core/types/thesisProgramEvaluation";
-import { getSchoolYear } from "../../../core/utils";
-import ModalForm from "../../common/ModalForm";
-import SupervisorEvaluationInput from "./SupervisorEvaluationInput";
+import { EditOutlined } from '@ant-design/icons';
+import { useQueryClient } from 'react-query';
+import useSemesterEndEvaluationApi from '../../../core/api/useSemesterEndEvaluationApi';
+import { Criteria } from '../../../core/data/supervisorEvaluationCriteria';
+import SchoolYear from '../../../core/types/schoolYear';
+import SemesterEndEvaluationSummary from '../../../core/types/semesterEndEvaluationSummary';
+import Cell from '../../../core/types/supervisorEvaluation';
+import ThesisProgramEvaluation from '../../../core/types/thesisProgramEvaluation';
+import { getSchoolYear } from '../../../core/utils';
+import ModalForm from '../../common/ModalForm';
+import SupervisorEvaluationInput from './SupervisorEvaluationInput';
 
 type SupervisorEvaluation = {
-    record: SemesterEndEvaluationSummary,
-    score_presentation: number
-}
+  record: SemesterEndEvaluationSummary;
+  score_presentation: number;
+};
 
-const ThesisProgramForm = ({ record, score_presentation }: SupervisorEvaluation) => {
+const ThesisProgramForm = ({
+  record,
+  score_presentation,
+}: SupervisorEvaluation) => {
   const queryClient = useQueryClient();
-  const { createThesisProgramEvaluation,
-          updateThesisProgramEvaluation } = useSemesterEndEvaluationApi();
+  const { createThesisProgramEvaluation, updateThesisProgramEvaluation } =
+    useSemesterEndEvaluationApi();
 
-  const schoolYear = getSchoolYear(record.presentation.student.admission_date,
-                                   record.presentation.presentation_date);
+  const schoolYear = getSchoolYear(
+    record.presentation.student.admission_date,
+    record.presentation.presentation_date
+  );
 
   const schoolYearTexts = SchoolYear[schoolYear].split('_');
+  console.log(schoolYear);
 
-  function calculateCourseScore(obj: ThesisProgramEvaluation) : number {
+  function calculateCourseScore(obj: ThesisProgramEvaluation): number {
     const originalCourseScore =
       obj.score_daily_activities_1 * 0.35 +
       obj.score_daily_activities_2 * 0.35 +
@@ -35,13 +41,13 @@ const ThesisProgramForm = ({ record, score_presentation }: SupervisorEvaluation)
     if (Criteria[SchoolYear[schoolYear]].hasLabRotation) {
       return (
         Math.round(
-          ( originalCourseScore * (5 / 6) + 
-            record.lab_rotation.course_score * (1 / 6)
-          ) * 100
+          (originalCourseScore * (5 / 6) +
+            record.lab_rotation.course_score * (1 / 6)) *
+            100
         ) / 100
       );
     }
-    return Math.round(originalCourseScore * 100)/100;
+    return Math.round(originalCourseScore * 100) / 100;
   }
 
   function generateCriteriaRows(criteria: any[]) {
@@ -90,10 +96,9 @@ const ThesisProgramForm = ({ record, score_presentation }: SupervisorEvaluation)
 
   const handleOnOk = async (obj: ThesisProgramEvaluation) => {
     obj.course_score = calculateCourseScore(obj);
-    if (record.thesis_program){
+    if (record.thesis_program) {
       return await updateThesisProgramEvaluation(record.presentation.id_, obj);
-    }
-    else {
+    } else {
       return await createThesisProgramEvaluation(record.presentation.id_, obj);
     }
   };
@@ -104,8 +109,12 @@ const ThesisProgramForm = ({ record, score_presentation }: SupervisorEvaluation)
 
   return (
     <ModalForm
-      title={record.presentation.student.full_name + ' - ' + 
-              record.presentation.student.email.split('@')[0].toUpperCase()}
+      buttonType="primary"
+      title={
+        record.presentation.student.full_name +
+        ' - ' +
+        record.presentation.student.email?.split('@')[0].toUpperCase()
+      }
       okText="Input"
       buttonIcon={<EditOutlined />}
       onOk={handleOnOk}
@@ -113,13 +122,13 @@ const ThesisProgramForm = ({ record, score_presentation }: SupervisorEvaluation)
       width={'65%'}
       // initialValues={professor}
     >
-      {schoolYearTexts[0] + " Thesis Program " +schoolYearTexts[1]}
+      {schoolYearTexts[0] + ' Thesis Program ' + schoolYearTexts[1]}
       <SupervisorEvaluationInput
-            record={record}
-            criteria={generateCriteriaRows(Criteria[SchoolYear[schoolYear]].thesis)}
-            score_presentation={score_presentation}
-            typeOfTable={'thesis_program'}
-          />
+        record={record}
+        criteria={generateCriteriaRows(Criteria[SchoolYear[schoolYear]].thesis)}
+        score_presentation={score_presentation}
+        typeOfTable={'thesis_program'}
+      />
     </ModalForm>
   );
 };

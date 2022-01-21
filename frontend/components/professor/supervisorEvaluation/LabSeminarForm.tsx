@@ -1,31 +1,36 @@
-import { EditOutlined } from "@ant-design/icons";
-import { useQueryClient } from "react-query";
-import useSemesterEndEvaluationApi from "../../../core/api/useSemesterEndEvaluationApi";
-import { Criteria } from "../../../core/data/supervisorEvaluationCriteria";
-import SchoolYear from "../../../core/types/schoolYear";
-import SemesterEndEvaluationSummary from "../../../core/types/semesterEndEvaluationSummary";
-import Cell from "../../../core/types/supervisorEvaluation";
-import LabSeminarEvaluation from "../../../core/types/labSeminarEvaluation";
-import { getSchoolYear } from "../../../core/utils";
-import ModalForm from "../../common/ModalForm";
-import SupervisorEvaluationInput from "./SupervisorEvaluationInput";
+import { EditOutlined } from '@ant-design/icons';
+import { useQueryClient } from 'react-query';
+import useSemesterEndEvaluationApi from '../../../core/api/useSemesterEndEvaluationApi';
+import { Criteria } from '../../../core/data/supervisorEvaluationCriteria';
+import LabSeminarEvaluation from '../../../core/types/labSeminarEvaluation';
+import SchoolYear from '../../../core/types/schoolYear';
+import SemesterEndEvaluationSummary from '../../../core/types/semesterEndEvaluationSummary';
+import Cell from '../../../core/types/supervisorEvaluation';
+import { getSchoolYear } from '../../../core/utils';
+import ModalForm from '../../common/ModalForm';
+import SupervisorEvaluationInput from './SupervisorEvaluationInput';
 
 type SupervisorEvaluation = {
-    record: SemesterEndEvaluationSummary,
-    score_presentation: number
-}
+  record: SemesterEndEvaluationSummary;
+  score_presentation: number;
+};
 
-const LabSeminarForm = ({ record, score_presentation }: SupervisorEvaluation) => {
+const LabSeminarForm = ({
+  record,
+  score_presentation,
+}: SupervisorEvaluation) => {
   const queryClient = useQueryClient();
-  const { createLabSeminarEvaluation,
-          updateLabSeminarEvaluation } = useSemesterEndEvaluationApi();
+  const { createLabSeminarEvaluation, updateLabSeminarEvaluation } =
+    useSemesterEndEvaluationApi();
 
-  const schoolYear = getSchoolYear(record.presentation.student.admission_date,
-            record.presentation.presentation_date);
+  const schoolYear = getSchoolYear(
+    record.presentation.student.admission_date,
+    record.presentation.presentation_date
+  );
 
   const schoolYearTexts = SchoolYear[schoolYear].split('_');
 
-  function calculateCourseScore(obj: LabSeminarEvaluation) : number {
+  function calculateCourseScore(obj: LabSeminarEvaluation): number {
     const originalCourseScore =
       obj.score_daily_activities_1 * 0.35 +
       obj.score_daily_activities_2 * 0.15 +
@@ -35,13 +40,12 @@ const LabSeminarForm = ({ record, score_presentation }: SupervisorEvaluation) =>
     if (Criteria[SchoolYear[schoolYear]].hasLabRotation) {
       return (
         Math.round(
-          ( originalCourseScore * 0.5 + 
-            record.lab_rotation.course_score * 0.5
-          ) * 100
+          (originalCourseScore * 0.5 + record.lab_rotation.course_score * 0.5) *
+            100
         ) / 100
       );
     }
-    return Math.round(originalCourseScore * 100)/100;
+    return Math.round(originalCourseScore * 100) / 100;
   }
 
   function generateCriteriaRows(criteria: any[]) {
@@ -90,10 +94,9 @@ const LabSeminarForm = ({ record, score_presentation }: SupervisorEvaluation) =>
 
   const handleOnOk = async (obj: LabSeminarEvaluation) => {
     obj.course_score = calculateCourseScore(obj);
-    if (record.lab_seminar){
+    if (record.lab_seminar) {
       return await updateLabSeminarEvaluation(record.presentation.id_, obj);
-    }
-    else {
+    } else {
       return await createLabSeminarEvaluation(record.presentation.id_, obj);
     }
   };
@@ -102,21 +105,31 @@ const LabSeminarForm = ({ record, score_presentation }: SupervisorEvaluation) =>
     queryClient.invalidateQueries('getSummary');
   };
 
+  console.log(record.presentation.student);
+
+  const modalFormTitle =
+    record.presentation.student.full_name +
+    (record.presentation.student.email
+      ? ` - ${record.presentation.student.email.split('@')[0].toUpperCase()}`
+      : '');
+
   return (
     <ModalForm
-      title={record.presentation.student.full_name + ' - ' + 
-              record.presentation.student.email.split('@')[0].toUpperCase()}
+      title={modalFormTitle}
       okText="Input"
       buttonIcon={<EditOutlined />}
       onOk={handleOnOk}
       onSuccess={handleOnSuccess}
+      buttonType="primary"
       width={'65%'}
       // initialValues={professor}
     >
-      {schoolYearTexts[0] + " Lab Seminar " +schoolYearTexts[1]}
+      {schoolYearTexts[0] + ' Lab Seminar ' + schoolYearTexts[1]}
       <SupervisorEvaluationInput
         record={record}
-        criteria={generateCriteriaRows(Criteria[SchoolYear[schoolYear]].labSeminar)}
+        criteria={generateCriteriaRows(
+          Criteria[SchoolYear[schoolYear]].labSeminar
+        )}
         score_presentation={score_presentation}
         typeOfTable={'lab_seminar'}
       />

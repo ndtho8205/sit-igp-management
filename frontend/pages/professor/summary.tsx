@@ -3,12 +3,7 @@ import SummaryTable from '../../components/professor/summary/SummaryTable';
 import ProfessorPagesLayout from '../../layouts/ProfessorPagesLayout';
 
 const SummaryPage = () => {
-  return (
-    <div>
-      <h1>Summary</h1>
-      <SummaryTable />
-    </div>
-  );
+  return <SummaryTable />;
 };
 
 SummaryPage.getLayout = function getLayout(page: ReactElement) {
