@@ -17,6 +17,8 @@ RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-
 COPY poetry.lock pyproject.toml /app/
 RUN poetry install --no-dev
 
+COPY ./alembic.ini /app/alembic.ini
 COPY ./backend/ /app/backend/
+COPY ./migrations/ /app/migrations/
 
-CMD poetry run uvicorn --host=0.0.0.0 backend.main:app
+CMD poetry run alembic upgrade head && poetry run uvicorn --host=0.0.0.0 backend.webapi:app 
