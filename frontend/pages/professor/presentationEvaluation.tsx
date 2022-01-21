@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
-import PresentationEvaluationsTable from '../../../components/professor/presentationEvaluation/PresentationEvaluationsTable';
-import SemEndPresentationRubric from '../../../components/professor/presentationEvaluation/SemEndPresentationRubric';
-import ProfessorPagesLayout from '../../../layouts/ProfessorPagesLayout';
+import PresentationEvaluationsTable from '../../components/professor/presentationEvaluation/PresentationEvaluationsTable';
+import SemEndPresentationRubric from '../../components/professor/presentationEvaluation/SemEndPresentationRubric';
+import ProfessorPagesLayout from '../../layouts/ProfessorPagesLayout';
 
 const SemEndPresentationInputScorePage = () => {
   return (

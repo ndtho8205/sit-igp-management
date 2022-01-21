@@ -18,23 +18,16 @@ const ProfessorMainNav = () => {
       href: '/professor/presentationEvaluation',
       label: 'Semester End Presentation',
       icon: <DesktopOutlined />,
-      subItems: [
-        {
-          href: '/professor/presentationEvaluation/inputScore',
-          label: 'Input Score',
-          icon: <EditOutlined />,
-        },
-        {
-          href: '/professor/presentationEvaluation/summary',
-          label: 'View Score',
-          icon: <ProfileOutlined />,
-        },
-      ],
     },
     {
       href: '/professor/supervisorEvaluation',
       label: 'Supervisor Evaluation',
       icon: <FundViewOutlined />,
+    },
+    {
+      href: '/professor/summary',
+      label: 'Summary',
+      icon: <ProfileOutlined />,
     },
     // {
     //   href: '/professor/labrotation',
