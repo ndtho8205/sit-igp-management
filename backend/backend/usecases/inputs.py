@@ -6,6 +6,7 @@ from pydantic import BaseModel
 
 from backend.entities.types import (
     ID,
+    Score,
     Gender,
     LongStr,
     FullName,
@@ -101,3 +102,53 @@ class PresentationEvaluationUpdateInput(BaseModel):
     score_qa: Optional[RatingScore]
 
     comment: Optional[LongStr]
+
+
+class ThesisProgramEvaluationCreateInput(BaseModel):
+    presentation_id: ID
+
+    score_daily_activities_1: Score
+    score_daily_activities_2: Score
+    score_meeting_presentation_1: Score
+    score_meeting_presentation_2: Score
+
+    course_score: Score
+
+
+class ThesisProgramEvaluationUpdateInput(BaseModel):
+    score_daily_activities_1: Optional[Score]
+    score_daily_activities_2: Optional[Score]
+    score_meeting_presentation_1: Optional[Score]
+    score_meeting_presentation_2: Optional[Score]
+
+    course_score: Score
+
+
+class LabSeminarEvaluationCreateInput(BaseModel):
+    presentation_id: ID
+
+    score_daily_activities_1: Score
+    score_daily_activities_2: Score
+    score_meeting_presentation_1: Score
+    score_meeting_presentation_2: Score
+
+    course_score: Score
+
+
+class LabSeminarEvaluationUpdateInput(BaseModel):
+    score_daily_activities_1: Optional[Score]
+    score_daily_activities_2: Optional[Score]
+    score_meeting_presentation_1: Optional[Score]
+    score_meeting_presentation_2: Optional[Score]
+
+    course_score: Score
+
+
+class LabRotationEvaluationCreateInput(BaseModel):
+    presentation_id: ID
+
+    course_score: Score
+
+
+class LabRotationEvaluationUpdateInput(BaseModel):
+    course_score: Score

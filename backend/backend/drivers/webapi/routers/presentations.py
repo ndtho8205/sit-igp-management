@@ -5,13 +5,6 @@ from sqlalchemy.orm import Session
 from fastapi import Depends, APIRouter
 
 from backend.entities import Professor, Presentation, PresentationEvaluation
-from backend.usecases import (
-    delete_presentation,
-    list_all_presentations,
-    create_new_presentation,
-    update_presentation_info,
-    create_new_presentation_evaluation,
-)
 from backend.adapters.pg import (
     student_repository,
     professor_repository,
@@ -23,12 +16,23 @@ from backend.usecases.inputs import (
     PresentationCreateInput,
     PresentationUpdateInput,
     PresentationEvaluationCreateInput,
+    PresentationEvaluationUpdateInput,
+)
+from backend.usecases.presentations import (
+    delete_presentation,
+    list_all_presentations,
+    create_new_presentation,
+    update_presentation_info,
 )
 from backend.adapters.webapi.responses import (
     PresentationResponse,
     PresentationEvaluationResponse,
 )
 from backend.drivers.webapi.dependencies import get_db, authenticate_user
+from backend.usecases.presentation_evaluations import (
+    update_presentation_evaluation,
+    create_new_presentation_evaluation,
+)
 
 
 router = APIRouter()
@@ -40,15 +44,13 @@ def create_presentation(
     db_session: Session = Depends(get_db),
     current_user: Professor = Depends(authenticate_user),
 ) -> Presentation:
-    presentation_repository.set_session(db_session)
-    professor_repository.set_session(db_session)
-    student_repository.set_session(db_session)
     presentation = create_new_presentation(
+        inp,
         current_user,
         student_repository,
         professor_repository,
         presentation_repository,
-        inp,
+        db_session,
     )
 
     return presentation
@@ -60,11 +62,11 @@ def find_all_presentations(
     db_session: Session = Depends(get_db),
     current_user: Professor = Depends(authenticate_user),
 ) -> List[Presentation]:
-    presentation_repository.set_session(db_session)
     presentations = list_all_presentations(
+        reviewer_id,
         current_user,
         presentation_repository,
-        reviewer_id,
+        db_session,
     )
     return presentations
 
@@ -76,14 +78,13 @@ def update_presentation_by_id(
     db_session: Session = Depends(get_db),
     current_user: Professor = Depends(authenticate_user),
 ) -> Presentation:
-    presentation_repository.set_session(db_session)
-    professor_repository.set_session(db_session)
     presentation = update_presentation_info(
+        presentation_id,
+        inp,
         current_user,
         professor_repository,
         presentation_repository,
-        presentation_id,
-        inp,
+        db_session,
     )
 
     return presentation
@@ -95,8 +96,12 @@ def delete(
     db_session: Session = Depends(get_db),
     current_user: Professor = Depends(authenticate_user),
 ) -> None:
-    presentation_repository.set_session(db_session)
-    delete_presentation(current_user, presentation_repository, presentation_id)
+    delete_presentation(
+        presentation_id,
+        current_user,
+        presentation_repository,
+        db_session,
+    )
 
 
 @router.post(
@@ -109,16 +114,36 @@ def evaluate_presentation(
     db_session: Session = Depends(get_db),
     current_user: Professor = Depends(authenticate_user),
 ) -> PresentationEvaluation:
-    presentation_repository.set_session(db_session)
-    presentation_evaluation_repository.set_session(db_session)
-    presentation_repository.set_session(db_session)
-
     evaluation = create_new_presentation_evaluation(
+        inp,
         current_user,
         presentation_repository,
         presentation_evaluation_repository,
-        inp,
+        db_session,
     )
-    print(evaluation)
+
+    return evaluation
+
+
+@router.put(
+    "/{presentation_id}/evaluations/{reviewer_id}",
+    response_model=PresentationEvaluationResponse,
+)
+def update_evaluation(
+    presentation_id: ID,
+    reviewer_id: ID,
+    inp: PresentationEvaluationUpdateInput,
+    db_session: Session = Depends(get_db),
+    current_user: Professor = Depends(authenticate_user),
+) -> PresentationEvaluation:
+    evaluation = update_presentation_evaluation(
+        presentation_id,
+        reviewer_id,
+        inp,
+        current_user,
+        presentation_repository,
+        presentation_evaluation_repository,
+        db_session,
+    )
 
     return evaluation

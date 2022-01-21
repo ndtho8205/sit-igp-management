@@ -5,15 +5,15 @@ from sqlalchemy.orm import Session
 from fastapi import Depends, APIRouter
 
 from backend.entities import Professor
-from backend.usecases import (
+from backend.adapters.pg import professor_repository
+from backend.entities.types import ID
+from backend.usecases.inputs import ProfessorCreateInput, ProfessorUpdateInput
+from backend.usecases.professors import (
     list_all_professors,
     update_professor_info,
     delete_professor_record,
     create_new_professor_record,
 )
-from backend.adapters.pg import professor_repository
-from backend.entities.types import ID
-from backend.usecases.inputs import ProfessorCreateInput, ProfessorUpdateInput
 from backend.adapters.webapi.responses import ProfessorResponse
 from backend.drivers.webapi.dependencies import get_db, authenticate_user
 
@@ -26,9 +26,13 @@ def create_professor(
     inp: ProfessorCreateInput,
     db_session: Session = Depends(get_db),
     current_user: Professor = Depends(authenticate_user),
-) -> ProfessorResponse:
-    professor_repository.set_session(db_session)
-    professor = create_new_professor_record(current_user, professor_repository, inp)
+) -> Professor:
+    professor = create_new_professor_record(
+        inp,
+        current_user,
+        professor_repository,
+        db_session,
+    )
 
     return professor
 
@@ -37,9 +41,8 @@ def create_professor(
 def find_all_professors(
     db_session: Session = Depends(get_db),
     current_user: Professor = Depends(authenticate_user),
-) -> List[ProfessorResponse]:
-    professor_repository.set_session(db_session)
-    professors = list_all_professors(current_user, professor_repository)
+) -> List[Professor]:
+    professors = list_all_professors(current_user, professor_repository, db_session)
 
     return professors
 
@@ -50,13 +53,13 @@ def update_professor_by_id(
     inp: ProfessorUpdateInput,
     db_session: Session = Depends(get_db),
     current_user: Professor = Depends(authenticate_user),
-) -> ProfessorResponse:
-    professor_repository.set_session(db_session)
+) -> Professor:
     db_professor = update_professor_info(
-        current_user,
-        professor_repository,
         professor_id,
         inp,
+        current_user,
+        professor_repository,
+        db_session,
     )
 
     return db_professor
@@ -68,9 +71,9 @@ def delete(
     db_session: Session = Depends(get_db),
     current_user: Professor = Depends(authenticate_user),
 ) -> None:
-    professor_repository.set_session(db_session)
     delete_professor_record(
+        professor_id,
         current_user,
         professor_repository,
-        professor_id,
+        db_session,
     )

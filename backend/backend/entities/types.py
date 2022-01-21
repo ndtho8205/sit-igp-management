@@ -28,18 +28,16 @@ class UniversityEmailStr(EmailStr):
     @classmethod
     def validate(cls, value: str) -> str:
         email = validate_email(value)[1]
-        validate_university_email(email)
+        # validate_university_email(email)
         return email
 
 
 class RatingScore(ConstrainedInt):
-    strict = True
     ge = 1
     le = 5
 
 
 class Score(ConstrainedFloat):
-    strict = True
     ge = 0.0
     le = 100.0
 

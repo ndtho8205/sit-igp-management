@@ -2,37 +2,40 @@ from typing import Optional
 
 from pydantic import BaseModel
 
-from backend.entities.types import StudentYear
+from backend.entities.types import ID, StudentYear
 
 
-class SupervisorScore(BaseModel):
-    daily_activities_1: float
-    daily_activities_2: float
-    meeting_presentation_1: float
-    meeting_presentation_2: float
-
-
-class LabRotation(BaseModel):
+class LabRotationEvaluation(BaseModel):
+    presentation_id: ID
     course_score: float
 
+    class Config:
+        orm_mode = True
 
-class ThesisProgram(BaseModel):
-    supervisor_evaluation: Optional[SupervisorScore]
 
-    def course_score(
+class ThesisProgramEvaluation(BaseModel):
+    presentation_id: ID
+
+    score_daily_activities_1: float
+    score_daily_activities_2: float
+    score_meeting_presentation_1: float
+    score_meeting_presentation_2: float
+    course_score: float
+
+    class Config:
+        orm_mode = True
+
+    def compute_course_score(
         self,
         student_year: StudentYear,
         semester_end_presentation_average_score: float,
         lab_rotation_score: Optional[float],
     ) -> Optional[float]:
-        if self.supervisor_evaluation is None:
-            return None
-
         tmp_score = (
-            self.supervisor_evaluation.daily_activities_1 * 0.35
-            + self.supervisor_evaluation.daily_activities_2 * 0.35
-            + self.supervisor_evaluation.meeting_presentation_1 * 0.1
-            + self.supervisor_evaluation.meeting_presentation_2 * 0.1
+            self.score_daily_activities_1 * 0.35
+            + self.score_daily_activities_2 * 0.35
+            + self.score_meeting_presentation_1 * 0.1
+            + self.score_meeting_presentation_2 * 0.1
             + semester_end_presentation_average_score * 0.1
         )
 
@@ -47,23 +50,29 @@ class ThesisProgram(BaseModel):
         raise NotImplementedError()
 
 
-class LabSeminar(BaseModel):
-    supervisor_evaluation: Optional[SupervisorScore]
+class LabSeminarEvaluation(BaseModel):
+    presentation_id: ID
 
-    def course_score(
+    score_daily_activities_1: float
+    score_daily_activities_2: float
+    score_meeting_presentation_1: float
+    score_meeting_presentation_2: float
+    course_score: float
+
+    class Config:
+        orm_mode = True
+
+    def compute_course_score(
         self,
         student_year: StudentYear,
         semester_end_presentation_average_score: float,
         lab_rotation_score: Optional[float],
     ) -> Optional[float]:
-        if self.supervisor_evaluation is None:
-            return None
-
         tmp_score = (
-            self.supervisor_evaluation.daily_activities_1 * 0.35
-            + self.supervisor_evaluation.daily_activities_2 * 0.15
-            + self.supervisor_evaluation.meeting_presentation_1 * 0.3
-            + self.supervisor_evaluation.meeting_presentation_2 * 0.1
+            self.score_daily_activities_1 * 0.35
+            + self.score_daily_activities_2 * 0.15
+            + self.score_meeting_presentation_1 * 0.3
+            + self.score_meeting_presentation_2 * 0.1
             + semester_end_presentation_average_score * 0.1
         )
 

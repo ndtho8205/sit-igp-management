@@ -8,10 +8,10 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi.exceptions import HTTPException
 
 from backend.configs import app_config
-from backend.usecases import verify_professor_email
 from backend.adapters.pg import professor_repository
 from backend.drivers.pg.session import DbSession
 from backend.entities.professor import Professor
+from backend.usecases.professors import verify_professor_email
 
 
 def get_db() -> Iterator[Session]:
@@ -20,7 +20,6 @@ def get_db() -> Iterator[Session]:
         yield db_session
     finally:
         db_session.close()
-        print("DbSession was closed!")
 
 
 auth_scheme = HTTPBearer()
@@ -33,7 +32,6 @@ def verify_token(credentials: HTTPAuthorizationCredentials = Depends(auth_scheme
     try:
         signing_key = jwks_client.get_signing_key_from_jwt(credentials.credentials).key
     except Exception as ex:
-        print(str(ex))
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="invalid credentials"
         ) from ex
@@ -58,8 +56,7 @@ def authenticate_user(
     db_session: Session = Depends(get_db),
     user_email: str = Depends(verify_token),
 ) -> Professor:
-    professor_repository.set_session(db_session)
-    user = verify_professor_email(professor_repository, user_email)
+    user = verify_professor_email(user_email, professor_repository, db_session)
 
     if not user or user.is_deleted:
         raise HTTPException(

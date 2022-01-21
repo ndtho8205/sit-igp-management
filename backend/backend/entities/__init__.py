@@ -1,12 +1,11 @@
 from backend.entities.student import Student
 from backend.entities.professor import Professor
-
-# from backend.entities.evaluations.courses import (
-#     LabSeminar,
-#     LabRotation,
-#     ThesisProgram,
-#     SupervisorScore,
-# )
+from backend.entities.evaluations.courses import (
+    LabSeminarEvaluation,
+    LabRotationEvaluation,
+    ThesisProgramEvaluation,
+)
+from backend.entities.semester_end_evaluation import SemesterEndEvaluation
 from backend.entities.evaluations.presentation import (
     Presentation,
     PresentationEvaluation,
@@ -20,8 +19,8 @@ __all__ = [
     "Presentation",
     "PresentationEvaluation",
     "compute_presentation_question_score",
-    # "LabSeminar",
-    # "LabRotation",
-    # "ThesisProgram",
-    # "SupervisorScore",
+    "LabSeminarEvaluation",
+    "LabRotationEvaluation",
+    "ThesisProgramEvaluation",
+    "SemesterEndEvaluation",
 ]

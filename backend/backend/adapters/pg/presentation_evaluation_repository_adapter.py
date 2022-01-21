@@ -3,8 +3,6 @@ from typing import List, Optional
 import sqlalchemy as sa
 from sqlalchemy.orm.session import Session
 
-from fastapi.encoders import jsonable_encoder
-
 from backend.entities import PresentationEvaluation
 from backend.entities.types import ID
 from backend.usecases.inputs import (
@@ -18,42 +16,35 @@ from backend.adapters.pg.schemas.presentation_evaluation import (
 )
 
 
-class PresentationEvaluationRepositoryAdapter(PresentationEvaluationRepository):
-    db_session: Session
-
-    def set_session(self, db_session: Session) -> None:
-        self.db_session = db_session
-
-    def __init__(self) -> None:
-        self.repository = BaseRepository[
-            PresentationEvaluationSchema,
-            PresentationEvaluationCreateInput,
-            PresentationEvaluationUpdateInput,
-        ](PresentationEvaluationSchema)
-
+class PresentationEvaluationRepositoryAdapter(
+    PresentationEvaluationRepository,
+    BaseRepository[
+        PresentationEvaluationSchema,
+        PresentationEvaluationCreateInput,
+        PresentationEvaluationUpdateInput,
+    ],
+):
     def create(
         self,
+        db_session: Session,
+        presentation_id: ID,
+        reviewer_id: ID,
         inp: PresentationEvaluationCreateInput,
-        question_score: float,
     ) -> PresentationEvaluation:
-        db_evaluation: PresentationEvaluationSchema = PresentationEvaluationSchema(
-            **jsonable_encoder(inp),
-            question_score=question_score,
-        )
-        self.db_session.add(db_evaluation)
-        self.db_session.commit()
-        self.db_session.refresh(db_evaluation)
+        db_evaluation = self._create(db_session, inp)
         return self.schema_to_entity(db_evaluation)
 
-    def update_by_presentation_and_reviewer_id(
+    def update(
         self,
+        db_session: Session,
         presentation_id: ID,
         reviewer_id: ID,
         inp: PresentationEvaluationUpdateInput,
-        question_score: float,
     ) -> Optional[PresentationEvaluation]:
         db_evaluation = self.find_one_by_presentation_and_reviewer_id(
-            presentation_id, reviewer_id
+            db_session,
+            presentation_id,
+            reviewer_id,
         )
         if db_evaluation is None:
             return None
@@ -61,30 +52,30 @@ class PresentationEvaluationRepositoryAdapter(PresentationEvaluationRepository):
         stmt = (
             sa.update(PresentationEvaluationSchema)
             .where(PresentationEvaluationSchema.id_ == db_evaluation.id_)
-            .values(inp.dict(exclude_unset=True), question_score=question_score)
+            .values(inp.dict(exclude_unset=True))
         )
-        self.db_session.execute(stmt)
-        self.db_session.commit()
-        self.db_session.refresh(db_evaluation)
+        db_session.execute(stmt)
+        db_session.commit()
+        db_session.refresh(db_evaluation)
 
         db_evaluation = self.find_one_by_presentation_and_reviewer_id(
-            presentation_id, reviewer_id
+            db_session,
+            presentation_id,
+            reviewer_id,
         )
 
         return db_evaluation
 
-    def delete(self, evaluation_id: ID) -> None:
-        self.repository.delete(self.db_session, evaluation_id)
-
     def find_all(
         self,
+        db_session: Session,
         reviewer_id: Optional[ID],
     ) -> List[PresentationEvaluation]:
         if reviewer_id is None:
-            db_evaluations = self.repository.find_all(self.db_session)
+            db_evaluations = self._find_all(db_session)
         else:
             db_evaluations = (
-                self.db_session.query(PresentationEvaluationSchema)
+                db_session.query(PresentationEvaluationSchema)
                 .where(
                     PresentationEvaluationSchema.reviewer_id == reviewer_id,
                 )
@@ -95,17 +86,14 @@ class PresentationEvaluationRepositoryAdapter(PresentationEvaluationRepository):
 
         return [self.schema_to_entity(db_evaluation) for db_evaluation in db_evaluations]
 
-    def find_one_by_id(self, presentation_id: ID) -> Optional[PresentationEvaluation]:
-        db_evaluation = self.repository.find_one_by_id(self.db_session, presentation_id)
-        if db_evaluation is None:
-            return None
-        return self.schema_to_entity(db_evaluation)
-
     def find_one_by_presentation_and_reviewer_id(
-        self, presentation_id: ID, reviewer_id: ID
+        self,
+        db_session: Session,
+        presentation_id: ID,
+        reviewer_id: ID,
     ) -> Optional[PresentationEvaluation]:
         db_evaluation: Optional[PresentationEvaluationSchema] = (
-            self.db_session.query(PresentationEvaluationSchema)
+            db_session.query(PresentationEvaluationSchema)
             .where(
                 PresentationEvaluationSchema.presentation_id == presentation_id,
                 PresentationEvaluationSchema.reviewer_id == reviewer_id,
@@ -125,4 +113,6 @@ class PresentationEvaluationRepositoryAdapter(PresentationEvaluationRepository):
         return PresentationEvaluation.from_orm(obj)
 
 
-presentation_evaluation_repository = PresentationEvaluationRepositoryAdapter()
+presentation_evaluation_repository = PresentationEvaluationRepositoryAdapter(
+    PresentationEvaluationSchema
+)

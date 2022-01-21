@@ -23,16 +23,18 @@ from backend.drivers.pg.session import DbSession
 # Database
 db_session = DbSession()
 try:
-    professor_repository.set_session(db_session)
-    superuser = professor_repository.find_one_by_email(app_config.SUPERUSER_EMAIL)
+    superuser = professor_repository.find_one_by_email(
+        db_session, app_config.SUPERUSER_EMAIL
+    )
     if superuser is None:
         professor_repository.create(
+            db_session,
             ProfessorCreateInput(
                 full_name=app_config.SUPERUSER_FULLNAME,
                 email=app_config.SUPERUSER_EMAIL,
                 is_verified=True,
                 is_superuser=True,
-            )
+            ),
         )
 finally:
     db_session.close()

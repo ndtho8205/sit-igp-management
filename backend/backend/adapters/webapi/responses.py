@@ -14,6 +14,7 @@ from backend.entities.types import (
     RatingScore,
     UniversityEmailStr,
 )
+from backend.entities.evaluations.courses import ThesisProgramEvaluation
 
 
 class _SubProfessor(BaseModel):
@@ -69,3 +70,33 @@ class PresentationResponse(BaseModel):
     reviewer2_evaluation: Optional[PresentationEvaluationResponse]
     reviewer3_evaluation: Optional[PresentationEvaluationResponse]
     reviewer4_evaluation: Optional[PresentationEvaluationResponse]
+
+
+class ThesisProgramEvaluationResponse(BaseModel):
+    score_daily_activities_1: Score
+    score_daily_activities_2: Score
+    score_meeting_presentation_1: Score
+    score_meeting_presentation_2: Score
+    course_score: Score
+
+
+class LabSeminarEvaluationResponse(BaseModel):
+    score_daily_activities_1: Score
+    score_daily_activities_2: Score
+    score_meeting_presentation_1: Score
+    score_meeting_presentation_2: Score
+    course_score: Score
+
+
+class LabRotationEvaluationResponse(BaseModel):
+    course_score: Score
+
+
+class SemesterEndEvaluationResponse(BaseModel):
+    presentation: Optional[PresentationResponse]
+    thesis_program: Optional[ThesisProgramEvaluationResponse]
+    lab_seminar: Optional[LabSeminarEvaluationResponse]
+    lab_rotation: Optional[LabRotationEvaluationResponse]
+
+    class Config:
+        orm_mode = True

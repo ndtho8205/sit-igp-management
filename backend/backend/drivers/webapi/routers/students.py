@@ -5,15 +5,15 @@ from sqlalchemy.orm import Session
 from fastapi import Depends, APIRouter
 
 from backend.entities import Student, Professor
-from backend.usecases import (
+from backend.adapters.pg import student_repository, professor_repository
+from backend.entities.types import ID
+from backend.usecases.inputs import StudentCreateInput, StudentUpdateInput
+from backend.usecases.students import (
     list_all_students,
     update_student_info,
     delete_student_record,
     create_new_student_record,
 )
-from backend.adapters.pg import student_repository, professor_repository
-from backend.entities.types import ID
-from backend.usecases.inputs import StudentCreateInput, StudentUpdateInput
 from backend.adapters.webapi.responses import StudentResponse
 from backend.drivers.webapi.dependencies import get_db, authenticate_user
 
@@ -27,12 +27,12 @@ def create_student(
     db_session: Session = Depends(get_db),
     current_user: Professor = Depends(authenticate_user),
 ) -> Student:
-    student_repository.set_session(db_session)
     student = create_new_student_record(
+        inp,
         current_user,
         student_repository,
         professor_repository,
-        inp,
+        db_session,
     )
 
     return student
@@ -43,8 +43,7 @@ def find_all_students(
     db_session: Session = Depends(get_db),
     current_user: Professor = Depends(authenticate_user),
 ) -> List[Student]:
-    student_repository.set_session(db_session)
-    students = list_all_students(current_user, student_repository)
+    students = list_all_students(current_user, student_repository, db_session)
 
     return students
 
@@ -56,13 +55,13 @@ def update_student_by_id(
     db_session: Session = Depends(get_db),
     current_user: Professor = Depends(authenticate_user),
 ) -> Student:
-    student_repository.set_session(db_session)
     student = update_student_info(
+        student_id,
+        inp,
         current_user,
         student_repository,
         professor_repository,
-        student_id,
-        inp,
+        db_session,
     )
 
     return student
@@ -76,7 +75,8 @@ def delete(
 ) -> None:
     student_repository.set_session(db_session)
     delete_student_record(
+        student_id,
         current_user,
         student_repository,
-        student_id,
+        db_session,
     )

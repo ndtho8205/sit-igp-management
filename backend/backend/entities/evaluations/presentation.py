@@ -66,16 +66,16 @@ class Presentation(BaseModel):
 
 
 def compute_presentation_question_score(
-    research_goal: int,
-    delivery: int,
-    visual_aid: int,
-    time: int,
-    qa_ability: int,
+    score_research_goal: int,
+    score_delivery: int,
+    score_visual_aid: int,
+    score_time: int,
+    score_qa_ability: int,
 ) -> float:
     return (
-        research_goal * 0.35
-        + delivery * 0.2
-        + visual_aid * 0.2
-        + time * 0.05
-        + qa_ability * 0.2
+        score_research_goal * 0.35
+        + score_delivery * 0.2
+        + score_visual_aid * 0.2
+        + score_time * 0.05
+        + score_qa_ability * 0.2
     ) * 20
