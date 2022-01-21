@@ -73,7 +73,6 @@ def delete(
     db_session: Session = Depends(get_db),
     current_user: Professor = Depends(authenticate_user),
 ) -> None:
-    student_repository.set_session(db_session)
     delete_student_record(
         student_id,
         current_user,
