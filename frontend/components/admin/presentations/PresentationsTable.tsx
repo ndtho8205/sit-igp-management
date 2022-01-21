@@ -42,6 +42,11 @@ function PresentationsTable() {
       key: 'presentation_length',
     },
     {
+      title: 'Session chair',
+      dataIndex: ['session_chair', 'full_name'],
+      key: 'session_chair.full_name',
+    },
+    {
       title: 'Reviewer 1',
       dataIndex: ['reviewer1', 'full_name'],
       key: 'reviewer1.full_name',
@@ -61,11 +66,7 @@ function PresentationsTable() {
       dataIndex: ['reviewer4', 'full_name'],
       key: 'reviewer4.full_name',
     },
-    {
-      title: 'Reviewer 5',
-      dataIndex: ['reviewer5', 'full_name'],
-      key: 'reviewer5.full_name',
-    },
+
     {
       title: 'Action',
       key: 'action',

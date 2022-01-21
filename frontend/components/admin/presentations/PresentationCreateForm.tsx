@@ -34,6 +34,10 @@ const PresentationCreateForm = () => {
         <DatePicker format="YYYY/MM/DD" />
       </Form.Item>
 
+      <Form.Item label="Session chair" name="session_chair_id">
+        <ProfessorAutoComplete />
+      </Form.Item>
+
       <Form.Item label="Reviewer 1" name="reviewer1_id">
         <ProfessorAutoComplete />
       </Form.Item>
@@ -47,10 +51,6 @@ const PresentationCreateForm = () => {
       </Form.Item>
 
       <Form.Item label="Reviewer 4" name="reviewer4_id">
-        <ProfessorAutoComplete />
-      </Form.Item>
-
-      <Form.Item label="Reviewer 5" name="reviewer5_id">
         <ProfessorAutoComplete />
       </Form.Item>
     </ModalForm>
