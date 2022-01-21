@@ -46,7 +46,6 @@ const usePresentationsApi = () => {
         `${endpoint}/${presentation_id}/evaluations/${reviewer_id}`,
         { presentation_id, reviewer_id, ...obj }
       );
-      console.log(response.data);
       return response.data;
     },
 
@@ -59,7 +58,6 @@ const usePresentationsApi = () => {
         `${endpoint}/${presentation_id}/evaluations/${reviewer_id}`,
         { presentation_id, reviewer_id, ...obj }
       );
-      console.log(response.data);
       return response.data;
     },
   };

@@ -11,7 +11,6 @@ const InputRatingScore = (props: Props) => {
   const [currentValue, setValue] = useState(props.value || 0);
 
   const handleOnChange = (value: number) => {
-    console.log({ value });
     setValue(value);
     props.onChange?.(value);
   };

@@ -29,7 +29,6 @@ const ThesisProgramForm = ({
   );
 
   const schoolYearTexts = SchoolYear[schoolYear].split('_');
-  console.log(schoolYear);
 
   function calculateCourseScore(obj: ThesisProgramEvaluation): number {
     const originalCourseScore =

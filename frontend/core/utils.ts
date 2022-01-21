@@ -8,7 +8,6 @@ const notify = (
   notification_type: NotificationType,
   msg: string | Error | AxiosError
 ) => {
-  console.log({ msg });
   if (notification_type == 'error') {
     let error_msg: string = msg as string;
 
@@ -36,11 +35,12 @@ const notify = (
   }
 };
 
-const getSchoolYear = (
-  admissionDate: string,
-  considerDate: string
-) : number => {
-  return Math.round(moment(considerDate).diff(moment(admissionDate),'years', true)*2)/2;
-}
+const getSchoolYear = (admissionDate: string, considerDate: string): number => {
+  return (
+    Math.round(
+      moment(considerDate).diff(moment(admissionDate), 'years', true) * 2
+    ) / 2
+  );
+};
 
-export { notify, getSchoolYear};
+export { notify, getSchoolYear };

@@ -105,8 +105,6 @@ const LabSeminarForm = ({
     queryClient.invalidateQueries('getSummary');
   };
 
-  console.log(record.presentation.student);
-
   const modalFormTitle =
     record.presentation.student.full_name +
     (record.presentation.student.email

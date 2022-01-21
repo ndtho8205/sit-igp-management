@@ -23,8 +23,6 @@ function PresentationsTable() {
     notify('error', error);
   }
 
-  console.log(data);
-
   const columns = [
     {
       title: 'Student',
