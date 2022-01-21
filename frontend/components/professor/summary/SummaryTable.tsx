@@ -1,8 +1,7 @@
-import { Col, Row, Table } from 'antd';
-import { useQuery } from 'react-query';
-import useSemesterEndEvaluationApi from '../../../core/api/useSemesterEndEvaluationApi';
-import SemesterEndEvaluationSummary from '../../../core/types/semesterEndEvaluationSummary';
-import styles from '../../../styles/ProfessorPagesLayout.module.css';
+import { Table } from "antd";
+import { useQuery } from "react-query";
+import useSemesterEndEvaluationApi from "../../../core/api/useSemesterEndEvaluationApi";
+import SemesterEndEvaluationSummary from "../../../core/types/semesterEndEvaluationSummary";
 
 function SummaryTable() {
   const { getSummary } = useSemesterEndEvaluationApi();
@@ -10,33 +9,6 @@ function SummaryTable() {
     SemesterEndEvaluationSummary[],
     Error
   >('getSummary', () => getSummary());
-
-  function generateReviewerColumn(
-    record: SemesterEndEvaluationSummary,
-    reviewerNo: number
-  ) {
-    if (!record.presentation['reviewer' + reviewerNo]) return '--';
-    return (
-      <>
-        <Row>
-          <Col span={19}>
-            {'Prof. ' + record.presentation['reviewer' + reviewerNo].full_name}
-          </Col>
-          <Col span={1}>
-            <p className={styles.supervisorEvaluationTableCell}>:</p>
-          </Col>
-          <Col span={4}>
-            <p className={styles.supervisorEvaluationTableCell}>
-              {record.presentation['reviewer' + reviewerNo + '_evaluation']
-                ? record.presentation['reviewer' + reviewerNo + '_evaluation']
-                    .question_score
-                : '--'}
-            </p>
-          </Col>
-        </Row>
-      </>
-    );
-  }
 
   function generateAllReviewerColumns() {
     const columns = [];
