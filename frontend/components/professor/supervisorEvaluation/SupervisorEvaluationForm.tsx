@@ -1,4 +1,4 @@
-import { EditOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { EditOutlined } from '@ant-design/icons';
 import {
   Button,
   Col,
@@ -25,9 +25,6 @@ type ProfessorCreateValues = {
   score_time: number;
   score_qa: number;
 };
-
-// let formThesis : FormInstance<any>
-// let formLabSeminar : FormInstance<any>
 
 class ScoreInput extends React.Component<any, any> {
   hasLabRotation: boolean;
@@ -76,13 +73,7 @@ class ScoreInput extends React.Component<any, any> {
       this.setState({
         score_course: score_course,
       });
-      // if(this.props.isThesis) {
-      //   formThesis.setFieldsValue({score_course: score_course});
-      // }
-      // else{
-      //   formLabSeminar.setFieldsValue({score_course: score_course});
-      // }
-      this.props.form.setFieldsValue({ score_course: score_course });
+      this.props.form.setFieldsValue({score_course: score_course});
     }, 1000);
     return null;
   };
@@ -426,6 +417,14 @@ const SupervisorEvaluationForm = ({ studentData }) => {
     return criteriaRows;
   }
 
+  function generateLabel(
+    program: string,
+    schoolYear: SchoolYear
+  ) {
+    const _schoolYear = SchoolYear[schoolYear].split('_');
+    return _schoolYear[0] + " " + program + " " +_schoolYear[1];
+  }
+
   return (
     <>
       <Button
@@ -446,19 +445,12 @@ const SupervisorEvaluationForm = ({ studentData }) => {
         width={'65%'}
         bodyStyle={{ height: '70vh', overflowY: 'scroll' }}
       >
-        Thesis Program
-        {generateForm(
-          generateCriteriaRows(Criteria[0].criteria.thesis),
-          true,
-          formThesis
-        )}
-        <br />
-        Lab Seminar
-        {generateForm(
-          generateCriteriaRows(Criteria[0].criteria.labSeminar),
-          false,
-          formLabSeminar
-        )}
+
+        {generateLabel("Thesis Program", studentData.school_year)}
+        {generateForm(generateCriteriaRows(Criteria[0].criteria.thesis),true,formThesis)}
+        <br/>
+        {generateLabel("Lab Seminar", studentData.school_year)}
+        {generateForm(generateCriteriaRows(Criteria[0].criteria.labSeminar),false,formLabSeminar)}
       </Modal>
     </>
   );
