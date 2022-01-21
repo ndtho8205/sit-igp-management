@@ -7,7 +7,7 @@ import { notify } from '../../../core/utils';
 import DeletePopconfirm from '../../common/DeletePopconfirm';
 import ProfessorEditForm from './ProfessorEditForm';
 
-function ProfessorsTable() {
+const ProfessorsTable = () => {
   const queryClient = useQueryClient();
   const { findAllProfessors, deleteProfessor } = useProfessorsApi();
   const { isLoading, data, error } = useQuery<Professor[], Error>(
@@ -63,6 +63,6 @@ function ProfessorsTable() {
       sticky
     ></Table>
   );
-}
+};
 
 export default ProfessorsTable;

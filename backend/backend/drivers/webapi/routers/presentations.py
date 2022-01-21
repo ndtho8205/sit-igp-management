@@ -105,11 +105,12 @@ def delete(
 
 
 @router.post(
-    "/{presentation_id}/evaluations/",
+    "/{presentation_id}/evaluations/{reviewer_id}",
     response_model=PresentationEvaluationResponse,
 )
 def evaluate_presentation(
     presentation_id: ID,
+    reviewer_id: ID,
     inp: PresentationEvaluationCreateInput,
     db_session: Session = Depends(get_db),
     current_user: Professor = Depends(authenticate_user),

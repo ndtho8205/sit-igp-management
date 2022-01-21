@@ -9,16 +9,16 @@ type Presentation = {
 
   presentation_length?: string;
 
-  session_chair?: ProfessorBasics;
-  reviewer1?: ProfessorBasics;
-  reviewer2?: ProfessorBasics;
-  reviewer3?: ProfessorBasics;
-  reviewer4?: ProfessorBasics;
+  session_chair: ProfessorBasics | null;
+  reviewer1: ProfessorBasics | null;
+  reviewer2: ProfessorBasics | null;
+  reviewer3: ProfessorBasics | null;
+  reviewer4: ProfessorBasics | null;
 
-  reviewer1_evaluation?: PresentationEvaluation;
-  reviewer2_evaluation?: PresentationEvaluation;
-  reviewer3_evaluation?: PresentationEvaluation;
-  reviewer4_evaluation?: PresentationEvaluation;
+  reviewer1_evaluation: PresentationEvaluation | null;
+  reviewer2_evaluation: PresentationEvaluation | null;
+  reviewer3_evaluation: PresentationEvaluation | null;
+  reviewer4_evaluation: PresentationEvaluation | null;
 };
 
 type PresentationEvaluation = {
@@ -32,4 +32,15 @@ type PresentationEvaluation = {
   question_score: number;
 };
 
-export type { Presentation, PresentationEvaluation };
+type PresentationEvaluationGivenByUser = {
+  presentation_id: string;
+  reviewer_id: string;
+  student: { full_name: string };
+  evaluation: PresentationEvaluation | null;
+};
+
+export type {
+  Presentation,
+  PresentationEvaluation,
+  PresentationEvaluationGivenByUser,
+};

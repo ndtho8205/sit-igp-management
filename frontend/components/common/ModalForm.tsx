@@ -16,6 +16,8 @@ type Props<T> = {
   buttonIcon?: ReactNode;
   width?: number | string;
   bodyStyle?: CSSProperties;
+  modalLayout?: object;
+  formLayout?: object;
   onOk: (data: T) => Promise<T>;
   onSuccess: () => void;
 };
@@ -80,12 +82,15 @@ const ModalForm = <T,>(props: Props<T>) => {
         destroyOnClose={true}
         width={props.width}
         bodyStyle={props.bodyStyle}
+        {...props.modalLayout}
       >
         <Form
           form={form}
           layout="vertical"
           name="form_in_modal"
+          labelWrap
           initialValues={props.initialValues}
+          {...props.formLayout}
         >
           {props.children}
         </Form>

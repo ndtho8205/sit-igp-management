@@ -15,7 +15,7 @@ const notify = (
     if (axios.isAxiosError(msg)) {
       switch (msg.response?.status) {
         case 422:
-          error_msg = `Validation error. ${msg.response.data}`;
+          error_msg = `Validation error. ${JSON.stringify(msg.response.data)}`;
           break;
         case 409:
         case 404:

@@ -7,7 +7,7 @@ const useProfessorsApi = () => {
 
   return {
     whoami: async () => {
-      const response = await get<Professor>(`${endpoint}/me`);
+      const response = await get<Professor>(`/whoami`);
       return response.data;
     },
 

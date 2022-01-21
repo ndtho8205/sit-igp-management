@@ -12,7 +12,7 @@ function PresentationsTable() {
   const { findAllPresentations, deletePresentation } = usePresentationsApi();
   const { isLoading, data, error } = useQuery<Presentation[], Error>(
     'findAllPresentations',
-    findAllPresentations
+    () => findAllPresentations()
   );
 
   const handleOnDeleteSuccess = () => {
