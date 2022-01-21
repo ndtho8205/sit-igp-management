@@ -16,9 +16,12 @@ const usePresentationsApi = () => {
     },
 
     findAllPresentations: async (reviewer_id = '') => {
-      const response = await get<Presentation[]>(
-        `${endpoint}/?reviewer_id=${reviewer_id}`
-      );
+      const path =
+        reviewer_id != ''
+          ? `${endpoint}/?reviewer_id=${reviewer_id}`
+          : `${endpoint}/`;
+
+      const response = await get<Presentation[]>(path);
       return response.data;
     },
 
