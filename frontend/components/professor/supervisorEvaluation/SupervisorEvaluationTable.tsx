@@ -20,7 +20,7 @@ function SupervisorEvaluationTable() {
   const { isLoading, data, error } = useQuery<
     SemesterEndEvaluationSummary[],
     Error
-  >('getSummary', () => getSummary(userId), {
+  >(['getSummary', userId], () => getSummary(userId), {
     enabled: !!userId,
   });
 

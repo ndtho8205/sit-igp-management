@@ -23,7 +23,7 @@ const Header = [
   },
 ];
 const Criteria = {
-  Freshmen_1 : {
+  Freshmen_1: {
     thesis: [
       'Students can understand basic knowledge and skills for problem-finding and -solving in engineering.',
       'Students can work for a team organized by the laboratory members in solving social issues.',

@@ -52,14 +52,14 @@ const ModalForm = <T,>(props: Props<T>) => {
     submitMutation.mutate(values);
   };
 
-  const handleCancel = () => {   
+  const handleCancel = () => {
     // form.resetFields();
     setFormVisible(false);
   };
 
   const handleAfterClose = () => {
     form.resetFields();
-  }
+  };
 
   return (
     <>
