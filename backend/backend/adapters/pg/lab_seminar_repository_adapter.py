@@ -53,7 +53,6 @@ class LabSeminarRepositoryAdapter(
         )
         db_session.execute(stmt)
         db_session.commit()
-        db_session.refresh(db_evaluation)
 
         db_evaluation = self.find_one_by_presentation_id(
             db_session,

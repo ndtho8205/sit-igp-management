@@ -87,7 +87,7 @@ const presentationEvaluationRubric = [
   {
     criteria: 'Ability to answer Q&A',
     weight: '20%',
-    key: 'score_qa',
+    key: 'score_qa_ability',
     excellent: [
       'Confidently demonstrates an excellent interpretation and knowledge of the subject and responds to every question by reviewers.',
     ],

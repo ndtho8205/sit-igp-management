@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
+import PresentationEvaluationsTable from '../../../components/professor/presentationEvaluation/PresentationEvaluationsTable';
 import SemEndPresentationRubric from '../../../components/professor/presentationEvaluation/SemEndPresentationRubric';
-import SemEndPresentationTable from '../../../components/professor/presentationEvaluation/SemEndPresentationTable';
 import ProfessorPagesLayout from '../../../layouts/ProfessorPagesLayout';
 
 const SemEndPresentationInputScorePage = () => {
@@ -11,7 +11,7 @@ const SemEndPresentationInputScorePage = () => {
         {' '}
         <SemEndPresentationRubric />{' '}
       </p>
-      <SemEndPresentationTable page="Input" />
+      <PresentationEvaluationsTable />
     </div>
   );
 };

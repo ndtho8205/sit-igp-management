@@ -14,6 +14,8 @@ type Props<T> = {
   buttonType?: 'primary' | 'default';
   buttonShape?: 'circle' | 'default';
   buttonIcon?: ReactNode;
+  modalLayout?: object;
+  formLayout?: object;
   onOk: (data: T) => Promise<T>;
   onSuccess: () => void;
 };
@@ -70,12 +72,15 @@ const ModalForm = <T,>(props: Props<T>) => {
         confirmLoading={submitMutation.isLoading}
         onOk={handleSubmit}
         onCancel={handleCancel}
+        {...props.modalLayout}
       >
         <Form
           form={form}
           layout="vertical"
           name="form_in_modal"
+          labelWrap
           initialValues={props.initialValues}
+          {...props.formLayout}
         >
           {props.children}
         </Form>

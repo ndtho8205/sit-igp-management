@@ -91,15 +91,19 @@ class PresentationEvaluationCreateInput(BaseModel):
     score_time: RatingScore
     score_qa_ability: RatingScore
 
+    question_score: Score
+
     comment: Optional[LongStr]
 
 
 class PresentationEvaluationUpdateInput(BaseModel):
-    score_research_goal: Optional[RatingScore]
-    score_delivery: Optional[RatingScore]
-    score_visual_aid: Optional[RatingScore]
-    score_time: Optional[RatingScore]
-    score_qa: Optional[RatingScore]
+    score_research_goal: RatingScore
+    score_delivery: RatingScore
+    score_visual_aid: RatingScore
+    score_time: RatingScore
+    score_qa_ability: RatingScore
+
+    question_score:Score
 
     comment: Optional[LongStr]
 
@@ -116,10 +120,10 @@ class ThesisProgramEvaluationCreateInput(BaseModel):
 
 
 class ThesisProgramEvaluationUpdateInput(BaseModel):
-    score_daily_activities_1: Optional[Score]
-    score_daily_activities_2: Optional[Score]
-    score_meeting_presentation_1: Optional[Score]
-    score_meeting_presentation_2: Optional[Score]
+    score_daily_activities_1: Score
+    score_daily_activities_2: Score
+    score_meeting_presentation_1: Score
+    score_meeting_presentation_2: Score
 
     course_score: Score
 
@@ -136,10 +140,10 @@ class LabSeminarEvaluationCreateInput(BaseModel):
 
 
 class LabSeminarEvaluationUpdateInput(BaseModel):
-    score_daily_activities_1: Optional[Score]
-    score_daily_activities_2: Optional[Score]
-    score_meeting_presentation_1: Optional[Score]
-    score_meeting_presentation_2: Optional[Score]
+    score_daily_activities_1: Score
+    score_daily_activities_2: Score
+    score_meeting_presentation_1: Score
+    score_meeting_presentation_2: Score
 
     course_score: Score
 
