@@ -12,7 +12,7 @@ const useSemesterEndEvaluationApi = () => {
 
   return {
     getSummary: async () => {
-      const response = await get<SemesterEndEvaluationSummary[]>('/summary');
+      const response = await get<SemesterEndEvaluationSummary[]>('/summary/');
       return response.data;
     },
 
