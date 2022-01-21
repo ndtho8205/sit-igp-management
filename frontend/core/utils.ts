@@ -1,5 +1,6 @@
 import { message, notification } from 'antd';
 import axios, { AxiosError } from 'axios';
+import moment from 'moment';
 
 type NotificationType = 'success' | 'error';
 
@@ -35,4 +36,11 @@ const notify = (
   }
 };
 
-export { notify };
+const getSchoolYear = (
+  admissionDate: string,
+  considerDate: string
+) : number => {
+  return Math.round(moment(considerDate).diff(moment(admissionDate),'years', true)*2)/2;
+}
+
+export { notify, getSchoolYear};

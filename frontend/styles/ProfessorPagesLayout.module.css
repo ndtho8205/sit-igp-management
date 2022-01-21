@@ -26,6 +26,13 @@
   padding-top: 5px;
 }
 
+.supervisorEvaluationTableCell {
+  margin: 0;
+  position: relative;
+  top: 50%;
+  transform: translatey(-50%);
+}
+
 .supervisorEvaluationFormCell {
   text-align: center;
   margin: 0;

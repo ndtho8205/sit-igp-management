@@ -2,7 +2,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Button, Form } from 'antd';
 import Modal from 'antd/lib/modal/Modal';
 import { AxiosError } from 'axios';
-import { ReactNode, useState } from 'react';
+import { CSSProperties, ReactNode, useState } from 'react';
 import { useMutation } from 'react-query';
 import { notify } from '../../core/utils';
 
@@ -14,6 +14,8 @@ type Props<T> = {
   buttonType?: 'primary' | 'default';
   buttonShape?: 'circle' | 'default';
   buttonIcon?: ReactNode;
+  width?: number | string;
+  bodyStyle?: CSSProperties;
   onOk: (data: T) => Promise<T>;
   onSuccess: () => void;
 };
@@ -24,7 +26,7 @@ const ModalForm = <T,>(props: Props<T>) => {
 
   const submitMutation = useMutation(props.onOk, {
     onSuccess: () => {
-      form.resetFields();
+      // form.resetFields();
       setFormVisible(false);
       notify('success', `${props.okText} success!`);
       props.onSuccess();
@@ -48,10 +50,14 @@ const ModalForm = <T,>(props: Props<T>) => {
     submitMutation.mutate(values);
   };
 
-  const handleCancel = () => {
-    form.resetFields();
+  const handleCancel = () => {   
+    // form.resetFields();
     setFormVisible(false);
   };
+
+  const handleAfterClose = () => {
+    form.resetFields();
+  }
 
   return (
     <>
@@ -70,6 +76,10 @@ const ModalForm = <T,>(props: Props<T>) => {
         confirmLoading={submitMutation.isLoading}
         onOk={handleSubmit}
         onCancel={handleCancel}
+        afterClose={handleAfterClose}
+        destroyOnClose={true}
+        width={props.width}
+        bodyStyle={props.bodyStyle}
       >
         <Form
           form={form}

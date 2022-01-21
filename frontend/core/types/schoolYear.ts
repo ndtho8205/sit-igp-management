@@ -1,12 +1,12 @@
 enum SchoolYear {
-  Freshmen_1 = 11,
-  Freshmen_2 = 12,
-  Sophomore_1 = 21,
-  Sophomore_2 = 22,
-  Junior_1 = 31,
-  Junior_2 = 32,
-  Senior_1 = 41,
-  Senior_2 = 42,
+  Freshmen_1 = 0,
+  Freshmen_2 = 0.5,
+  Sophomore_1 = 1,
+  Sophomore_2 = 1.5,
+  Junior_1 = 2,
+  Junior_2 = 2.5,
+  Senior_1 = 3,
+  Senior_2 = 3.5,
 }
 
 export default SchoolYear;

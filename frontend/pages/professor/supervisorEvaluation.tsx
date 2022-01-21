@@ -7,7 +7,7 @@ const SupervisorEvaluationPage = () => {
     <div>
       <h1>Supervisor Evaluation - Input Scores</h1>
       {/* <p> <SemEndPresentationRubric/> </p> */}
-      <SupervisorEvaluationTable page="Input" />
+      <SupervisorEvaluationTable />
     </div>
   );
 };
