@@ -18,6 +18,7 @@ const useAxios = () => {
       token = await getAccessTokenSilently({
         audience: config.authApiAudience,
       });
+      console.log({ token });
     } catch (error) {
       console.log({ error });
       notify('error', error as Error);

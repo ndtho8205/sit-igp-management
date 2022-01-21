@@ -18,26 +18,6 @@ const Home: NextPage = () => {
     router.prefetch('/professor');
   });
 
-  const message = <>
-    <Typography.Title level={5}>
-      Please login using the university email address.
-    </Typography.Title>
-    <Button
-      type="primary"
-      onClick={() => auth.loginWithRedirect()}
-      loading={auth.isLoading}
-    >
-      Log In
-    </Button>
-  </> ? (
-    !auth.isAuthenticated
-  ) : (
-    <Typography.Title level={5}>
-      You already logged in. We will redirect you to the SIT IGP Management
-      dashboard.
-    </Typography.Title>
-  );
-
   if (auth.isAuthenticated) {
     router.push(config.authRedirectUri);
   }
@@ -52,7 +32,16 @@ const Home: NextPage = () => {
       }}
     >
       <Space direction="vertical" align="center">
-        {message}
+        <Typography.Title level={5}>
+          Please login using the university email address.
+        </Typography.Title>
+        <Button
+          type="primary"
+          onClick={() => auth.loginWithRedirect()}
+          loading={auth.isLoading}
+        >
+          Log In
+        </Button>
       </Space>
     </div>
   );

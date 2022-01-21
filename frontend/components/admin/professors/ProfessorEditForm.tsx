@@ -2,7 +2,7 @@ import { EditOutlined } from '@ant-design/icons';
 import { Form, Input } from 'antd';
 import { useQueryClient } from 'react-query';
 import useProfessorsApi from '../../../core/api/useProfessorsApi';
-import Professor from '../../../core/types/professor';
+import { Professor } from '../../../core/types/professor';
 import { rules } from '../../../core/validators';
 import ModalForm from '../../common/ModalForm';
 

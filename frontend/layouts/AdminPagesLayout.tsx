@@ -2,6 +2,7 @@ import {
   DesktopOutlined,
   HomeOutlined,
   IdcardOutlined,
+  ReloadOutlined,
   UserOutlined,
 } from '@ant-design/icons';
 import { Layout } from 'antd';
@@ -25,6 +26,11 @@ const AdminPagesLayout = ({ children }: Props) => {
       href: '/admin/presentations',
       label: 'Semester End Presentations',
       icon: <DesktopOutlined />,
+    },
+    {
+      href: '/admin/lab_rotation',
+      label: 'Lab Rotation',
+      icon: <ReloadOutlined />,
     },
     {
       href: '/admin/professors',

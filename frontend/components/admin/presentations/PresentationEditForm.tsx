@@ -2,10 +2,9 @@ import { EditOutlined } from '@ant-design/icons';
 import { Form, Input } from 'antd';
 import { useQueryClient } from 'react-query';
 import usePresentationsApi from '../../../core/api/usePresentationsApi';
-import Presentation from '../../../core/types/presentation';
+import { Presentation } from '../../../core/types/presentation';
 import ModalForm from '../../common/ModalForm';
 import ProfessorAutoComplete from '../../common/ProfessorAutoComplete';
-import StudentAutoComplete from '../../common/StudentAutoComplete';
 
 type Props = {
   presentation: Presentation;
@@ -32,10 +31,6 @@ const PresentationEditForm = ({ presentation }: Props) => {
       onSuccess={handleOnSuccess}
       initialValues={presentation}
     >
-      <Form.Item label="Student" name="student_id" rules={[{ required: true }]}>
-        <StudentAutoComplete />
-      </Form.Item>
-
       <Form.Item label="Presentation time" name="presentation_length">
         <Input />
       </Form.Item>

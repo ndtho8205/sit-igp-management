@@ -7,7 +7,13 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import config from '../core/config';
 import '../styles/globals.css';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 20,
+    },
+  },
+});
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;

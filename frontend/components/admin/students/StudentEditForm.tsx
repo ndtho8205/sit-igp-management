@@ -33,11 +33,7 @@ const StudentEditForm = ({ student }: Props) => {
       onSuccess={handleOnSuccess}
       initialValues={student}
     >
-      <Form.Item
-        label="Full name"
-        name="full_name"
-        rules={[{ required: true }, ...rules.FullName]}
-      >
+      <Form.Item label="Full name" name="full_name" rules={rules.FullName}>
         <Input />
       </Form.Item>
 

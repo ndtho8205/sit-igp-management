@@ -2,7 +2,7 @@ import { Space, Table } from 'antd';
 import React from 'react';
 import { useQuery, useQueryClient } from 'react-query';
 import usePresentationsApi from '../../../core/api/usePresentationsApi';
-import Presentation from '../../../core/types/presentation';
+import { Presentation } from '../../../core/types/presentation';
 import { notify } from '../../../core/utils';
 import DeletePopconfirm from '../../common/DeletePopconfirm';
 import PresentationEditForm from './PresentationEditForm';

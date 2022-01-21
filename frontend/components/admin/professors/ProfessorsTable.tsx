@@ -2,7 +2,7 @@ import { Space, Table, Tag } from 'antd';
 import React from 'react';
 import { useQuery, useQueryClient } from 'react-query';
 import useProfessorsApi from '../../../core/api/useProfessorsApi';
-import Professor from '../../../core/types/professor';
+import { Professor } from '../../../core/types/professor';
 import { notify } from '../../../core/utils';
 import DeletePopconfirm from '../../common/DeletePopconfirm';
 import ProfessorEditForm from './ProfessorEditForm';
