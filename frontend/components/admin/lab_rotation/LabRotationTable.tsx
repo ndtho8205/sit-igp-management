@@ -10,7 +10,7 @@ const LabRotationTable = () => {
   const { getSummary } = useSemesterEndEvaluationApi();
   const summaryQuery = useQuery<SemesterEndEvaluationSummary[], Error>(
     'getSummary',
-    getSummary
+    () => getSummary()
   );
 
   if (summaryQuery.error) {
@@ -46,7 +46,7 @@ const LabRotationTable = () => {
       dataSource={summaryQuery.data}
       columns={columns}
       loading={summaryQuery.isLoading}
-      rowKey="id_"
+      rowKey={(record: SemesterEndEvaluationSummary) => record.presentation.id_}
       showSorterTooltip
       sticky
     ></Table>

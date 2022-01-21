@@ -3,13 +3,7 @@ import SupervisorEvaluationTable from '../../components/professor/supervisorEval
 import ProfessorPagesLayout from '../../layouts/ProfessorPagesLayout';
 
 const SupervisorEvaluationPage = () => {
-  return (
-    <div>
-      <h1>Supervisor Evaluation - Input Scores</h1>
-      {/* <p> <SemEndPresentationRubric/> </p> */}
-      <SupervisorEvaluationTable />
-    </div>
-  );
+  return <SupervisorEvaluationTable />;
 };
 
 SupervisorEvaluationPage.getLayout = function getLayout(page: ReactElement) {

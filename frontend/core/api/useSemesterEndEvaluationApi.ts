@@ -11,8 +11,9 @@ const useSemesterEndEvaluationApi = () => {
   const labSeminarEndpoint = '/lab_seminar';
 
   return {
-    getSummary: async () => {
-      const response = await get<SemesterEndEvaluationSummary[]>('/summary/');
+    getSummary: async (supervisor_id = '') => {
+      const path = supervisor_id ? `/summary/${supervisor_id}` : '/summary/';
+      const response = await get<SemesterEndEvaluationSummary[]>(path);
       return response.data;
     },
 

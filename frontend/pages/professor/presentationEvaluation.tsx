@@ -1,3 +1,4 @@
+import { Space } from 'antd';
 import { ReactElement } from 'react';
 import PresentationEvaluationsTable from '../../components/professor/presentationEvaluation/PresentationEvaluationsTable';
 import SemEndPresentationRubric from '../../components/professor/presentationEvaluation/SemEndPresentationRubric';
@@ -5,14 +6,10 @@ import ProfessorPagesLayout from '../../layouts/ProfessorPagesLayout';
 
 const SemEndPresentationInputScorePage = () => {
   return (
-    <div>
-      <h1>Semester End Presentation - Input Scores</h1>
-      <p>
-        {' '}
-        <SemEndPresentationRubric />{' '}
-      </p>
+    <Space direction="vertical">
+      <SemEndPresentationRubric />
       <PresentationEvaluationsTable />
-    </div>
+    </Space>
   );
 };
 
