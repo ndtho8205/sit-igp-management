@@ -47,3 +47,22 @@
   background: grey;
   height: 100%;
 }
+
+.summaryTableThesisProgramCol {
+  background:lavender;
+}
+.summaryTableRow:hover .summaryTableThesisProgramCol {
+  background:thistle !important;
+}
+.summaryTableLabSeminarCol {
+  background:lavenderblush;
+}
+.summaryTableRow:hover .summaryTableLabSeminarCol {
+  background:mistyrose !important;
+}
+.summaryTablePresentationAverageCol {
+  background:azure;
+}
+.summaryTableRow:hover .summaryTablePresentationAverageCol {
+  background:lightblue !important;
+}

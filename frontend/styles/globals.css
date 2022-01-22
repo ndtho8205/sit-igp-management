@@ -12,3 +12,7 @@
   text-align: center;
   color: black;
 }
+
+.ant-table-body {
+  overflow-y: auto !important;
+}

@@ -23,7 +23,7 @@ const ProfessorPagesLayout: FunctionComponent = ({ children }: Props) => {
   return (
     <Layout className={styles.professorContainer}>
       <Sider
-        width={300}
+        width={250}
         collapsed={isCollapsed}
         collapsible
         onCollapse={() => setIsCollapsed(!isCollapsed)}

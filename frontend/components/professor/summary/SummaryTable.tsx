@@ -2,6 +2,7 @@ import { Table } from "antd";
 import { useQuery } from "react-query";
 import useSemesterEndEvaluationApi from "../../../core/api/useSemesterEndEvaluationApi";
 import SemesterEndEvaluationSummary from "../../../core/types/semesterEndEvaluationSummary";
+import styles from '../../../styles/ProfessorPagesLayout.module.css';
 
 function SummaryTable() {
   const { getSummary } = useSemesterEndEvaluationApi();
@@ -12,6 +13,25 @@ function SummaryTable() {
 
   function generateAllReviewerColumns() {
     const columns = [];
+    columns.push({
+      title: 'Presentation Average Score',
+      key: 'score_presentation',
+      align: 'center',
+      width: '150px',
+      className: styles.summaryTablePresentationAverageCol,
+      render: (record: SemesterEndEvaluationSummary) => {
+        let score_presentation = 0;
+        for (let i = 1; i <= 4; ++i) {          
+          if (!record.presentation['reviewer' + i + '_evaluation']) {
+            return '--';
+          } else
+            score_presentation +=
+              record.presentation['reviewer' + i + '_evaluation']
+                .question_score;
+        }
+        return Math.round((score_presentation / 4) * 100) / 100;
+      },
+    });
     columns.push(
       {
         title: 'Presentation Time',
@@ -26,6 +46,9 @@ function SummaryTable() {
         key: 'session_chair',
         align: 'center',
         width: '150px',
+        render: (text: string) => {
+          return text === null ? '' : 'Prof. ' + text;
+        },
       }
     );
     for (let i = 1; i <= 4; ++i) {
@@ -57,24 +80,6 @@ function SummaryTable() {
         ],
       });
     }
-    columns.push({
-      title: 'Average Score',
-      key: 'score_presentation',
-      align: 'center',
-      width: '150px',
-      render: (record: SemesterEndEvaluationSummary) => {
-        for (let i = 1; i <= 4; ++i) {
-          let score_presentation = 0;
-          if (!record.presentation['reviewer' + i + '_evaluation']) {
-            return '--';
-          } else
-            score_presentation +=
-              record.presentation['reviewer' + i + '_evaluation']
-                .question_score;
-        }
-        return Math.round((score_presentation / 4) * 100) / 100;
-      },
-    });
     return columns;
   }
 
@@ -101,10 +106,6 @@ function SummaryTable() {
       width: '200px',
     },
     {
-      title: 'Presentation Evaluation',
-      children: generateAllReviewerColumns(),
-    },
-    {
       title: 'Supervisor Evaluation',
       children: [
         {
@@ -113,6 +114,7 @@ function SummaryTable() {
           key: 'thesis_program',
           align: 'center',
           width: '150px',
+          className: styles.summaryTableThesisProgramCol,
           render: (text: number) => {
             return text === null ? '--' : text;
           },
@@ -123,22 +125,30 @@ function SummaryTable() {
           key: 'thesis_program',
           align: 'center',
           width: '150px',
+          className: styles.summaryTableLabSeminarCol,
           render: (text: number) => {
             return text === null ? '--' : text;
           },
         },
       ],
     },
+    {
+      title: 'Presentation Evaluation',
+      children: generateAllReviewerColumns(),
+    },
   ];
+
   return (
     <Table
       dataSource={data}
       columns={columns}
       loading={isLoading}
+      rowClassName={styles.summaryTableRow}
+      pagination={false}
       // rowKey="professor_id"
       showSorterTooltip
       sticky
-      scroll={{ x: '100%' }}
+      scroll={{ x: '100%', y: '60vh'}}
       bordered
     ></Table>
   );
