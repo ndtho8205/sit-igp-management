@@ -105,7 +105,7 @@ async def forbidden_exception_handler(
 ) -> JSONResponse:
     return JSONResponse(
         status_code=403,
-        content={"detail": exc.args[0]},
+        content={"detail": "You do not have enough access privileges"},
     )
 
 
