@@ -14,7 +14,4 @@ def list_all_presentations(
     presentation_repository: PresentationRepository,
     db_session: Session,
 ) -> List[Presentation]:
-    if not current_user.is_superuser:
-        raise ForbiddenError()
-
     return presentation_repository.find_all(db_session, reviewer_id)
