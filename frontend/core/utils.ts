@@ -37,7 +37,7 @@ const notify = (
 
 const getSchoolYear = (admissionDate: string, considerDate: string): number => {
   return (
-    Math.round(
+    Math.floor(
       moment(considerDate).diff(moment(admissionDate), 'years', true) * 2
     ) / 2
   );
