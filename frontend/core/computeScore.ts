@@ -6,12 +6,15 @@ const compute_presentaion_question_score = (
   score_qa_ability: number
 ) => {
   return (
-    (score_research_goal * 0.35 +
-      score_delivery * 0.2 +
-      score_visual_aid * 0.2 +
-      score_time * 0.05 +
-      score_qa_ability * 0.2) *
-    20
+    Math.round(
+      (
+        score_research_goal * 0.35 +
+        score_delivery * 0.2 +
+        score_visual_aid * 0.2 +
+        score_time * 0.05 +
+        score_qa_ability * 0.2) *
+        20 * 100
+      ) / 100
   );
 };
 

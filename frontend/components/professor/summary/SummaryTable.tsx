@@ -72,9 +72,9 @@ function SummaryTable() {
             width: '80px',
             render: (record: SemesterEndEvaluationSummary) => {
               return record.presentation['reviewer' + i + '_evaluation']
-                ? record.presentation['reviewer' + i + '_evaluation']
-                    .question_score
+                ? Math.round(record.presentation['reviewer' + i + '_evaluation'].question_score * 100) / 100
                 : '--';
+                //Math.round should be remove in later time.
             },
           },
         ],
