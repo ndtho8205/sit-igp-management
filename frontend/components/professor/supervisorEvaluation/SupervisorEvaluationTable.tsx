@@ -63,13 +63,10 @@ function SupervisorEvaluationTable() {
       key: 'thesis_program_course_score',
       align: 'center',
       render: (text, record) => {
-        if(!record.lab_rotation){
-          return "Cannot input at the moment";
-        }
         let score_presentation = 0;
         for (let i = 1; i < 5; ++i) {
           if (!record.presentation['reviewer' + i + '_evaluation']) {
-            return "Cannot input at the moment";
+            return 'Cannot input at the moment';
             // score_presentation += 100;
           } else
             score_presentation +=
@@ -103,13 +100,10 @@ function SupervisorEvaluationTable() {
       key: 'lab_seminar_course_score',
       align: 'center',
       render: (text, record) => {
-        if(!record.lab_rotation){
-          return "Cannot input at the moment";
-        }
         let score_presentation = 0;
         for (let i = 1; i < 5; ++i) {
           if (!record.presentation['reviewer' + i + '_evaluation']) {
-            return "Cannot input at the moment";
+            return 'Cannot input at the moment';
             // score_presentation += 100;
           } else
             score_presentation +=
