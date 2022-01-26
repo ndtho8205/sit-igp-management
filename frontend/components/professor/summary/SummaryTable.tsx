@@ -92,6 +92,18 @@ function SummaryTable() {
       fixed: 'left',
     },
     {
+      title: 'Student ID',
+      // dataIndex: ['student','id'],
+      key: 'student_id',
+      align: 'center',
+      width: '110px',
+      render: (record) => {
+        if (record.presentation.student.email) {
+          return record.presentation.student.email.split('@')[0].toUpperCase();
+        }
+      },
+    },
+    {
       title: 'Gender',
       dataIndex: ['presentation', 'student', 'gender'],
       key: 'student_gender',
@@ -116,7 +128,7 @@ function SummaryTable() {
           width: '150px',
           className: styles.summaryTableThesisProgramCol,
           render: (text: number) => {
-            return text === null ? '--' : text;
+            return text === null ? '--' : Math.round(text);
           },
         },
         {
@@ -127,7 +139,7 @@ function SummaryTable() {
           width: '150px',
           className: styles.summaryTableLabSeminarCol,
           render: (text: number) => {
-            return text === null ? '--' : text;
+            return text === null ? '--' : Math.round(text);
           },
         },
       ],
