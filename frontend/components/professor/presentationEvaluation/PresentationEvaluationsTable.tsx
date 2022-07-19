@@ -1,4 +1,5 @@
-import { Space, Table } from 'antd';
+import { CheckSquareOutlined } from '@ant-design/icons';
+import { Space, Table, Tooltip } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
 import { useQuery } from 'react-query';
@@ -76,13 +77,25 @@ const PresentationEvaluationsTable = () => {
       align: 'center',
       width: '90px',
       render: (_: string, record: PresentationEvaluationGivenByUser) => {
-        return (
-          <>
-            <Space size="middle">
-              <PresentationEvaluationInputForm evaluation={record} />
-            </Space>
-          </>
-        );
+        if(!record.evaluation){
+          return (
+            <>
+              <Space size="middle">
+                <PresentationEvaluationInputForm evaluation={record} />
+              </Space>
+            </>
+          );
+        }
+        else{
+          return (
+            <>
+              <Tooltip placement='right' title='You have submitted the scores for this student.'>
+                <CheckSquareOutlined 
+                style={{ fontSize: '2em', color: "green"}}/>
+              </Tooltip>
+            </>
+          )
+        }
       },
     },
     {

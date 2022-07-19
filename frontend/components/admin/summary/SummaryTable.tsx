@@ -1,15 +1,29 @@
 import { Table } from "antd";
+import moment from "moment";
 import { useQuery } from "react-query";
 import useSemesterEndEvaluationApi from "../../../core/api/useSemesterEndEvaluationApi";
 import SemesterEndEvaluationSummary from "../../../core/types/semesterEndEvaluationSummary";
 import styles from '../../../styles/ProfessorPagesLayout.module.css';
+
+const NUMBER_OF_REVIEWERS = 3;
 
 function SummaryTable() {
   const { getSummary } = useSemesterEndEvaluationApi();
   const { isLoading, data, error } = useQuery<
     SemesterEndEvaluationSummary[],
     Error
-  >('getSummary', () => getSummary());
+  >('getSummary', () => getSummary(), {
+    select: (data) => 
+      data
+      .filter(_data => {
+        let presentation_date = moment(_data.presentation.presentation_date);
+        let date_now = moment(Date.now());
+        if(Math.abs(date_now.diff(presentation_date, 'months')) <= 3){
+          return true;
+        }
+        return false;
+      })
+  });
 
   function generateAllReviewerColumns() {
     const columns = [];
@@ -21,7 +35,7 @@ function SummaryTable() {
       className: styles.summaryTablePresentationAverageCol,
       render: (record: SemesterEndEvaluationSummary) => {
         let score_presentation = 0;
-        for (let i = 1; i <= 4; ++i) {          
+        for (let i = 1; i <= NUMBER_OF_REVIEWERS; ++i) {          
           if (!record.presentation['reviewer' + i + '_evaluation']) {
             return '--';
           } else
@@ -29,7 +43,7 @@ function SummaryTable() {
               record.presentation['reviewer' + i + '_evaluation']
                 .question_score;
         }
-        return Math.round((score_presentation / 4) * 100) / 100;
+        return Math.round((score_presentation / NUMBER_OF_REVIEWERS) * 100) / 100;
       },
     });
     columns.push(
@@ -51,7 +65,7 @@ function SummaryTable() {
         },
       }
     );
-    for (let i = 1; i <= 4; ++i) {
+    for (let i = 1; i <= NUMBER_OF_REVIEWERS; ++i) {
       columns.push({
         title: 'Reviewer ' + i,
         children: [

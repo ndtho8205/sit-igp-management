@@ -1,6 +1,6 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Form } from 'antd';
-import Modal from 'antd/lib/modal/Modal';
+import { Button, Form, Modal} from 'antd';
+// import Modal from 'antd/lib/modal/Modal';
 import { AxiosError } from 'axios';
 import { CSSProperties, ReactNode, useState } from 'react';
 import { useMutation } from 'react-query';
@@ -20,11 +20,15 @@ type Props<T> = {
   formLayout?: object;
   onOk: (data: T) => Promise<T>;
   onSuccess: () => void;
+  confirmText?: string;
+  needConfirm?: boolean;
 };
 
 const ModalForm = <T,>(props: Props<T>) => {
   const [isFormVisible, setFormVisible] = useState(false);
   const [form] = Form.useForm();
+
+  const { confirm } = Modal;
 
   const submitMutation = useMutation(props.onOk, {
     onSuccess: () => {
@@ -42,7 +46,7 @@ const ModalForm = <T,>(props: Props<T>) => {
     setFormVisible(true);
   };
 
-  const handleSubmit = async () => {
+  const handleConfirm = async () => {
     let values: T;
     try {
       values = await form.validateFields();
@@ -50,6 +54,19 @@ const ModalForm = <T,>(props: Props<T>) => {
       return;
     }
     submitMutation.mutate(values);
+  };
+
+  const handleSubmit = () => {
+    confirm({
+      title: "Confirmation",
+      content: props.confirmText !== undefined ? props.confirmText : "Are you sure?",
+      onOk() {
+        handleConfirm()
+      },
+      okText: "Yes",
+      cancelText: "No",
+
+    });
   };
 
   const handleCancel = () => {
@@ -76,7 +93,11 @@ const ModalForm = <T,>(props: Props<T>) => {
         okText={props.okText}
         cancelText="Cancel"
         confirmLoading={submitMutation.isLoading}
-        onOk={handleSubmit}
+        onOk={
+          (props.needConfirm === undefined ||
+            props.needConfirm === false)?
+           handleConfirm : handleSubmit
+        }
         onCancel={handleCancel}
         afterClose={handleAfterClose}
         destroyOnClose={true}

@@ -1,5 +1,6 @@
-import { EditOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { FormOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { Form, Input, Popover, Table } from 'antd';
+import { max } from 'moment';
 import React from 'react';
 import { useQueryClient } from 'react-query';
 import usePresentationsApi from '../../../core/api/usePresentationsApi';
@@ -110,7 +111,7 @@ const PresentationEvaluationInputForm = ({ evaluation }: Props) => {
             </>
           }
           name={criterion.key}
-          rules={[{ required: true }, { type: 'number', min: 1, max: 5 }]}
+          rules={[{ required: true }, { type: 'number', min: 1, max: 5 , message: criterion.criteria + " must be between 1 to 5."}]}
           initialValue={
             evaluation.evaluation ? evaluation.evaluation[criterion.key] : null
           }
@@ -135,11 +136,13 @@ const PresentationEvaluationInputForm = ({ evaluation }: Props) => {
       title={evaluation.student.full_name}
       okText="Submit"
       buttonType="primary"
-      buttonIcon={<EditOutlined />}
+      buttonIcon={<FormOutlined />}
       onOk={handleOnOk}
       onSuccess={handleOnSuccess}
       modalLayout={{ width: '65%' }}
       formLayout={formLayout}
+      needConfirm={true}
+      confirmText="Are you sure? You will not be able to edit the scores after you submit!"
     >
       {insertFormItems()}
 

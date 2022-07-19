@@ -11,6 +11,8 @@ import styles from '../../../styles/ProfessorPagesLayout.module.css';
 import LabSeminarForm from './LabSeminarForm';
 import ThesisProgramForm from './ThesisProgramForm';
 
+const NUMBER_OF_REVIEWERS = 3;
+
 function SupervisorEvaluationTable() {
   // get user id
   const { whoami } = useProfessorsApi();
@@ -75,7 +77,7 @@ function SupervisorEvaluationTable() {
       align: 'center',
       render: (text, record) => {
         let score_presentation = 0;
-        for (let i = 1; i < 5; ++i) {
+        for (let i = 1; i <= NUMBER_OF_REVIEWERS; ++i) {
           if (!record.presentation['reviewer' + i + '_evaluation']) {
             return 'Cannot input at the moment';
             // score_presentation += 100;
@@ -96,7 +98,7 @@ function SupervisorEvaluationTable() {
                 <ThesisProgramForm
                   record={record}
                   score_presentation={
-                    Math.round((score_presentation / 4) * 100) / 100
+                    Math.round((score_presentation / NUMBER_OF_REVIEWERS) * 100) / 100
                   }
                 />
               </Col>
@@ -112,7 +114,7 @@ function SupervisorEvaluationTable() {
       align: 'center',
       render: (text, record) => {
         let score_presentation = 0;
-        for (let i = 1; i < 5; ++i) {
+        for (let i = 1; i <= NUMBER_OF_REVIEWERS; ++i) {
           if (!record.presentation['reviewer' + i + '_evaluation']) {
             return 'Cannot input at the moment';
             // score_presentation += 100;
@@ -133,7 +135,7 @@ function SupervisorEvaluationTable() {
                 <LabSeminarForm
                   record={record}
                   score_presentation={
-                    Math.round((score_presentation / 4) * 100) / 100
+                    Math.round((score_presentation / NUMBER_OF_REVIEWERS) * 100) / 100
                   }
                 />
               </Col>
