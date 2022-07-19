@@ -24,11 +24,11 @@ const ProfessorMainNav = () => {
       label: 'Supervisor Evaluation',
       icon: <FundViewOutlined />,
     },
-    {
-      href: '/professor/summary',
-      label: 'Summary',
-      icon: <ProfileOutlined />,
-    },
+    // {
+    //   href: '/professor/summary',
+    //   label: 'Summary',
+    //   icon: <ProfileOutlined />,
+    // },
     // {
     //   href: '/professor/labrotation',
     //   label: 'Lab Rotation',

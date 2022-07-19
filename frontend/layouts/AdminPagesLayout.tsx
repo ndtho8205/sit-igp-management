@@ -2,6 +2,7 @@ import {
   DesktopOutlined,
   HomeOutlined,
   IdcardOutlined,
+  ProfileOutlined,
   ReloadOutlined,
   UserOutlined,
 } from '@ant-design/icons';
@@ -38,6 +39,11 @@ const AdminPagesLayout = ({ children }: Props) => {
       icon: <IdcardOutlined />,
     },
     { href: '/admin/students', label: 'Students', icon: <UserOutlined /> },
+    {
+      href: '/admin/summary',
+      label: 'Summary',
+      icon: <ProfileOutlined />,
+    },
   ];
 
   const routeLabels: { [route: string]: string } = menuItems.reduce(

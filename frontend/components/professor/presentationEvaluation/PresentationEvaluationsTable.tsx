@@ -1,5 +1,6 @@
 import { Space, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
+import moment from 'moment';
 import { useQuery } from 'react-query';
 import usePresentationsApi from '../../../core/api/usePresentationsApi';
 import useProfessorsApi from '../../../core/api/useProfessorsApi';
@@ -27,7 +28,16 @@ const PresentationEvaluationsTable = () => {
   >(['findAllPresentations', userId], () => findAllPresentations(userId), {
     enabled: !!userId,
     select: (data) =>
-      data.map((presentation) => {
+      data
+      .filter(_data => {
+        let presentation_date = moment(_data.presentation_date);
+        let date_now = moment(Date.now());
+        if(Math.abs(date_now.diff(presentation_date, 'months')) <= 3){
+          return true;
+        }
+        return false;
+      })
+      .map((presentation) => {
         let evaluation: PresentationEvaluation | null = null;
 
         switch (userId) {
@@ -113,6 +123,7 @@ const PresentationEvaluationsTable = () => {
       title: 'Comment',
       dataIndex: ['evaluation', 'comment'],
       width: '350px',
+      ellipsis: true,
     },
   ];
 

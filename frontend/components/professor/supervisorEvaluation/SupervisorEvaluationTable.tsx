@@ -1,4 +1,5 @@
 import { Col, Row, Table } from 'antd';
+import moment from 'moment';
 import { useQuery } from 'react-query';
 import useProfessorsApi from '../../../core/api/useProfessorsApi';
 import useSemesterEndEvaluationApi from '../../../core/api/useSemesterEndEvaluationApi';
@@ -22,6 +23,16 @@ function SupervisorEvaluationTable() {
     Error
   >(['getSummary', userId], () => getSummary(userId), {
     enabled: !!userId,
+    select: (data) => 
+      data
+      .filter(_data => {
+        let presentation_date = moment(_data.presentation.presentation_date);
+        let date_now = moment(Date.now());
+        if(Math.abs(date_now.diff(presentation_date, 'months')) <= 3){
+          return true;
+        }
+        return false;
+      })
   });
 
   const inputColumns = [
