@@ -1,5 +1,4 @@
 import { Space, Table } from 'antd';
-import React from 'react';
 import { useQuery } from 'react-query';
 import useSemesterEndEvaluationApi from '../../../core/api/useSemesterEndEvaluationApi';
 import SemesterEndEvaluationSummary from '../../../core/types/semesterEndEvaluationSummary';
@@ -24,9 +23,14 @@ const LabRotationTable = () => {
       key: 'full_name',
     },
     {
+      title: 'Presentation date',
+      dataIndex: ['presentation', 'presentation_date'],
+      key: 'presentation_date',
+    },
+    {
       title: 'Lab rotation',
       dataIndex: ['lab_rotation', 'course_score'],
-      key: 'email',
+      key: 'course_score',
     },
     {
       title: 'Action',
