@@ -77,7 +77,7 @@ const PresentationEvaluationsTable = () => {
       align: 'center',
       width: '90px',
       render: (_: string, record: PresentationEvaluationGivenByUser) => {
-        if(!record.evaluation){
+        // if(!record.evaluation){
           return (
             <>
               <Space size="middle">
@@ -85,17 +85,17 @@ const PresentationEvaluationsTable = () => {
               </Space>
             </>
           );
-        }
-        else{
-          return (
-            <>
-              <Tooltip placement='right' title='You have submitted the scores for this student.'>
-                <CheckSquareOutlined 
-                style={{ fontSize: '2em', color: "green"}}/>
-              </Tooltip>
-            </>
-          )
-        }
+        // }
+        // else{
+        //   return (
+        //     <>
+        //       <Tooltip placement='right' title='You have submitted the scores for this student.'>
+        //         <CheckSquareOutlined 
+        //         style={{ fontSize: '2em', color: "green"}}/>
+        //       </Tooltip>
+        //     </>
+        //   )
+        // }
       },
     },
     {
