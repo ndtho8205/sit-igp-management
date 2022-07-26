@@ -57,6 +57,7 @@ const PresentationEvaluationsTable = () => {
 
           return {
             presentation_id: presentation.id_,
+            presentation_length: presentation.presentation_length,
             reviewer_id: userId as string,
             student: { full_name: presentation.student.full_name },
             evaluation,
