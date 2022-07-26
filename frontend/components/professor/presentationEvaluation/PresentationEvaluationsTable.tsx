@@ -105,6 +105,7 @@ const PresentationEvaluationsTable = () => {
     {
       title: 'Presentation Time',
       dataIndex: ['presentation_length'],
+      align: 'center',
     },
     {
       title: 'Research Objectives, Goals, and Plans',
