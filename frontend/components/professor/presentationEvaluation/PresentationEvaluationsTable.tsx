@@ -1,5 +1,4 @@
-import { CheckSquareOutlined } from '@ant-design/icons';
-import { Space, Table, Tooltip } from 'antd';
+import { Space, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
 import { useQuery } from 'react-query';
@@ -30,39 +29,39 @@ const PresentationEvaluationsTable = () => {
     enabled: !!userId,
     select: (data) =>
       data
-      .filter(_data => {
-        let presentation_date = moment(_data.presentation_date);
-        let date_now = moment(Date.now());
-        if(Math.abs(date_now.diff(presentation_date, 'months')) <= 3){
-          return true;
-        }
-        return false;
-      })
-      .map((presentation) => {
-        let evaluation: PresentationEvaluation | null = null;
+        .filter((_data) => {
+          let presentation_date = moment(_data.presentation_date);
+          let date_now = moment(Date.now());
+          if (Math.abs(date_now.diff(presentation_date, 'months')) <= 3) {
+            return true;
+          }
+          return false;
+        })
+        .map((presentation) => {
+          let evaluation: PresentationEvaluation | null = null;
 
-        switch (userId) {
-          case presentation.reviewer1?.id_:
-            evaluation = presentation.reviewer1_evaluation;
-            break;
-          case presentation.reviewer2?.id_:
-            evaluation = presentation.reviewer2_evaluation;
-            break;
-          case presentation.reviewer3?.id_:
-            evaluation = presentation.reviewer3_evaluation;
-            break;
-          case presentation.reviewer4?.id_:
-            evaluation = presentation.reviewer4_evaluation;
-            break;
-        }
+          switch (userId) {
+            case presentation.reviewer1?.id_:
+              evaluation = presentation.reviewer1_evaluation;
+              break;
+            case presentation.reviewer2?.id_:
+              evaluation = presentation.reviewer2_evaluation;
+              break;
+            case presentation.reviewer3?.id_:
+              evaluation = presentation.reviewer3_evaluation;
+              break;
+            case presentation.reviewer4?.id_:
+              evaluation = presentation.reviewer4_evaluation;
+              break;
+          }
 
-        return {
-          presentation_id: presentation.id_,
-          reviewer_id: userId as string,
-          student: { full_name: presentation.student.full_name },
-          evaluation,
-        };
-      }),
+          return {
+            presentation_id: presentation.id_,
+            reviewer_id: userId as string,
+            student: { full_name: presentation.student.full_name },
+            evaluation,
+          };
+        }),
   });
 
   if (presentationsQuery.error) {
@@ -78,19 +77,19 @@ const PresentationEvaluationsTable = () => {
       width: '90px',
       render: (_: string, record: PresentationEvaluationGivenByUser) => {
         // if(!record.evaluation){
-          return (
-            <>
-              <Space size="middle">
-                <PresentationEvaluationInputForm evaluation={record} />
-              </Space>
-            </>
-          );
+        return (
+          <>
+            <Space size="middle">
+              <PresentationEvaluationInputForm evaluation={record} />
+            </Space>
+          </>
+        );
         // }
         // else{
         //   return (
         //     <>
         //       <Tooltip placement='right' title='You have submitted the scores for this student.'>
-        //         <CheckSquareOutlined 
+        //         <CheckSquareOutlined
         //         style={{ fontSize: '2em', color: "green"}}/>
         //       </Tooltip>
         //     </>
@@ -101,6 +100,10 @@ const PresentationEvaluationsTable = () => {
     {
       title: 'Student Name',
       dataIndex: ['student', 'full_name'],
+    },
+    {
+      title: 'Presentation Time',
+      dataIndex: ['presentation_length'],
     },
     {
       title: 'Research Objectives, Goals, and Plans',
