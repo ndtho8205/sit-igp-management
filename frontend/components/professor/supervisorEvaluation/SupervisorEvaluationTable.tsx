@@ -120,7 +120,11 @@ function SupervisorEvaluationTable() {
       key: 'lab_seminar_course_score',
       align: 'center',
       render: (text, record) => {
-        if(!record.lab_rotation) {
+        let schoolYear = getSchoolYear(
+          record.presentation.student.admission_date,
+          record.presentation.presentation_date
+        );
+        if(schoolYear >= 1 && !record.lab_rotation) {
           return 'Please wait until Lab Rotation score is input.';
         }
         let score_presentation = 0;
