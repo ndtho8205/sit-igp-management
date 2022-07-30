@@ -1,10 +1,10 @@
 import {
   DesktopOutlined,
-  EditOutlined,
   FundViewOutlined,
   HomeOutlined,
   ProfileOutlined,
 } from '@ant-design/icons';
+import { useAuth0 } from '@auth0/auth0-react';
 import { Menu } from 'antd';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -12,6 +12,23 @@ import { useRouter } from 'next/router';
 const ProfessorMainNav = () => {
   const router = useRouter();
   const { SubMenu } = Menu;
+  const auth = useAuth0();
+  const canViewSummary = () => {
+    if (auth.isAuthenticated) {
+      const user_email = auth.user?.email;
+
+      if (
+        user_email === 'kamioka@shibaura-it.ac.jp' ||
+        user_email === 'zam08580@shibaura-it.ac.jp' ||
+        user_email === 'nb20501@shibaura-it.ac.jp'
+      ) {
+        return true;
+      }
+    }
+
+    return false;
+  };
+
   const menuItems = [
     { href: '/professor', label: 'Home', icon: <HomeOutlined /> },
     {
@@ -24,17 +41,15 @@ const ProfessorMainNav = () => {
       label: 'Supervisor Evaluation',
       icon: <FundViewOutlined />,
     },
-    // {
-    //   href: '/professor/summary',
-    //   label: 'Summary',
-    //   icon: <ProfileOutlined />,
-    // },
-    // {
-    //   href: '/professor/labrotation',
-    //   label: 'Lab Rotation',
-    //   icon: <UserSwitchOutlined />,
-    // },
   ];
+
+  if (canViewSummary()) {
+    menuItems.push({
+      href: '/professor/presentationSummary',
+      label: 'Summary',
+      icon: <ProfileOutlined />,
+    });
+  }
 
   function renderMenuItems() {
     const nav = [];

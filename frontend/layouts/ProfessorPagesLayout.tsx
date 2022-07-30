@@ -16,7 +16,7 @@ const ProfessorPagesLayout: FunctionComponent = ({ children }: Props) => {
   const routeLabels = {
     '/professor': 'Home',
     '/professor/presentationEvaluation': 'Semester End Presentation',
-    // '/professor/summary': 'Summary',
+    '/professor/presentationSummary': 'Summary',
     '/professor/supervisorEvaluation': 'Supervisor Evaluation',
   };
 
