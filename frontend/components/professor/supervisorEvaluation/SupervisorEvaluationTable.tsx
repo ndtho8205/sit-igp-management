@@ -25,16 +25,15 @@ function SupervisorEvaluationTable() {
     Error
   >(['getSummary', userId], () => getSummary(userId), {
     enabled: !!userId,
-    select: (data) => 
-      data
-      .filter(_data => {
-        let presentation_date = moment(_data.presentation.presentation_date);
-        let date_now = moment(Date.now());
-        if(Math.abs(date_now.diff(presentation_date, 'months')) <= 3){
+    select: (data) =>
+      data.filter((_data) => {
+        const presentation_date = moment(_data.presentation.presentation_date);
+        const date_now = moment(Date.now());
+        if (Math.abs(date_now.diff(presentation_date, 'months')) <= 3) {
           return true;
         }
         return false;
-      })
+      }),
   });
 
   const inputColumns = [
@@ -76,11 +75,11 @@ function SupervisorEvaluationTable() {
       key: 'thesis_program_course_score',
       align: 'center',
       render: (text, record) => {
-        let schoolYear = getSchoolYear(
+        const schoolYear = getSchoolYear(
           record.presentation.student.admission_date,
           record.presentation.presentation_date
         );
-        if(schoolYear >= 1 && !record.lab_rotation) {
+        if (Math.floor(schoolYear) == 1 && !record.lab_rotation) {
           return 'Please wait until Lab Rotation score is input.';
         }
         let score_presentation = 0;
@@ -105,7 +104,9 @@ function SupervisorEvaluationTable() {
                 <ThesisProgramForm
                   record={record}
                   score_presentation={
-                    Math.round((score_presentation / NUMBER_OF_REVIEWERS) * 100) / 100
+                    Math.round(
+                      (score_presentation / NUMBER_OF_REVIEWERS) * 100
+                    ) / 100
                   }
                 />
               </Col>
@@ -120,11 +121,11 @@ function SupervisorEvaluationTable() {
       key: 'lab_seminar_course_score',
       align: 'center',
       render: (text, record) => {
-        let schoolYear = getSchoolYear(
+        const schoolYear = getSchoolYear(
           record.presentation.student.admission_date,
           record.presentation.presentation_date
         );
-        if(schoolYear >= 1 && !record.lab_rotation) {
+        if (schoolYear >= 1 && !record.lab_rotation) {
           return 'Please wait until Lab Rotation score is input.';
         }
         let score_presentation = 0;
@@ -149,7 +150,9 @@ function SupervisorEvaluationTable() {
                 <LabSeminarForm
                   record={record}
                   score_presentation={
-                    Math.round((score_presentation / NUMBER_OF_REVIEWERS) * 100) / 100
+                    Math.round(
+                      (score_presentation / NUMBER_OF_REVIEWERS) * 100
+                    ) / 100
                   }
                 />
               </Col>
