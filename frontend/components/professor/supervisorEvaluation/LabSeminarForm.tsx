@@ -25,7 +25,8 @@ const LabSeminarForm = ({
 
   const schoolYear = getSchoolYear(
     record.presentation.student.admission_date,
-    record.presentation.presentation_date
+    record.presentation.presentation_date,
+    record.presentation.student.email.split('@')[0]
   );
 
   const schoolYearTexts = SchoolYear[schoolYear].split('_');

@@ -78,6 +78,34 @@ const Criteria = {
     ],
     hasLabRotation: true,
   },
+
+  Junior_1: {
+    thesis: [
+      'Students can clarify what are common and different in conducting research by comparing different laboratory works.',
+      'Students can apply basic knowledge for science and engineering to problem-solving in real R&D sites.',
+      'Students can develop thinking skills and present their research progress at the end of semester presentation.',
+    ],
+    labSeminar: [
+      'Students can understand a wide range of research and clearly identify what they cannot understand in the topic being discussed.',
+      'Students can explain their own research to people who are not in the same research areas and understand the importance of multidisciplinary approach.',
+      'Students can connect book knowledge to real-world applications, develop an appreciation for research in their field and show their achievement at the end of semester presentation.',
+    ],
+    hasLabRotation: false,
+  },
+
+  Junior_2: {
+    thesis: [
+      'Students can clarify what are common and different in conducting research by comparing different laboratory works.',
+      'Students can apply basic knowledge for science and engineering to problem-solving in real R&D sites.',
+      'Students can develop thinking skills and present their research progress at the end of semester presentation.',
+    ],
+    labSeminar: [
+      'Students can understand a wide range of research and clearly identify what they cannot understand in the topic being discussed.',
+      'Students can explain their own research to people who are not in the same research areas and understand the importance of multidisciplinary approach.',
+      'Students can connect book knowledge to real-world applications, develop an appreciation for research in their field and show their achievement at the end of semester presentation.',
+    ],
+    hasLabRotation: false,
+  },
 };
 
 export { Header, Criteria };

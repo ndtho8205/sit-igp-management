@@ -193,7 +193,8 @@ class SupervisorEvaluationInput extends React.Component<any, any> {
   render() {
     const schoolYear = getSchoolYear(
       this.props.record.presentation.student.admission_date,
-      this.props.record.presentation.presentation_date
+      this.props.record.presentation.presentation_date,
+      this.props.record.presentation.student.email.split('@')[0]
     );
     const noOfCol = Criteria[SchoolYear[schoolYear]].hasLabRotation ? 5 : 4;
 

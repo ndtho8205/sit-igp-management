@@ -35,11 +35,19 @@ const notify = (
   }
 };
 
-const getSchoolYear = (admissionDate: string, considerDate: string): number => {
+const getSchoolYear = (
+  admissionDate: string,
+  considerDate: string,
+  id: string
+): number => {
+  // console.log(id);
+  const duplicated_sem = id == 'am20004' ? 1 : 0;
   return (
     Math.floor(
       moment(considerDate).diff(moment(admissionDate), 'years', true) * 2
-    ) / 2
+    ) /
+      2 -
+    duplicated_sem * 0.5
   );
 };
 

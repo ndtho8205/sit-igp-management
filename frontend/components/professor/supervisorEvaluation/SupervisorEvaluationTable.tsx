@@ -63,7 +63,8 @@ function SupervisorEvaluationTable() {
       render: (record) => {
         const schoolYear = getSchoolYear(
           record.presentation.student.admission_date,
-          record.presentation.presentation_date
+          record.presentation.presentation_date,
+          record.presentation.student.email.split('@')[0]
         );
         const schoolYearTexts = SchoolYear[schoolYear].split('_');
         return schoolYearTexts[0] + ' ' + schoolYearTexts[1];
@@ -77,7 +78,8 @@ function SupervisorEvaluationTable() {
       render: (text, record) => {
         const schoolYear = getSchoolYear(
           record.presentation.student.admission_date,
-          record.presentation.presentation_date
+          record.presentation.presentation_date,
+          record.presentation.student.email.split('@')[0]
         );
         if (Math.floor(schoolYear) == 1 && !record.lab_rotation) {
           return 'Please wait until Lab Rotation score is input.';
@@ -123,9 +125,10 @@ function SupervisorEvaluationTable() {
       render: (text, record) => {
         const schoolYear = getSchoolYear(
           record.presentation.student.admission_date,
-          record.presentation.presentation_date
+          record.presentation.presentation_date,
+          record.presentation.student.email.split('@')[0]
         );
-        if (schoolYear >= 1 && !record.lab_rotation) {
+        if (Math.floor(schoolYear) == 1 && !record.lab_rotation) {
           return 'Please wait until Lab Rotation score is input.';
         }
         let score_presentation = 0;
