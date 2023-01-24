@@ -1,8 +1,8 @@
-import { Table } from "antd";
-import moment from "moment";
-import { useQuery } from "react-query";
-import useSemesterEndEvaluationApi from "../../../core/api/useSemesterEndEvaluationApi";
-import SemesterEndEvaluationSummary from "../../../core/types/semesterEndEvaluationSummary";
+import { Popover, Table } from 'antd';
+import moment from 'moment';
+import { useQuery } from 'react-query';
+import useSemesterEndEvaluationApi from '../../../core/api/useSemesterEndEvaluationApi';
+import SemesterEndEvaluationSummary from '../../../core/types/semesterEndEvaluationSummary';
 import styles from '../../../styles/ProfessorPagesLayout.module.css';
 
 const NUMBER_OF_REVIEWERS = 3;
@@ -13,16 +13,15 @@ function SummaryTable() {
     SemesterEndEvaluationSummary[],
     Error
   >('getSummary', () => getSummary(), {
-    select: (data) => 
-      data
-      .filter(_data => {
-        let presentation_date = moment(_data.presentation.presentation_date);
-        let date_now = moment(Date.now());
-        if(Math.abs(date_now.diff(presentation_date, 'months')) <= 3){
+    select: (data) =>
+      data.filter((_data) => {
+        const presentation_date = moment(_data.presentation.presentation_date);
+        const date_now = moment(Date.now());
+        if (Math.abs(date_now.diff(presentation_date, 'months')) <= 3) {
           return true;
         }
         return false;
-      })
+      }),
   });
 
   function generateAllReviewerColumns() {
@@ -35,7 +34,7 @@ function SummaryTable() {
       className: styles.summaryTablePresentationAverageCol,
       render: (record: SemesterEndEvaluationSummary) => {
         let score_presentation = 0;
-        for (let i = 1; i <= NUMBER_OF_REVIEWERS; ++i) {          
+        for (let i = 1; i <= NUMBER_OF_REVIEWERS; ++i) {
           if (!record.presentation['reviewer' + i + '_evaluation']) {
             return '--';
           } else
@@ -43,7 +42,9 @@ function SummaryTable() {
               record.presentation['reviewer' + i + '_evaluation']
                 .question_score;
         }
-        return Math.round((score_presentation / NUMBER_OF_REVIEWERS) * 100) / 100;
+        return (
+          Math.round((score_presentation / NUMBER_OF_REVIEWERS) * 100) / 100
+        );
       },
     });
     columns.push(
@@ -85,10 +86,31 @@ function SummaryTable() {
             align: 'center',
             width: '80px',
             render: (record: SemesterEndEvaluationSummary) => {
-              return record.presentation['reviewer' + i + '_evaluation']
-                ? Math.round(record.presentation['reviewer' + i + '_evaluation'].question_score * 100) / 100
-                : '--';
-                //Math.round should be remove in later time.
+              if (record.presentation['reviewer' + i + '_evaluation']) {
+                const presentation_score =
+                  Math.round(
+                    record.presentation['reviewer' + i + '_evaluation']
+                      .question_score * 100
+                  ) / 100;
+
+                const presentation_comment =
+                  record.presentation['reviewer' + i + '_evaluation'].comment ??
+                  'The reviewer did not leave a comment.';
+                return (
+                  <Popover
+                    placement="topRight"
+                    title="Reviewer's Comment"
+                    content={presentation_comment}
+                    overlayStyle={{ maxWidth: '500px', textAlign: 'justify' }}
+                    arrowPointAtCenter={true}
+                  >
+                    {presentation_score}
+                  </Popover>
+                );
+              } else {
+                return '--';
+              }
+              //Math.round should be remove in later time.
             },
           },
         ],
@@ -174,7 +196,7 @@ function SummaryTable() {
       // rowKey="professor_id"
       showSorterTooltip
       sticky
-      scroll={{ x: '100%', y: '60vh'}}
+      scroll={{ x: '100%', y: '60vh' }}
       bordered
     ></Table>
   );
