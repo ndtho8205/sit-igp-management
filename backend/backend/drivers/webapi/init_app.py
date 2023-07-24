@@ -1,24 +1,22 @@
 # pylint: disable=unused-argument
 import sentry_sdk
+from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from sentry_sdk.integrations.asgi import SentryAsgiMiddleware
 from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration
 
-from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
-from fastapi.middleware.cors import CORSMiddleware
-
-from backend.configs import app_config
 from backend.adapters.pg import professor_repository
+from backend.configs import app_config
+from backend.drivers.pg.session import DbSession
 from backend.drivers.webapi import api
 from backend.usecases.errors import (
-    ConflictError,
-    NotFoundError,
-    ForbiddenError,
     BadRequestError,
+    ConflictError,
+    ForbiddenError,
+    NotFoundError,
 )
 from backend.usecases.inputs import ProfessorCreateInput
-from backend.drivers.pg.session import DbSession
-
 
 # Database
 db_session = DbSession()
@@ -67,7 +65,7 @@ except Exception as ex:  # pylint: disable=broad-except
 if app_config.CORS_ALLOW_ORIGINS:
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=app_config.CORS_ALLOW_ORIGINS,
+        allow_origins=[app_config.CORS_ALLOW_ORIGINS],
         allow_credentials=True,
         allow_methods=["HEAD", "GET", "POST", "PUT", "DELETE"],
         allow_headers=["*"],

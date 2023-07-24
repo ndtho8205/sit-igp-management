@@ -1,6 +1,5 @@
-from typing import Any, Dict, List, Optional
-
 from enum import Enum
+from typing import Any, Dict, Optional
 
 from pydantic import AnyHttpUrl, BaseSettings, validator
 from pydantic.networks import HttpUrl, PostgresDsn
@@ -66,7 +65,7 @@ class BaseAppConfig(BaseConfig):
     APP_NAME: str = "SIT IGP Management"
     API_PREFIX: str = "/api"
 
-    CORS_ALLOW_ORIGINS: List[AnyHttpUrl] = []
+    CORS_ALLOW_ORIGINS: AnyHttpUrl
 
     SENTRY_DSN: Optional[HttpUrl] = None
 
