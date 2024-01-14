@@ -5,7 +5,7 @@ import useSemesterEndEvaluationApi from '../../../core/api/useSemesterEndEvaluat
 import SemesterEndEvaluationSummary from '../../../core/types/semesterEndEvaluationSummary';
 import styles from '../../../styles/ProfessorPagesLayout.module.css';
 
-const NUMBER_OF_REVIEWERS = 3;
+const NUMBER_OF_REVIEWERS = 4;
 
 function SummaryTable() {
   const { getSummary } = useSemesterEndEvaluationApi();

@@ -11,7 +11,7 @@ import styles from '../../../styles/ProfessorPagesLayout.module.css';
 import LabSeminarForm from './LabSeminarForm';
 import ThesisProgramForm from './ThesisProgramForm';
 
-const NUMBER_OF_REVIEWERS = 3;
+const NUMBER_OF_REVIEWERS = 4;
 
 function SupervisorEvaluationTable() {
   // get user id
