@@ -97,7 +97,7 @@ const PresentationEvaluationsTable = () => {
               moment.duration({
                 minutes: score_time_minutes,
                 seconds: score_time_seconds,
-              }).substract(max_allowed_time).minutes())
+              }).subtract(max_allowed_time).minutes())
           )
           return (
             <>
