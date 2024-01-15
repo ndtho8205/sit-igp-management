@@ -33,7 +33,20 @@ const PresentationTimeInputForm = ({ presentation }: Props) => {
       onSuccess={handleOnSuccess}
       initialValues={presentation}
     >
-      <Form.Item label="Presentation Time" name="presentation_length">
+      <Form.Item 
+        label="Presentation Time (Format: mm:ss)" 
+        name="presentation_length"
+        rules={[
+          {
+            required: true,
+            message: "Please input the presentation time"
+          },
+          {
+            pattern: new RegExp(/\d\d:\d\d/),
+            message: "Please input the time as mm:ss (e.g., 09:00)"
+          }
+        ]}
+      >
         <Input />
       </Form.Item>
     </ModalForm>
