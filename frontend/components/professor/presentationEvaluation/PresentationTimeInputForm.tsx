@@ -42,7 +42,7 @@ const PresentationTimeInputForm = ({ presentation }: Props) => {
             message: "Please input the presentation time"
           },
           {
-            pattern: new RegExp(/\d\d:\d\d/),
+            pattern: new RegExp(/^\d\d:\d\d$/),
             message: "Please input the time as mm:ss (e.g., 09:00)"
           }
         ]}
