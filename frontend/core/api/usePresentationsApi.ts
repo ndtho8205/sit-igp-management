@@ -23,6 +23,12 @@ const usePresentationsApi = () => {
       return response.data;
     },
 
+    findSessionChairPresentations: async (session_chair_id: string) => {
+      const path = `${endpoint}/?session_chair_id=${session_chair_id}`;
+      const response = await get<Presentation[]>(path);
+      return response.data;
+    },
+
     findPresentationById: async (id: string) => {
       const response = await get<Presentation>(`${endpoint}/${id}`);
       return response.data;

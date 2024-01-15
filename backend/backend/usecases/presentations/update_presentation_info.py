@@ -18,17 +18,26 @@ def update_presentation_info(
     db_session: Session,
 ) -> Presentation:
     if not current_user.is_superuser:
-        raise ForbiddenError()
-
-    validate_presentation_reviewers(
-        inp.session_chair_id,
-        inp.reviewer1_id,
-        inp.reviewer2_id,
-        inp.reviewer3_id,
-        inp.reviewer4_id,
-        professor_repository,
-        db_session,
-    )
+        #Normal user can update presentation_length
+        if (
+            inp.presentation_date or 
+            inp.session_chair_id or 
+            inp.reviewer1_id or 
+            inp.reviewer2_id or 
+            inp.reviewer3_id or 
+            inp.reviewer4_id
+        ):
+            raise ForbiddenError()
+    else:
+        validate_presentation_reviewers(
+            inp.session_chair_id,
+            inp.reviewer1_id,
+            inp.reviewer2_id,
+            inp.reviewer3_id,
+            inp.reviewer4_id,
+            professor_repository,
+            db_session,
+        )
 
     presentation = presentation_repository.update(db_session, presentation_id, inp)
     if presentation is None:

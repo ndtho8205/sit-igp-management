@@ -10,8 +10,9 @@ from backend.usecases.repositories.presentation_repository import PresentationRe
 
 def list_all_presentations(
     reviewer_id: Optional[ID],
+    session_chair_id: Optional[ID],
     current_user: Professor,
     presentation_repository: PresentationRepository,
     db_session: Session,
 ) -> List[Presentation]:
-    return presentation_repository.find_all(db_session, reviewer_id)
+    return presentation_repository.find_all(db_session, reviewer_id, session_chair_id)

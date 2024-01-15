@@ -59,11 +59,13 @@ def create_presentation(
 @router.get("/", response_model=List[PresentationResponse])
 def find_all_presentations(
     reviewer_id: Optional[ID] = None,
+    session_chair_id: Optional[ID] = None,
     db_session: Session = Depends(get_db),
     current_user: Professor = Depends(authenticate_user),
 ) -> List[Presentation]:
     presentations = list_all_presentations(
         reviewer_id,
+        session_chair_id,
         current_user,
         presentation_repository,
         db_session,

@@ -47,10 +47,9 @@ class PresentationRepositoryAdapter(
         self,
         db_session: Session,
         reviewer_id: Optional[ID]=None,
+        session_chair_id: Optional[ID]=None,
     ) -> List[Presentation]:
-        if reviewer_id is None:
-            db_presentations = self._find_all(db_session)
-        else:
+        if reviewer_id and session_chair_id is None:
             db_presentations = (
                 db_session.query(PresentationSchema)
                 .where(
@@ -65,6 +64,18 @@ class PresentationRepositoryAdapter(
                 .order_by(PresentationSchema.created_at.desc())
                 .all()
             )
+        elif reviewer_id is None and session_chair_id:
+            db_presentations = (
+                db_session.query(PresentationSchema)
+                .where(
+                    PresentationSchema.session_chair_id == reviewer_id,
+                )
+                .where(PresentationSchema.is_deleted.is_(False))
+                .order_by(PresentationSchema.created_at.desc())
+                .all()
+            )
+        else: 
+            db_presentations = self._find_all(db_session)
 
         return [
             self.schema_to_entity(db_session, db_presentation)
