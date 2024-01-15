@@ -1,4 +1,5 @@
-import { Space, Table } from 'antd';
+import { EditOutlined } from '@ant-design/icons';
+import { Popover, Space, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
 import { useQuery } from 'react-query';
@@ -10,7 +11,7 @@ import {
   PresentationEvaluationGivenByUser,
 } from '../../../core/types/presentation';
 import { Professor } from '../../../core/types/professor';
-import { notify } from '../../../core/utils';
+import { getSchoolYear, notify } from '../../../core/utils';
 import PresentationEvaluationInputForm from './PresentationEvaluationInputForm';
 
 const PresentationEvaluationsTable = () => {
@@ -37,7 +38,7 @@ const PresentationEvaluationsTable = () => {
           }
           return false;
         })
-        .map((presentation) => {
+        .map((presentation: Presentation) => {
           let evaluation: PresentationEvaluation | null = null;
 
           switch (userId) {
@@ -58,8 +59,13 @@ const PresentationEvaluationsTable = () => {
           return {
             presentation_id: presentation.id_,
             presentation_length: presentation.presentation_length,
+            presentation_date: presentation.presentation_date,
             reviewer_id: userId as string,
-            student: { full_name: presentation.student.full_name },
+            student: { 
+              full_name: presentation.student.full_name,
+              admission_date: presentation.student.admission_date,
+              email: presentation.student.email,
+            },
             evaluation,
           };
         }),
@@ -78,16 +84,45 @@ const PresentationEvaluationsTable = () => {
       width: '90px',
       render: (_: string, record) => {
         if(record.presentation_length){
-        return (
-          <>
-            <Space size="middle">
-              <PresentationEvaluationInputForm evaluation={record as PresentationEvaluationGivenByUser} />
-            </Space>
-          </>
-        );
+          const schoolYear = getSchoolYear(
+            record.student.admission_date,
+            record.presentation_date,
+            record.student.email.split('@')[0]
+          );
+          const max_allowed_time = schoolYear == 0 ? moment.duration({minutes: 10}) : moment.duration({minutes: 15})
+          const [score_time_minutes, score_time_seconds] = record.presentation_length.split(':')
+          const score_time = Math.max(
+            1,
+            5 - Math.abs(
+              moment.duration({
+                minutes: score_time_minutes,
+                seconds: score_time_seconds,
+              }).substract(max_allowed_time).minutes())
+          )
+          return (
+            <>
+              <Space size="middle">
+                <PresentationEvaluationInputForm 
+                  evaluation={record as PresentationEvaluationGivenByUser} 
+                  score_time={score_time} 
+                />
+              </Space>
+            </>
+          );
         }
         else{
-          return 'Please wait until the Session Chair have input the presentation time.';
+          return (
+            <Popover
+              placement="topRight"
+              title="Reviewer's Comment"
+              content="Please wait until the Session Chair have input the presentation time."
+              overlayStyle={{ maxWidth: '500px', textAlign: 'justify' }}
+              arrowPointAtCenter={true}
+            >
+              <EditOutlined />
+            </Popover>
+          )
+          
         }
       },
     },

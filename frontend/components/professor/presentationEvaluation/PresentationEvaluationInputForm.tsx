@@ -15,9 +15,10 @@ import ModalForm from '../../common/ModalForm';
 
 type Props = {
   evaluation: PresentationEvaluationGivenByUser;
+  score_time: number | null;
 };
 
-const PresentationEvaluationInputForm = ({ evaluation }: Props) => {
+const PresentationEvaluationInputForm = ({ evaluation, score_time }: Props) => {
   const queryClient = useQueryClient();
   const { createPresentationEvaluation, updatePresentationEvaluation } =
     usePresentationsApi();
@@ -113,7 +114,11 @@ const PresentationEvaluationInputForm = ({ evaluation }: Props) => {
           name={criterion.key}
           rules={[{ required: true }, { type: 'number', min: 1, max: 5 , message: criterion.criteria + " must be between 1 to 5."}]}
           initialValue={
-            evaluation.evaluation ? evaluation.evaluation[criterion.key] : null
+            evaluation.evaluation 
+              ? evaluation.evaluation[criterion.key] 
+              : criterion.key == 'score_time' 
+                ? score_time 
+                : null
           }
           // initialValue={0}
         >
