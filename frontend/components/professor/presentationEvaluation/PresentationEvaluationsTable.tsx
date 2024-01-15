@@ -114,8 +114,8 @@ const PresentationEvaluationsTable = () => {
           return (
             <Popover
               placement="topRight"
-              title="Reviewer's Comment"
-              content="Please wait until the Session Chair have input the presentation time."
+              title="Missing presentation time"
+              content="Please wait until the Session Chair has input the presentation time."
               overlayStyle={{ maxWidth: '500px', textAlign: 'justify' }}
               arrowPointAtCenter={true}
             >

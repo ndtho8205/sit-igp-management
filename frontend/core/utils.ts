@@ -41,7 +41,7 @@ const getSchoolYear = (
   id: string
 ): number => {
   // console.log(id);
-  const duplicated_sem = id == 'am20004' ? 1 : 0;
+  const duplicated_sem = id == 'am20004' ? 1 : id == 'am22101' ? 2 : 0;
   return (
     Math.floor(
       moment(considerDate).diff(moment(admissionDate), 'years', true) * 2
