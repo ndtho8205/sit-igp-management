@@ -194,7 +194,7 @@ const PresentationEvaluationsTable = () => {
             queryClient.invalidateQueries(['findAllPresentations', userId]);
           }}
           loading={isRefreshBtnClicked && queryClient.isFetching() > 0}
-        />      
+        >Refresh</Button>      
       </Space>
       <Table
         dataSource={presentationsQuery.data}
