@@ -27,13 +27,19 @@ const ProfessorAutoComplete = (props: Props) => {
   };
 
   return (
-    <AutoComplete onSelect={handleOnSelect}>
-      {data?.map((professor: Professor) => (
-        <AutoComplete.Option key={professor.id_} value={professor.full_name}>
-          {professor.full_name}
-        </AutoComplete.Option>
-      ))}
-    </AutoComplete>
+    <AutoComplete 
+      onSelect={handleOnSelect}
+      options={data?.map((professor: Professor) => {
+        return {
+          key: professor.id_,
+          value: professor.full_name,
+        }
+      })}
+      filterOption={(value, option) => 
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        option!.value.toUpperCase().indexOf(value.toUpperCase()) !== -1
+      }
+    />
   );
 };
 

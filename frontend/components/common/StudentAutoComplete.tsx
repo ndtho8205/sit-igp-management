@@ -27,13 +27,19 @@ const StudentAutoComplete = (props: Props) => {
   };
 
   return (
-    <AutoComplete onSelect={handleOnSelect}>
-      {data?.map((student: Student) => (
-        <AutoComplete.Option key={student.id_} value={student.full_name}>
-          {student.full_name}
-        </AutoComplete.Option>
-      ))}
-    </AutoComplete>
+    <AutoComplete 
+      onSelect={handleOnSelect}
+      options={data?.map((student: Student) => {
+        return {
+          key: student.id_,
+          value: student.full_name,
+        }
+      })}
+      filterOption={(value, option) => 
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        option!.value.toUpperCase().indexOf(value.toUpperCase()) !== -1
+      }
+    />
   );
 };
 
