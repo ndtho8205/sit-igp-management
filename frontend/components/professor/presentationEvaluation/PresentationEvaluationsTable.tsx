@@ -1,8 +1,9 @@
 import { EditOutlined } from '@ant-design/icons';
-import { Popover, Space, Table } from 'antd';
+import { Button, Popover, Space, Table, Typography } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
-import { useQuery } from 'react-query';
+import { useState } from 'react';
+import { useQuery, useQueryClient } from 'react-query';
 import usePresentationsApi from '../../../core/api/usePresentationsApi';
 import useProfessorsApi from '../../../core/api/useProfessorsApi';
 import {
@@ -13,8 +14,11 @@ import {
 import { Professor } from '../../../core/types/professor';
 import { getSchoolYear, notify } from '../../../core/utils';
 import PresentationEvaluationInputForm from './PresentationEvaluationInputForm';
+import SemEndPresentationRubric from './SemEndPresentationRubric';
 
 const PresentationEvaluationsTable = () => {
+  const { Title } = Typography;
+
   // get user id
   const { whoami } = useProfessorsApi();
   const whoamiQuery = useQuery<Professor, Error>('whoami', whoami);
@@ -22,12 +26,17 @@ const PresentationEvaluationsTable = () => {
 
   // fetch Presentations data & transform it
   const { findAllPresentations } = usePresentationsApi();
+  const [isRefreshBtnClicked, setIsRefreshBtnClicked] =
+    useState<boolean>(false);
   const presentationsQuery = useQuery<
     Presentation[],
     Error,
     PresentationEvaluationGivenByUser[]
   >(['findAllPresentations', userId], () => findAllPresentations(userId), {
     enabled: !!userId,
+    onSuccess: () => {
+      setIsRefreshBtnClicked(false);
+    },
     select: (data) =>
       data
         .filter((_data) => {
@@ -70,6 +79,7 @@ const PresentationEvaluationsTable = () => {
           };
         }),
   });
+  const queryClient = useQueryClient();
 
   if (presentationsQuery.error) {
     notify('error', presentationsQuery.error);
@@ -174,14 +184,27 @@ const PresentationEvaluationsTable = () => {
   ];
 
   return (
-    <Table
-      dataSource={presentationsQuery.data}
-      columns={columns}
-      loading={presentationsQuery.isLoading}
-      rowKey="presentation_id"
-      showSorterTooltip
-      bordered
-    />
+    <>
+      <Title level={4}>Input Score (as Reviewer)</Title>
+      <Space>
+        <SemEndPresentationRubric />
+        <Button 
+          onClick={() => {
+            setIsRefreshBtnClicked(true);
+            queryClient.invalidateQueries(['findAllPresentations', userId]);
+          }}
+          loading={isRefreshBtnClicked && queryClient.isFetching() > 0}
+        />      
+      </Space>
+      <Table
+        dataSource={presentationsQuery.data}
+        columns={columns}
+        loading={presentationsQuery.isLoading}
+        rowKey="presentation_id"
+        showSorterTooltip
+        bordered
+      />
+    </>
   );
 };
 

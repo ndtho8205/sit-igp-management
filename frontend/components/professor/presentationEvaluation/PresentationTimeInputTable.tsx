@@ -1,4 +1,4 @@
-import { Space, Table } from 'antd';
+import { Space, Table, Typography } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
 import { useQuery } from 'react-query';
@@ -12,6 +12,8 @@ import { notify } from '../../../core/utils';
 import PresentationTimeInputForm from './PresentationTimeInputForm';
 
 const PresentationTimeInputTable = () => {
+  const { Title } = Typography;
+
   // get user id
   const { whoami } = useProfessorsApi();
   const whoamiQuery = useQuery<Professor, Error>('whoami', whoami);
@@ -38,6 +40,9 @@ const PresentationTimeInputTable = () => {
 
   if (presentationsQuery.error) {
     notify('error', presentationsQuery.error);
+  }
+  if (presentationsQuery.data?.length == 0) {
+    return null;
   }
 
   // render
@@ -73,14 +78,17 @@ const PresentationTimeInputTable = () => {
   ];
 
   return (
-    <Table
-      dataSource={presentationsQuery.data}
-      columns={columns}
-      loading={presentationsQuery.isLoading}
-      rowKey="presentation_id"
-      showSorterTooltip
-      bordered
-    />
+    <>
+      <Title level={4}>Input Presentation Time (as Session Chair)</Title>
+      <Table
+        dataSource={presentationsQuery.data}
+        columns={columns}
+        loading={presentationsQuery.isLoading}
+        rowKey="presentation_id"
+        showSorterTooltip
+        bordered
+      />
+    </>
   );
 };
 
