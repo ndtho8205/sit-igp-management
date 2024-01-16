@@ -68,7 +68,7 @@ class PresentationRepositoryAdapter(
             db_presentations = (
                 db_session.query(PresentationSchema)
                 .where(
-                    PresentationSchema.session_chair_id == reviewer_id,
+                    PresentationSchema.session_chair_id == session_chair_id,
                 )
                 .where(PresentationSchema.is_deleted.is_(False))
                 .order_by(PresentationSchema.created_at.desc())
