@@ -5,7 +5,7 @@ import { notify } from '../utils';
 
 axios.defaults.baseURL = config.apiServerUrl;
 axios.defaults.headers.post['Content-Type'] = 'application/json';
-axios.defaults.timeout = 5000;
+axios.defaults.timeout = 60000;
 axios.defaults.headers.common['Authorization'] = 'Bearer random_token';
 
 const useAxios = () => {
